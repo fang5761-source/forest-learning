@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>慢慢變強｜螢光森林 v0.8.1</title>
+  <meta name="theme-color" content="#163826">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="forest-bg" aria-hidden="true">
+    <div class="mist mist-1"></div>
+    <div class="mist mist-2"></div>
+    <div class="leaf leaf-a"></div>
+    <div class="leaf leaf-b"></div>
+    <div class="leaf leaf-c"></div>
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+    <div class="glow glow-c"></div>
+    <div class="fireflies" id="fireflies"></div>
+  </div>
+
+  <main class="app-shell">
+    <header class="app-header glass">
+      <div>
+        <div class="eyebrow">森林探索學習</div>
+        <h1>慢慢變強</h1>
+        <div class="version-tag">v0.8.1 討論整合版</div>
+      </div>
+      <button id="globalSpeakBtn" class="icon-btn" type="button" aria-label="朗讀目前內容">🔊</button>
+    </header>
+
+    <section id="introScreen" class="screen active">
+      <div class="card story-card intro-hero">
+        <div class="hero-illustration">
+          <img src="icon.png" alt="螢火蟲小精靈" class="hero-spirit">
+        </div>
+        <div class="story-text">
+          <h2>森林正在等一位小探險家</h2>
+          <p id="introStoryText" class="story-lines">
+            很久以前，森林裡的樹會發光。<br>
+            每一棵樹，都藏著一種能力。<br>
+            可是有一天，森林的光被封印了。<br>
+            小精靈找了很久，終於找到你。<br>
+            你願意陪我一起，把森林慢慢點亮嗎？
+          </p>
+          <div class="action-group">
+            <button id="introAcceptBtn" class="primary-btn" type="button">我願意幫你</button>
+            <button id="introReplayBtn" class="secondary-btn" type="button">再聽一次故事</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nameScreen" class="screen">
+      <div class="card name-card">
+        <div class="small-title">第一步</div>
+        <h2>選一位小精靈朋友</h2>
+        <p class="subtle">名字就是個性，也可以之後到設定裡重新選。</p>
+        <div id="nameGrid" class="name-grid"></div>
+        <div class="action-group stack-mobile">
+          <button id="confirmNameBtn" class="primary-btn" type="button" disabled>選這位小精靈</button>
+          <button id="nameReplayBtn" class="secondary-btn" type="button">朗讀這一頁</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="titleScreen" class="screen">
+      <div class="card name-card">
+        <div class="small-title">第二步</div>
+        <h2>選你的探險稱號</h2>
+        <p class="subtle">小精靈會這樣叫你，也可以之後到設定裡重新選。</p>
+        <div id="titleGrid" class="name-grid"></div>
+        <div class="action-group stack-mobile">
+          <button id="confirmTitleBtn" class="primary-btn" type="button" disabled>用這個稱號</button>
+          <button id="titleReplayBtn" class="secondary-btn" type="button">朗讀這一頁</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="bondScreen" class="screen">
+      <div class="card story-card bond-card">
+        <div class="bond-top">
+          <img src="icon.png" alt="螢火蟲小精靈" class="bond-spirit">
+          <div>
+            <div class="small-title">準備出發</div>
+            <h2 id="bondTitle">小探險家，你好呀。</h2>
+          </div>
+        </div>
+        <p id="bondStoryText" class="story-lines"></p>
+        <div class="action-group stack-mobile">
+          <button id="bondContinueBtn" class="primary-btn" type="button">一起進入森林</button>
+          <button id="bondReplayBtn" class="secondary-btn" type="button">再聽一次</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="homeScreen" class="screen">
+      <div class="card dashboard-card">
+        <div class="world-topbar">
+          <div class="world-badge" id="worldTimeBadge">星夜森林</div>
+          <div class="title-actions">
+            <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
+            <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
+          </div>
+        </div>
+
+        <div class="companion-row">
+          <img src="icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit">
+          <div>
+            <div class="small-title">你的陪伴精靈</div>
+            <h2 id="homeSpiritTitle">希望</h2>
+            <p id="welcomeLine" class="subtle">歡迎回來，小探險家。</p>
+          </div>
+        </div>
+
+        <div class="status-grid">
+          <div class="status-pill glass-soft">
+            <span>森林亮度</span>
+            <strong id="brightnessText">12%</strong>
+          </div>
+          <div class="status-pill glass-soft">
+            <span>光之碎片</span>
+            <strong id="shardText">0</strong>
+          </div>
+          <div class="status-pill glass-soft">
+            <span>守護天數</span>
+            <strong id="streakText">1</strong>
+          </div>
+        </div>
+
+        <div class="mission-panel glass-soft">
+          <div class="mission-head">
+            <h3>今天的小任務</h3>
+            <small>完成後，森林會亮一點，還會拿到種子。</small>
+          </div>
+          <div class="mission-list">
+            <div class="mission-item"><span>今日任務 1 次</span><strong id="missionDailyState">未完成</strong></div>
+            <div class="mission-item"><span>注音或拼音練功 1 次</span><strong id="missionLanguageState">未完成</strong></div>
+            <div class="mission-item"><span>九九口訣房 1 次</span><strong id="missionMathState">未完成</strong></div>
+          </div>
+        </div>
+
+        <div class="map-panel">
+          <div class="map-title-row">
+            <h3>森林地圖</h3>
+            <small class="subtle">努力會讓森林長出新的地方。</small>
+          </div>
+          <div class="world-map">
+            <button class="world-spot spirit-spot" data-mode="today" type="button">
+              <span class="spot-emoji">⭐</span>
+              <span class="spot-name">今日任務</span>
+              <small>跟著小精靈先做今天的探索</small>
+            </button>
+            <button class="world-spot symbol-spot" data-mode="symbol" type="button">
+              <span class="spot-emoji">ㄅ</span>
+              <span class="spot-name">注音符號房</span>
+              <small>只練符號辨識</small>
+            </button>
+            <button class="world-spot combo-spot" data-mode="combo" type="button">
+              <span class="spot-emoji">🧩</span>
+              <span class="spot-name">拼音練功房</span>
+              <small>完整拼音讀音</small>
+            </button>
+            <button class="world-spot math-spot" data-mode="math" type="button">
+              <span class="spot-emoji">✖️</span>
+              <span class="spot-name">九九口訣房</span>
+              <small>背熟口訣節奏</small>
+            </button>
+            <button class="world-spot forest-spot" data-mode="forest" type="button">
+              <span class="spot-emoji">🌲</span>
+              <span class="spot-name">森林冒險</span>
+              <small>混合挑戰與驚喜</small>
+            </button>
+            <button class="world-spot garden-spot" id="gardenVisitBtn" type="button">
+              <span class="spot-emoji" id="gardenVisual">🟫</span>
+              <span class="spot-name">森林花圃</span>
+              <small id="gardenText">空地</small>
+            </button>
+            <button class="world-spot village-spot locked" id="villageBtn" type="button">
+              <span class="spot-emoji">🌳</span>
+              <span class="spot-name">小精靈村</span>
+              <small id="villageHint">種下 5 顆種子後出現</small>
+            </button>
+            <button class="world-spot deer-spot locked" id="deerBtn" type="button">
+              <span class="spot-emoji">🦌</span>
+              <span class="spot-name">小鹿森林</span>
+              <small id="deerHint">種下 8 顆種子後出現</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="growth-panel glass-soft">
+          <div class="growth-head">
+            <h3>種子袋</h3>
+            <small>普通、稀有、星光種子都會放在這裡。</small>
+          </div>
+          <div class="growth-grid seed-grid-4">
+            <div class="growth-pill"><span>普通種子</span><strong id="seedNormalText">0 顆</strong></div>
+            <div class="growth-pill"><span>稀有種子</span><strong id="seedRareText">0 顆</strong></div>
+            <div class="growth-pill"><span>星光種子</span><strong id="seedStarText">0 顆</strong></div>
+            <div class="growth-pill"><span>已種下</span><strong id="plantedText">0 顆</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gardenScreen" class="screen">
+      <div class="card settings-card">
+        <div class="screen-topbar">
+          <button id="gardenBackBtn" class="ghost-btn" type="button">← 回森林</button>
+          <div class="small-title">森林花圃</div>
+        </div>
+        <h2 id="gardenPageTitle">森林花圃</h2>
+        <p class="subtle" id="gardenPageDesc">在這裡種下種子，讓森林慢慢長大。</p>
+
+        <div class="garden-stage-display glass-soft">
+          <div class="garden-big-visual" id="gardenBigVisual">🟫</div>
+          <div>
+            <div class="small-title">目前進度</div>
+            <h3 id="gardenStageTitle">空地</h3>
+            <p id="gardenLifeText" class="subtle">還沒有長出花，先把第一顆種子種下去吧。</p>
+          </div>
+        </div>
+
+        <div class="seed-actions-grid">
+          <button id="plantNormalBtn" class="primary-btn" type="button">種普通種子</button>
+          <button id="plantRareBtn" class="secondary-btn" type="button">種稀有種子</button>
+          <button id="plantStarBtn" class="secondary-btn" type="button">種星光種子</button>
+        </div>
+
+        <div class="growth-panel glass-soft">
+          <div class="growth-head">
+            <h3>花圃的驚喜</h3>
+            <small>花圃長大後，蝴蝶、小鳥、發光花都會慢慢出現。</small>
+          </div>
+          <div id="gardenBonusList" class="garden-bonus-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="villageScreen" class="screen">
+      <div class="card settings-card">
+        <div class="screen-topbar">
+          <button id="villageBackBtn" class="ghost-btn" type="button">← 回森林</button>
+          <div class="small-title">小精靈村</div>
+        </div>
+        <h2>大樹樹洞村</h2>
+        <p class="subtle">小精靈的朋友會住在發光的樹洞裡。</p>
+        <div class="tree-village glass-soft">
+          <div class="tree-crown">🌳</div>
+          <div class="tree-holes" id="treeHoles">
+            <div class="tree-hole active">✨</div>
+            <div class="tree-hole">○</div>
+            <div class="tree-hole">○</div>
+            <div class="tree-hole">○</div>
+          </div>
+          <p id="villageStory" class="subtle">先多種幾顆種子，讓朋友慢慢搬進來。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quizScreen" class="screen">
+      <div class="quiz-topbar glass">
+        <button id="backHomeBtn" class="ghost-btn" type="button">← 回森林</button>
+        <div class="quiz-meta">
+          <span id="modeChip" class="meta-chip">今日任務</span>
+          <span id="roundText" class="meta-chip">1 / 5</span>
+        </div>
+      </div>
+
+      <div class="card question-card">
+        <div class="question-head centered-head">
+          <div class="question-main">
+            <div id="questionTypeLabel" class="small-title">語言森林</div>
+            <h2 id="questionPrompt">題目</h2>
+          </div>
+          <div class="question-tools">
+            <button id="toggleVisualBtn" class="mini-btn hidden-btn" type="button">展開乘法表</button>
+            <button id="questionSpeakBtn" class="icon-btn light" type="button" aria-label="朗讀題目">🔊</button>
+          </div>
+        </div>
+
+        <div id="visualArea" class="visual-area collapsed"></div>
+        <div id="optionsWrap" class="options-wrap"></div>
+
+        <div class="feedback-bar">
+          <div>
+            <div class="small-title">小精靈說</div>
+            <p id="feedbackLine" class="feedback-line">慢慢來，我們一起試試看。</p>
+          </div>
+          <div class="excluded-box">
+            <span>已排除</span>
+            <strong id="excludedText">0 個</strong>
+          </div>
+        </div>
+
+        <div class="quiz-actions">
+          <button id="nextQuestionBtn" class="primary-btn hidden-btn" type="button">下一題</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="settingsScreen" class="screen">
+      <div class="card settings-card">
+        <div class="small-title">設定</div>
+        <h2>重新選擇小精靈與稱號</h2>
+        <p class="subtle">之後要調整的小功能，也可以慢慢放到這裡。</p>
+
+        <h3 class="settings-subtitle">小精靈</h3>
+        <div id="settingsNameGrid" class="name-grid"></div>
+
+        <h3 class="settings-subtitle">探險稱號</h3>
+        <div id="settingsTitleGrid" class="name-grid"></div>
+
+        <div class="action-group stack-mobile">
+          <button id="settingsSaveBtn" class="primary-btn" type="button">保存設定</button>
+          <button id="settingsCancelBtn" class="secondary-btn" type="button">回到森林</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen">
+      <div class="card result-card">
+        <div class="result-glow">✨</div>
+        <h2 id="resultTitle">今天森林亮了一點。</h2>
+        <p id="resultText" class="subtle">你又幫小精靈找回一點光了。</p>
+        <div class="result-stats">
+          <div class="result-pill">森林亮度 <strong id="resultBrightness">12%</strong></div>
+          <div class="result-pill">光之碎片 <strong id="resultShards">0</strong></div>
+        </div>
+        <div class="action-group stack-mobile">
+          <button id="resultHomeBtn" class="primary-btn" type="button">回到森林地圖</button>
+          <button id="exploreMoreBtn" class="secondary-btn" type="button">再探索一下</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
