@@ -540,3 +540,65 @@ button:hover,.map-node:hover,.name-btn:hover{transform:translateY(-1px)}
     grid-template-columns:repeat(2,minmax(0,1fr)) !important;
   }
 }
+
+
+.reset-note{
+  margin-top:10px;
+  line-height:1.6;
+}
+.growth-head{
+  align-items:center !important;
+}
+.growth-head h3{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.growth-head h3::before{
+  content:"✨";
+}
+.growth-pill{
+  position:relative;
+  overflow:hidden;
+}
+.growth-pill::before{
+  content:"•";
+  position:absolute;
+  top:10px;
+  right:12px;
+  color:rgba(255,235,172,.65);
+  font-size:18px;
+}
+
+
+/* v0.8.7 種子袋美化 */
+.growth-grid .growth-pill{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255,223,128,.14), transparent 20%),
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+.growth-grid .growth-pill:nth-child(1)::before{
+  content:"🌱";
+}
+.growth-grid .growth-pill:nth-child(2)::before{
+  content:"✨";
+}
+.growth-grid .growth-pill:nth-child(3)::before{
+  content:"⭐";
+}
+.growth-grid .growth-pill:nth-child(4)::before{
+  content:"🌼";
+}
+.growth-grid .growth-pill::before{
+  position:absolute;
+  top:10px;
+  right:12px;
+  font-size:18px;
+  opacity:.9;
+}
+.growth-grid .growth-pill span{
+  letter-spacing:.02em;
+}

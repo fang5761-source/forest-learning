@@ -151,6 +151,7 @@ const backHomeBtn = document.getElementById('backHomeBtn');
 const settingsNameGrid = document.getElementById('settingsNameGrid');
 const settingsTitleGrid = document.getElementById('settingsTitleGrid');
 const settingsSaveBtn = document.getElementById('settingsSaveBtn');
+const settingsResetBtn = document.getElementById('settingsResetBtn');
 const settingsCancelBtn = document.getElementById('settingsCancelBtn');
 const resultTitle = document.getElementById('resultTitle');
 const resultText = document.getElementById('resultText');
@@ -311,6 +312,7 @@ function updateHome() {
 }
 
 let availableVoices = [];
+let speakingNow = false;
 function loadVoices() {
   availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
 }
@@ -324,13 +326,27 @@ function pickVoice() {
 function speak(text) {
   state.currentSpeechText = text;
   if (!('speechSynthesis' in window)) return;
+
+  // 再按一次同一顆喇叭時，直接停止
+  if (speakingNow) {
+    window.speechSynthesis.cancel();
+    speakingNow = false;
+    return;
+  }
+
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(String(text).replace(/\n/g, ' '));
   utter.lang = 'zh-TW';
-  utter.rate = 0.92;
-  utter.pitch = 1.02;
+  utter.rate = 0.9;
+  utter.pitch = 1.0;
+
   const voice = pickVoice();
   if (voice) utter.voice = voice;
+
+  utter.onend = () => { speakingNow = false; };
+  utter.onerror = () => { speakingNow = false; };
+
+  speakingNow = true;
   window.speechSynthesis.speak(utter);
 }
 
@@ -497,6 +513,7 @@ function startMode(mode) {
   }
   showScreen('quiz');
   renderQuestion();
+  scrollToQuestionTop();
 }
 function renderMathStrip(q) {
   const wrap = document.createElement('div');
@@ -618,8 +635,12 @@ function handleAnswer(btn, optionObj) {
 function nextQuestion() {
   stopSpeech();
   state.qIndex += 1;
-  if (state.qIndex >= state.questionList.length) finishRound();
-  else renderQuestion();
+  if (state.qIndex >= state.questionList.length) {
+    finishRound();
+  } else {
+    renderQuestion();
+    scrollToQuestionTop();
+  }
 }
 function rewardSeed() {
   const roll = Math.random();
@@ -726,6 +747,12 @@ function bindEvents() {
     updateHome();
     showScreen('home');
     speak(`好，現在我是${state.spiritName}，你是${state.playerTitle}。`);
+  };
+  settingsResetBtn.onclick = () => {
+    const ok = confirm('重新設定會清掉目前的小精靈、稱號、種子、花圃進度與任務紀錄。確定要重新設定嗎？');
+    if (!ok) return;
+    resetAllProgress();
+    window.location.reload();
   };
   settingsCancelBtn.onclick = () => {
     showScreen('home');
