@@ -75,6 +75,7 @@ const state = {
   settingsSelectedName: localStorage.getItem('mm_strength_name') || '',
   settingsSelectedTitle: localStorage.getItem('mm_player_title') || '',
   awaitingNext: false,
+  lastCorrectLine: '',
 };
 
 const screens = {
@@ -164,6 +165,18 @@ const questionCard = document.querySelector('.question-card');
 function randomItem(list) { return list[Math.floor(Math.random() * list.length)]; }
 function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function pickNonRepeat(list, lastValue) {
+  if (!list || !list.length) return '';
+  if (list.length === 1) return list[0];
+  let choice = randomItem(list);
+  let tries = 0;
+  while (choice === lastValue && tries < 8) {
+    choice = randomItem(list);
+    tries += 1;
+  }
+  return choice;
+}
 function stopSpeech() { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); }
 
 function saveState() {
@@ -493,6 +506,7 @@ function startMode(mode) {
   state.wrongCount = 0;
   state.correctCombo = 0;
   state.awaitingNext = false;
+  state.lastCorrectLine = '';
   stopSpeech();
 
   if (mode === 'today') {
@@ -514,6 +528,7 @@ function startMode(mode) {
   showScreen('quiz');
   renderQuestion();
   scrollToQuestionTop();
+  setTimeout(scrollToQuestionTop, 120);
 }
 function renderMathStrip(q) {
   const wrap = document.createElement('div');
@@ -607,7 +622,15 @@ function handleAnswer(btn, optionObj) {
     state.correctCombo += 1;
     state.awaitingNext = true;
     disableQuestionInputs();
-    const line = state.correctCombo >= 2 ? '森林好像在為你鼓掌。' : randomItem(CORRECT_LINES);
+    let line;
+    if (state.correctCombo >= 5) {
+      line = pickNonRepeat(['森林好像在為你鼓掌。','小精靈開心得飛了一圈。','太棒了，森林又亮了一點。'], state.lastCorrectLine);
+    } else if (state.correctCombo >= 2) {
+      line = pickNonRepeat(['你今天越來越穩了。','太好了，這題也找到了。','小精靈說，你越來越熟練了。'], state.lastCorrectLine);
+    } else {
+      line = pickNonRepeat(CORRECT_LINES, state.lastCorrectLine);
+    }
+    state.lastCorrectLine = line;
     feedbackLine.textContent = line;
     nextQuestionBtn.classList.remove('hidden-btn');
     if (questionCard) {
@@ -640,6 +663,7 @@ function nextQuestion() {
   } else {
     renderQuestion();
     scrollToQuestionTop();
+    setTimeout(scrollToQuestionTop, 120);
   }
 }
 function rewardSeed() {
