@@ -134,6 +134,10 @@ const gardenBonusList = document.getElementById('gardenBonusList');
 const plantNormalBtn = document.getElementById('plantNormalBtn');
 const plantRareBtn = document.getElementById('plantRareBtn');
 const plantStarBtn = document.getElementById('plantStarBtn');
+const gardenSeedNormalText = document.getElementById('gardenSeedNormalText');
+const gardenSeedRareText = document.getElementById('gardenSeedRareText');
+const gardenSeedStarText = document.getElementById('gardenSeedStarText');
+const gardenPlantedText = document.getElementById('gardenPlantedText');
 const villageBackBtn = document.getElementById('villageBackBtn');
 const villageStory = document.getElementById('villageStory');
 const treeHoles = document.getElementById('treeHoles');
@@ -309,6 +313,10 @@ function updateHome() {
   if (seedRareText) seedRareText.textContent = `${state.rareSeeds} 顆`;
   if (seedStarText) seedStarText.textContent = `${state.starSeeds} 顆`;
   if (plantedText) plantedText.textContent = `${state.plantedSeeds} 顆`;
+  if (gardenSeedNormalText) gardenSeedNormalText.textContent = `${state.normalSeeds} 顆`;
+  if (gardenSeedRareText) gardenSeedRareText.textContent = `${state.rareSeeds} 顆`;
+  if (gardenSeedStarText) gardenSeedStarText.textContent = `${state.starSeeds} 顆`;
+  if (gardenPlantedText) gardenPlantedText.textContent = `${state.plantedSeeds} 顆`;
   if (gardenText) gardenText.textContent = getGardenStageLabel(state.gardenStage);
   if (gardenVisual) gardenVisual.textContent = getGardenVisual(state.gardenStage);
   if (missionDailyState) missionDailyState.textContent = getMissionLabel(state.missionDailyDone);
@@ -527,7 +535,7 @@ function startMode(mode) {
   }
   showScreen('quiz');
   renderQuestion();
-  scrollToQuestionTop();
+  scrollToQuestionTop(); setTimeout(scrollToQuestionTop,50); setTimeout(scrollToQuestionTop,150);
   setTimeout(scrollToQuestionTop, 120);
   setTimeout(scrollToQuestionTop, 260);
 }
@@ -663,7 +671,7 @@ function nextQuestion() {
     finishRound();
   } else {
     renderQuestion();
-    scrollToQuestionTop();
+    scrollToQuestionTop(); setTimeout(scrollToQuestionTop,50); setTimeout(scrollToQuestionTop,150);
     setTimeout(scrollToQuestionTop, 120);
     setTimeout(scrollToQuestionTop, 260);
   }

@@ -646,3 +646,58 @@ button:hover,.map-node:hover,.name-btn:hover{transform:translateY(-1px)}
   .compact-spot{min-height:76px !important;}
   .seed-grid-4{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
 }
+
+
+/* v0.9.0 花圃與種子袋整合 */
+.compact-seed-grid .growth-pill{
+  min-height:64px !important;
+}
+.garden-page-card{
+  max-width:860px;
+}
+.integrated-seed-panel{
+  margin-bottom:14px;
+}
+.prettier-garden-box{
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255,223,128,.08), transparent 22%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06)) !important;
+}
+.garden-big-visual-wrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.garden-big-visual{
+  width:150px;
+  min-height:120px !important;
+  font-size:74px !important;
+  border-radius:28px !important;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,240,182,.16), transparent 26%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 10px 24px rgba(0,0,0,.16);
+}
+.garden-glow{
+  position:absolute;
+  bottom:6px;
+  width:80px;
+  height:20px;
+  border-radius:50%;
+  background:rgba(255,223,128,.16);
+  filter:blur(10px);
+}
+.seed-actions-grid{
+  margin-top:16px !important;
+}
+.seed-actions-grid button{
+  min-height:58px;
+}
+@media (max-width:760px){
+  .garden-big-visual{
+    width:120px;
+    min-height:100px !important;
+    font-size:58px !important;
+  }
+}

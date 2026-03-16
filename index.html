@@ -193,32 +193,38 @@
           </div>
         </div>
 
-        <div class="growth-panel glass-soft">
-          <div class="growth-head">
-            <h3>種子收集</h3>
-            <small>先看收集數量，詳細種植再進花圃。</small>
-          </div>
-          <div class="growth-grid seed-grid-4">
-            <div class="growth-pill"><span>普通種子</span><strong id="seedNormalText">0 顆</strong></div>
-            <div class="growth-pill"><span>稀有種子</span><strong id="seedRareText">0 顆</strong></div>
-            <div class="growth-pill"><span>星光種子</span><strong id="seedStarText">0 顆</strong></div>
-            <div class="growth-pill"><span>已種下</span><strong id="plantedText">0 顆</strong></div>
-          </div>
+        
         </div>
       </div>
     </section>
 
     <section id="gardenScreen" class="screen">
-      <div class="card settings-card">
+      <div class="card settings-card garden-page-card">
         <div class="screen-topbar">
           <button id="gardenBackBtn" class="ghost-btn" type="button">← 回森林</button>
           <div class="small-title">森林花圃</div>
         </div>
         <h2 id="gardenPageTitle">森林花圃</h2>
-        <p class="subtle" id="gardenPageDesc">在這裡種下種子，讓森林慢慢長大。</p>
+        <p class="subtle" id="gardenPageDesc">在這裡看種子、種種子，也看森林慢慢長大。</p>
 
-        <div class="garden-stage-display glass-soft">
-          <div class="garden-big-visual" id="gardenBigVisual">🟫</div>
+        <div class="growth-panel glass-soft integrated-seed-panel">
+          <div class="growth-head">
+            <h3>我的種子袋</h3>
+            <small>先看收集到多少，再直接種下去。</small>
+          </div>
+          <div class="growth-grid seed-grid-4">
+            <div class="growth-pill"><span>普通種子</span><strong id="gardenSeedNormalText">0 顆</strong></div>
+            <div class="growth-pill"><span>稀有種子</span><strong id="gardenSeedRareText">0 顆</strong></div>
+            <div class="growth-pill"><span>星光種子</span><strong id="gardenSeedStarText">0 顆</strong></div>
+            <div class="growth-pill"><span>已種下</span><strong id="gardenPlantedText">0 顆</strong></div>
+          </div>
+        </div>
+
+        <div class="garden-stage-display glass-soft prettier-garden-box">
+          <div class="garden-big-visual-wrap">
+            <div class="garden-big-visual" id="gardenBigVisual">🟫</div>
+            <div class="garden-glow"></div>
+          </div>
           <div>
             <div class="small-title">目前進度</div>
             <h3 id="gardenStageTitle">空地</h3>
