@@ -602,3 +602,47 @@ button:hover,.map-node:hover,.name-btn:hover{transform:translateY(-1px)}
 .growth-grid .growth-pill span{
   letter-spacing:.02em;
 }
+
+
+/* v0.8.9 主畫面瘦身與強制滑動支援 */
+.dashboard-card{padding:20px !important;}
+.companion-row{margin-bottom:12px !important;}
+.status-grid{margin:12px 0 14px !important;}
+.status-pill{padding:12px 14px !important;}
+.status-pill strong{font-size:24px !important;}
+.mission-panel{padding:14px 16px !important;margin-bottom:12px !important;}
+.mission-head h3{font-size:20px !important;}
+.mission-item{min-height:50px !important;padding:10px 14px !important;}
+.mission-item span,.mission-item strong{font-size:16px !important;}
+.mission-list{gap:8px !important;}
+.map-panel{margin-top:8px !important;padding:14px !important;}
+.world-map{gap:10px !important;}
+.world-spot{min-height:96px !important;padding:14px !important;border-radius:20px !important;}
+.world-spot .spot-name{font-size:20px !important;}
+.world-spot .spot-emoji{font-size:24px !important;}
+.compact-spot{min-height:82px !important;opacity:.92;}
+.compact-spot .spot-name{font-size:18px !important;}
+.compact-spot small{font-size:13px !important;}
+.growth-panel{padding:14px 16px !important;margin-top:12px !important;}
+.growth-head h3{font-size:20px !important;}
+.growth-head small{font-size:13px !important;}
+.seed-grid-4{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:8px !important;}
+.growth-grid .growth-pill{min-height:70px !important;padding:10px 12px !important;border-radius:18px !important;}
+.growth-grid .growth-pill span{font-size:13px !important;}
+.growth-grid .growth-pill strong{font-size:22px !important;}
+.question-card{scroll-margin-top:12px;}
+.quiz-topbar{scroll-margin-top:8px;}
+
+@media (max-width:760px){
+  .dashboard-card{padding:16px !important;}
+  .status-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;}
+  .status-pill{padding:10px !important;}
+  .status-pill strong{font-size:18px !important;}
+  .world-map{grid-template-columns:1fr 1fr !important;gap:8px !important;}
+  .spirit-spot{grid-column:1 / -1 !important;}
+  .world-spot{min-height:88px !important;padding:12px !important;}
+  .world-spot .spot-name{font-size:16px !important;}
+  .world-spot small{font-size:12px !important;}
+  .compact-spot{min-height:76px !important;}
+  .seed-grid-4{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}

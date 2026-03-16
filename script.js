@@ -529,6 +529,7 @@ function startMode(mode) {
   renderQuestion();
   scrollToQuestionTop();
   setTimeout(scrollToQuestionTop, 120);
+  setTimeout(scrollToQuestionTop, 260);
 }
 function renderMathStrip(q) {
   const wrap = document.createElement('div');
@@ -664,6 +665,7 @@ function nextQuestion() {
     renderQuestion();
     scrollToQuestionTop();
     setTimeout(scrollToQuestionTop, 120);
+    setTimeout(scrollToQuestionTop, 260);
   }
 }
 function rewardSeed() {
