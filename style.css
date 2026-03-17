@@ -927,13 +927,22 @@ html, body {
 }
 
 
+
 .options-wrap[data-layout="drag-fruit"]{grid-template-columns:1fr}
 .fruit-board{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
-.fruit-basket{width:100%;min-height:116px;border-radius:26px;border:2px dashed rgba(255,244,196,.34);background:linear-gradient(180deg, rgba(255,221,140,.18), rgba(255,255,255,.06));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;cursor:pointer}
-.fruit-basket.ready,.fruit-basket:focus-visible{border-color:rgba(255,244,196,.82);box-shadow:0 0 0 4px rgba(255,244,196,.10)}
-.basket-spirit{font-size:34px}
-.basket-title{font-size:24px;font-weight:800}
+.fruit-basket{width:100%;border:none;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:8px 8px 2px;cursor:pointer}
+.fruit-basket.ready .basket-body,.fruit-basket:focus-visible .basket-body{transform:translateY(-2px);box-shadow:0 0 0 4px rgba(255,244,196,.10), inset 0 1px 0 rgba(255,255,255,.2)}
+.basket-title{font-size:20px;font-weight:800;color:#fff3bf}
 .fruit-basket small{color:rgba(255,255,255,.76);font-size:14px;line-height:1.5}
+.basket-art{width:min(290px,100%);display:flex;flex-direction:column;align-items:center;gap:0}
+.basket-handle{width:150px;height:54px;border:8px solid #c89042;border-bottom:none;border-radius:90px 90px 0 0;opacity:.95}
+.basket-body{width:100%;min-height:126px;margin-top:-8px;border-radius:18px 18px 28px 28px;background:linear-gradient(180deg,#d69b4f 0%,#b97731 48%,#9d6126 100%);box-shadow:inset 0 10px 0 rgba(255,236,178,.24), inset 0 -12px 0 rgba(89,49,14,.18), 0 10px 24px rgba(0,0,0,.16);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+.basket-body::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg, rgba(255,239,210,.16) 0 12px, rgba(129,72,24,.14) 12px 24px), repeating-linear-gradient(0deg, rgba(255,230,189,.1) 0 10px, rgba(130,71,24,.14) 10px 20px);mix-blend-mode:soft-light;pointer-events:none}
+.basket-content{position:relative;z-index:1;min-height:56px;min-width:180px;border-radius:18px;background:rgba(255,248,229,.16);display:flex;align-items:center;justify-content:center;padding:10px 14px;border:2px dashed rgba(255,245,215,.42)}
+.basket-placeholder{color:rgba(255,250,236,.82);font-weight:700}
+.basket-fruit-preview{display:inline-flex;align-items:center;gap:8px;font-size:26px;font-weight:800;color:#fffaf0;text-shadow:0 1px 0 rgba(0,0,0,.18)}
+.fruit-basket.holding .basket-content{background:rgba(255,250,236,.24);border-color:rgba(255,245,215,.72)}
+.fruit-basket.dropped .basket-content{animation:basketDropPop .35s ease}
 .fruit-orchard{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .fruit-chip{width:100%;min-height:86px;border-radius:28px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg, rgba(120,180,106,.28), rgba(255,255,255,.08));color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-size:28px;font-weight:800;cursor:grab}
 .fruit-chip .fruit-emoji{font-size:28px}
@@ -941,4 +950,6 @@ html, body {
 .fruit-chip.dragging{opacity:.6;transform:scale(.98)}
 .fruit-chip.excluded{background:linear-gradient(180deg, rgba(120,120,120,.22), rgba(255,255,255,.06))}
 .fruit-chip.correct{background:linear-gradient(180deg, rgba(201,235,132,.34), rgba(255,255,255,.08))}
-@media (max-width:760px){.fruit-orchard{grid-template-columns:1fr}.fruit-chip{min-height:82px}}
+@keyframes basketDropPop{0%{transform:scale(.94)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@media (max-width:760px){.fruit-orchard{grid-template-columns:1fr}.fruit-chip{min-height:82px}.basket-art{width:min(240px,100%)}.basket-body{min-height:114px}.basket-content{min-width:150px}.basket-fruit-preview{font-size:24px}}
+

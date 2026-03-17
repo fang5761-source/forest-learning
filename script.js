@@ -858,6 +858,25 @@ function renderMathStrip(q) {
   visualArea.appendChild(wrap);
 }
 
+
+function setBasketPreview(optionsWrap, answerText, stateName = 'holding') {
+  const basket = optionsWrap.querySelector('.fruit-basket');
+  if (!basket) return;
+  const content = basket.querySelector('.basket-content');
+  if (!content) return;
+  basket.classList.remove('holding','dropped');
+  if (!answerText) {
+    content.innerHTML = '<span class="basket-placeholder">籃子準備好了</span>';
+    return;
+  }
+  basket.classList.add(stateName);
+  content.innerHTML = `<span class="basket-fruit-preview">🍎 ${answerText}</span>`;
+}
+
+function dropFruitIntoBasket(optionsWrap, answerText) {
+  setBasketPreview(optionsWrap, answerText, 'dropped');
+}
+
 function renderFruitDragQuestion(q) {
   optionsWrap.innerHTML = '';
   optionsWrap.className = 'options-wrap drag-fruit-wrap';
@@ -869,7 +888,15 @@ function renderFruitDragQuestion(q) {
   const basket = document.createElement('button');
   basket.type = 'button';
   basket.className = 'fruit-basket';
-  basket.innerHTML = `<div class="basket-spirit">🧺</div><div class="basket-title">把果子放進籃子</div><small>先點一顆果子，再點籃子；電腦也可以直接拖曳。</small>`;
+  basket.innerHTML = `
+    <div class="basket-title">把果子放進籃子</div>
+    <div class="basket-art" aria-hidden="true">
+      <div class="basket-handle"></div>
+      <div class="basket-body">
+        <div class="basket-content"><span class="basket-placeholder">籃子準備好了</span></div>
+      </div>
+    </div>
+    <small>手機：先點果子，再點籃子。電腦：也可以直接拖曳。</small>`;
   basket.addEventListener('dragover', (e) => {
     if (state.awaitingNext) return;
     e.preventDefault();
@@ -885,6 +912,7 @@ function renderFruitDragQuestion(q) {
     const fruit = optionsWrap.querySelector(`[data-fruit-index="${idx}"]`);
     if (fruit) {
       const optionObj = q.options[Number(idx)];
+      dropFruitIntoBasket(optionsWrap, optionObj.text);
       evaluateAnswer(fruit, optionObj);
     }
   });
@@ -898,6 +926,7 @@ function renderFruitDragQuestion(q) {
       return;
     }
     const idx = Number(selected.dataset.fruitIndex);
+    dropFruitIntoBasket(optionsWrap, q.options[idx].text);
     evaluateAnswer(selected, q.options[idx]);
   });
 
@@ -926,7 +955,10 @@ function renderFruitDragQuestion(q) {
       optionsWrap.querySelectorAll('.fruit-chip').forEach(node => node.classList.remove('selected'));
       if (!already) {
         fruit.classList.add('selected');
-        feedbackLine.textContent = `已選擇果子 ${optionObj.text}，再點一下籃子。`;
+        setBasketPreview(optionsWrap, optionObj.text, 'holding');
+        feedbackLine.textContent = `已拿起果子 ${optionObj.text}，再點一下籃子。`;
+      } else {
+        setBasketPreview(optionsWrap, '', 'holding');
       }
     });
     orchard.appendChild(fruit);
@@ -1046,6 +1078,9 @@ function evaluateAnswer(btn, optionObj) {
     btn.classList.add('excluded');
     btn.disabled = true;
     btn.classList.remove('selected');
+    if (q.uiType === 'drag-fruit') {
+      setTimeout(() => setBasketPreview(optionsWrap, '', 'holding'), 520);
+    }
     state.excluded += 1;
     state.wrongCount += 1;
     state.correctCombo = 0;
@@ -1684,7 +1719,15 @@ function renderFruitDragQuestion(q) {
   const basket = document.createElement('button');
   basket.type = 'button';
   basket.className = 'fruit-basket';
-  basket.innerHTML = `<div class="basket-spirit">🧺</div><div class="basket-title">把果子放進籃子</div><small>先點一顆果子，再點籃子；電腦也可以直接拖曳。</small>`;
+  basket.innerHTML = `
+    <div class="basket-title">把果子放進籃子</div>
+    <div class="basket-art" aria-hidden="true">
+      <div class="basket-handle"></div>
+      <div class="basket-body">
+        <div class="basket-content"><span class="basket-placeholder">籃子準備好了</span></div>
+      </div>
+    </div>
+    <small>手機：先點果子，再點籃子。電腦：也可以直接拖曳。</small>`;
   basket.addEventListener('dragover', (e) => {
     if (state.awaitingNext) return;
     e.preventDefault();
@@ -1700,6 +1743,7 @@ function renderFruitDragQuestion(q) {
     const fruit = optionsWrap.querySelector(`[data-fruit-index="${idx}"]`);
     if (fruit) {
       const optionObj = q.options[Number(idx)];
+      dropFruitIntoBasket(optionsWrap, optionObj.text);
       evaluateAnswer(fruit, optionObj);
     }
   });
@@ -1713,6 +1757,7 @@ function renderFruitDragQuestion(q) {
       return;
     }
     const idx = Number(selected.dataset.fruitIndex);
+    dropFruitIntoBasket(optionsWrap, q.options[idx].text);
     evaluateAnswer(selected, q.options[idx]);
   });
 
@@ -1741,7 +1786,10 @@ function renderFruitDragQuestion(q) {
       optionsWrap.querySelectorAll('.fruit-chip').forEach(node => node.classList.remove('selected'));
       if (!already) {
         fruit.classList.add('selected');
-        feedbackLine.textContent = `已選擇果子 ${optionObj.text}，再點一下籃子。`;
+        setBasketPreview(optionsWrap, optionObj.text, 'holding');
+        feedbackLine.textContent = `已拿起果子 ${optionObj.text}，再點一下籃子。`;
+      } else {
+        setBasketPreview(optionsWrap, '', 'holding');
       }
     });
     orchard.appendChild(fruit);
