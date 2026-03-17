@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v0.8.1</title>
+  <title>慢慢變強｜螢光森林 v0.9.0</title>
   <meta name="theme-color" content="#163826">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json?v=090">
+  <link rel="stylesheet" href="style.css?v=090">
 </head>
 <body>
   <div class="forest-bg" aria-hidden="true">
@@ -28,7 +28,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v0.8.1 討論整合版</div>
+        <div class="version-tag">v0.9.0 三十玩法版</div>
       </div>
       <button id="globalSpeakBtn" class="icon-btn" type="button" aria-label="朗讀目前內容">🔊</button>
     </header>
@@ -131,6 +131,20 @@
             <strong id="streakText">1</strong>
           </div>
         </div>
+        <div class="rank-panel glass-soft">
+          <div class="rank-head">
+            <div>
+              <div class="small-title">森林升級系統</div>
+              <h3 id="forestRankText">新手探險家</h3>
+            </div>
+            <div class="rank-stars-box">
+              <span>熟練星</span>
+              <strong id="totalStarsText">0 ⭐</strong>
+            </div>
+          </div>
+          <p id="rankHintText" class="subtle">先從基本功開始，森林就會慢慢亮起來。</p>
+        </div>
+
 
         <div class="mission-panel glass-soft">
           <div class="mission-head">
@@ -269,6 +283,19 @@
       </div>
     </section>
 
+
+    <section id="roomSelectScreen" class="screen">
+      <div class="card settings-card">
+        <div class="screen-topbar">
+          <button id="roomSelectBackBtn" class="ghost-btn" type="button">← 回森林</button>
+          <div class="small-title">進入房間前先選一種玩法</div>
+        </div>
+        <h2 id="roomSelectTitle">注音符號房</h2>
+        <p id="roomSelectDesc" class="subtle">先選今天想怎麼練。</p>
+        <div id="roomSelectGrid" class="room-select-grid"></div>
+      </div>
+    </section>
+
     <section id="quizScreen" class="screen">
       <div class="quiz-topbar glass">
         <button id="backHomeBtn" class="ghost-btn" type="button">← 回森林</button>
@@ -339,6 +366,7 @@
         <div class="result-stats">
           <div class="result-pill">森林亮度 <strong id="resultBrightness">12%</strong></div>
           <div class="result-pill">光之碎片 <strong id="resultShards">0</strong></div>
+          <div class="result-pill">森林等級 <strong id="resultRankText">新手探險家</strong></div>
         </div>
         <div class="action-group stack-mobile">
           <button id="resultHomeBtn" class="primary-btn" type="button">回到森林地圖</button>
@@ -348,6 +376,6 @@
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=090"></script>
 </body>
 </html>

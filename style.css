@@ -701,3 +701,244 @@ button:hover,.map-node:hover,.name-btn:hover{transform:translateY(-1px)}
     font-size:58px !important;
   }
 }
+
+
+/* v0.8.2 母版修正：只修自動跳回題目與回應機制 */
+html, body {
+  scroll-behavior: auto;
+}
+.quiz-topbar,
+.question-card {
+  scroll-margin-top: 8px;
+}
+
+
+/* v0.8.8 熟練星星版 */
+.rank-panel{
+  padding:16px 18px !important;
+  border-radius:24px;
+  margin-bottom:14px;
+}
+.rank-head{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:center;
+}
+.rank-head h3{
+  font-size:24px;
+  margin-top:4px;
+}
+.rank-stars-box{
+  min-width:120px;
+  padding:12px 14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  text-align:center;
+}
+.rank-stars-box span{
+  display:block;
+  font-size:13px;
+  color:rgba(255,255,255,.76);
+}
+.rank-stars-box strong{
+  display:block;
+  margin-top:6px;
+  font-size:24px;
+  color:var(--gold-soft);
+}
+.rank-panel p{
+  margin:12px 0 0;
+  line-height:1.6;
+}
+@media (max-width:760px){
+  .rank-head{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .rank-stars-box{
+    width:100%;
+  }
+}
+
+
+/* v0.8.9 房內分流版 */
+.room-select-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+.room-card-btn{
+  min-height:120px;
+  padding:16px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));
+  color:#fff;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:6px;
+  cursor:pointer;
+}
+.room-card-btn .room-emoji{font-size:28px}
+.room-card-btn strong{font-size:22px}
+.room-card-btn small{color:rgba(255,255,255,.78); line-height:1.5}
+.table-pick-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:16px;
+}
+.table-pick-btn{
+  min-height:64px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+}
+.table-pick-btn.selected{
+  background:linear-gradient(180deg, rgba(255,238,176,.26), rgba(255,215,106,.18));
+  border-color:rgba(255,226,138,.4);
+  color:#fffef4;
+}
+@media (max-width:760px){
+  .room-select-grid{grid-template-columns:1fr}
+  .table-pick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+/* ===== v0.9.0 30玩法擴充版 ===== */
+.scene-badge{
+  width:100%;
+  padding:10px 14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.88);
+  font-size:16px;
+  text-align:center;
+}
+.visual-mini-equation{
+  padding:14px 20px;
+  border-radius:18px;
+  background:rgba(255,255,255,.10);
+  font-size:28px;
+  color:#fff7d0;
+  letter-spacing:.04em;
+}
+.shadow-pill{opacity:.55; filter:blur(1.4px)}
+.diff-pill{min-width:72px; text-align:center}
+.options-wrap[data-layout="floating-catch"],
+.options-wrap[data-layout="bubble"],
+.options-wrap[data-layout="butterfly"],
+.options-wrap[data-layout="garden"],
+.options-wrap[data-layout="pond"]{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.options-wrap[data-layout="river"],
+.options-wrap[data-layout="bridge"],
+.options-wrap[data-layout="path"],
+.options-wrap[data-layout="maze"],
+.options-wrap[data-layout="stepping"],
+.options-wrap[data-layout="echo"],
+.options-wrap[data-layout="drum"],
+.options-wrap[data-layout="cards"],
+.options-wrap[data-layout="memory"]{
+  grid-template-columns:1fr;
+}
+.options-wrap[data-layout="floating-catch"] .option-row,
+.options-wrap[data-layout="bubble"] .option-row,
+.options-wrap[data-layout="butterfly"] .option-row,
+.options-wrap[data-layout="garden"] .option-row,
+.options-wrap[data-layout="pond"] .option-row{
+  align-items:stretch;
+}
+.options-wrap[data-layout="floating-catch"] .option-btn{
+  border-radius:999px;
+  min-height:70px;
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="bubble"] .option-btn{
+  border-radius:50px;
+  min-height:84px;
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.24), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="butterfly"] .option-btn{
+  min-height:80px;
+  border-radius:26px;
+  background:linear-gradient(135deg, rgba(255,216,109,.22), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="river"] .option-btn,
+.options-wrap[data-layout="stepping"] .option-btn{
+  min-height:78px;
+  border-radius:26px;
+  background:linear-gradient(180deg, rgba(170,205,231,.20), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="bridge"] .option-btn{
+  min-height:76px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(163,112,66,.34), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="path"] .option-btn,
+.options-wrap[data-layout="maze"] .option-btn{
+  min-height:76px;
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(101,144,78,.28), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="drum"] .option-btn{
+  min-height:82px;
+  border-radius:999px;
+  background:linear-gradient(180deg, rgba(210,143,80,.32), rgba(255,255,255,.08));
+  font-size:28px;
+}
+.options-wrap[data-layout="cards"] .option-btn,
+.options-wrap[data-layout="memory"] .option-btn{
+  min-height:86px;
+  border-radius:20px;
+  background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="garden"] .option-btn{
+  min-height:78px;
+  border-radius:28px;
+  background:linear-gradient(180deg, rgba(129,175,101,.30), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="pond"] .option-btn{
+  min-height:80px;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(79,151,177,.30), rgba(255,255,255,.08));
+}
+.options-wrap[data-layout="echo"] .option-btn{
+  min-height:76px;
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(162,130,217,.26), rgba(255,255,255,.08));
+}
+@media (max-width:760px){
+  .options-wrap[data-layout="floating-catch"],
+  .options-wrap[data-layout="bubble"],
+  .options-wrap[data-layout="butterfly"],
+  .options-wrap[data-layout="garden"],
+  .options-wrap[data-layout="pond"]{
+    grid-template-columns:1fr;
+  }
+}
+
+
+.options-wrap[data-layout="drag-fruit"]{grid-template-columns:1fr}
+.fruit-board{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.fruit-basket{width:100%;min-height:116px;border-radius:26px;border:2px dashed rgba(255,244,196,.34);background:linear-gradient(180deg, rgba(255,221,140,.18), rgba(255,255,255,.06));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;cursor:pointer}
+.fruit-basket.ready,.fruit-basket:focus-visible{border-color:rgba(255,244,196,.82);box-shadow:0 0 0 4px rgba(255,244,196,.10)}
+.basket-spirit{font-size:34px}
+.basket-title{font-size:24px;font-weight:800}
+.fruit-basket small{color:rgba(255,255,255,.76);font-size:14px;line-height:1.5}
+.fruit-orchard{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fruit-chip{width:100%;min-height:86px;border-radius:28px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg, rgba(120,180,106,.28), rgba(255,255,255,.08));color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-size:28px;font-weight:800;cursor:grab}
+.fruit-chip .fruit-emoji{font-size:28px}
+.fruit-chip.selected{outline:3px solid rgba(255,236,160,.36);transform:translateY(-2px)}
+.fruit-chip.dragging{opacity:.6;transform:scale(.98)}
+.fruit-chip.excluded{background:linear-gradient(180deg, rgba(120,120,120,.22), rgba(255,255,255,.06))}
+.fruit-chip.correct{background:linear-gradient(180deg, rgba(201,235,132,.34), rgba(255,255,255,.08))}
+@media (max-width:760px){.fruit-orchard{grid-template-columns:1fr}.fruit-chip{min-height:82px}}

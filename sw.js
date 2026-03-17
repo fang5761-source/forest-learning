@@ -1,6 +1,6 @@
 
-const CACHE_NAME = 'mm-strength-v0-8-1';
-const ASSETS = ['./', './index.html', './style.css', './script.js', './manifest.json', './icon.png'];
+const CACHE_NAME = 'mm-strength-v0-8-9';
+const ASSETS = ['./', './index.html?v=089', './style.css?v=089', './script.js?v=089', './manifest.json?v=089', './icon.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
 });
