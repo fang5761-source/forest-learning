@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.12.1 東西向過河版</title>
+  <title>慢慢變強｜螢光森林 v1.12.2 版面優化版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -170,7 +170,7 @@
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
     .scratch-canvas { position: absolute; inset: 0; z-index: 10; touch-action: none; cursor: crosshair; }
 
-    /* 🌟 小鹿過河 (路徑跳躍) v1.12.1 東西橫向過河版 */
+    /* 🌟 小鹿過河 (路徑跳躍) v1.12.2 版面優化版 */
     .path-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
     .path-river { position: absolute; inset: 0; background-image: url('river_bg.jpg'); background-size: cover; background-position: center; z-index: 1;}
     
@@ -187,7 +187,24 @@
     /* 🌟 移除人造框框，純透明小鹿 */
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 10; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; }
     
-    .path-prompt-box { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); padding: 8px 30px; border-radius: 99px; font-size: 36px; font-weight: 900; color: #ffd76a; z-index: 6; border: 2px solid rgba(255,215,106,0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
+    /* 🌟 優雅的魔法題目框 (取代原本笨重的黑框) */
+    .path-prompt-box { 
+        position: absolute; 
+        top: 20px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        background: linear-gradient(180deg, rgba(20, 60, 40, 0.8), rgba(10, 40, 20, 0.9));
+        padding: 8px 32px; 
+        border-radius: 20px; 
+        font-size: 32px; 
+        font-weight: 900; 
+        color: #fff; 
+        z-index: 6; 
+        border: 2px solid rgba(100, 255, 150, 0.3); 
+        box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(100,255,150,0.1); 
+        backdrop-filter: blur(8px); 
+        letter-spacing: 0.1em;
+    }
 
     /* 🌟 提示吐司 (Toast) 特效 */
     .toast-msg { position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(22, 56, 38, 0.95); color: #fff; padding: 12px 24px; border-radius: 99px; font-size: 18px; font-weight: bold; border: 2px solid #ffd76a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -242,8 +259,12 @@
       .scratch-container { width: 200px; height: 200px; }
       .scratch-content { font-size: 80px; }
       .path-stage { height: 300px; }
-      .path-prompt-box { font-size: 28px; padding: 6px 20px;}
-      .path-character { width: 60px; height: 60px; }
+      
+      /* 🌟 手機版過河佈局微調 */
+      .path-prompt-box { font-size: 24px; padding: 6px 24px; top: 15px; }
+      .path-character { width: 55px; height: 55px; } /* 縮小一點點避免擠壓 */
+      .path-stone { width: 64px; height: 64px; font-size: 26px; } 
+      .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
     }
   </style>
 </head>
@@ -257,13 +278,14 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.12.1 東西向過河版</div>
+        <div class="version-tag">v1.12.2 版面優化版</div>
       </div>
     </header>
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
-        <div class="hero-illustration"><img src="elf.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
+        <!-- 🌟 換回經典 icon.png -->
+        <div class="hero-illustration"><img src="icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.style.display='none'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
           <p id="introStoryText" class="story-lines">很久以前，森林裡的樹會發光。<br>每一棵樹，都藏著一種能力。<br>可是有一天，森林的光被封印了。<br>小精靈找了很久，終於找到你。<br>你願意陪我一起，把森林慢慢點亮嗎？</p>
@@ -300,7 +322,8 @@
     <section id="bondScreen" class="screen">
       <div class="card story-card bond-card">
         <div class="bond-top">
-          <img src="elf.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.src='icon.png'">
+          <!-- 🌟 換回經典 icon.png -->
+          <img src="icon.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.style.display='none'">
           <div><div class="small-title">準備出發</div><h2 id="bondTitle">小探險家，你好呀。</h2></div>
         </div>
         <p id="bondStoryText" class="story-lines"></p>
@@ -321,7 +344,8 @@
         </div>
 
         <div class="companion-row">
-          <img src="elf.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.src='icon.png'">
+          <!-- 🌟 換回經典 icon.png -->
+          <img src="icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.style.display='none'">
           <div>
             <div class="small-title">你的陪伴精靈</div>
             <h2 id="homeSpiritTitle">希望</h2>
@@ -842,7 +866,6 @@
       return list;
     }
 
-    /* 🌟 v1.12.1：真實東西向過河版 (純圖片背景) */
     function buildMathPathSet(table) {
       const list = [];
       for (let i = 0; i < 5; i += 1) {
@@ -1031,7 +1054,7 @@
         const flashlightImg = document.createElement('img');
         flashlightImg.src = 'flashlight.png';
         flashlightImg.className = 'flashlight-img';
-        flashlightImg.onerror = function() { this.onerror = null; this.src = 'elf.png'; };
+        flashlightImg.onerror = function() { this.onerror = null; this.src = 'icon.png'; };
         flashlightImg.style.left = '50%';
         flashlightImg.style.top = '50%';
 
@@ -1176,7 +1199,7 @@
         const glowBox = document.createElement('div'); glowBox.className = 'drum-glow-box';
         
         const drumImg = document.createElement('img');
-        drumImg.src = 'drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='elf.png'; }; 
+        drumImg.src = 'drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='icon.png'; }; 
         
         let taps = 0; const requiredTaps = 2; 
         const answerReveal = document.createElement('div'); answerReveal.className = 'drum-answer-reveal'; answerReveal.textContent = q.answer;
@@ -1228,7 +1251,7 @@
           img.className = 'bubble-img';
           img.onerror = function() { 
             this.onerror = null; 
-            this.src = 'elf.png'; 
+            this.src = 'icon.png'; 
             this.style.opacity = '0.4'; 
             this.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.8))';
           };
@@ -1542,7 +1565,7 @@
         window.onpointerup = () => { isScratching = false; };
         window.ontouchend = () => { isScratching = false; };
       }
-      /* 🌟 小鹿過河 v1.12.1 東西向真實過河版 UI 渲染 */
+      /* 🌟 小鹿過河 v1.12.2 版面優化版 UI 渲染 */
       else if (q.uiType === 'path') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
         if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
@@ -1554,25 +1577,32 @@
         riverBg.className = 'path-river';
         stage.appendChild(riverBg);
 
-        // 🌟 改變水流動畫：改為從左到右流動
         const riverOverlay = document.createElement('div');
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
+        if (state.qIndex === 0) {
+            const shoreBottom = document.createElement('div');
+            shoreBottom.className = 'path-shore-bottom';
+            stage.appendChild(shoreBottom);
+        }
+        if (state.qIndex === state.questionList.length - 1) {
+            const shoreTop = document.createElement('div');
+            shoreTop.className = 'path-shore-top';
+            stage.appendChild(shoreTop);
+        }
+
         if (q.kind && q.kind.startsWith('math')) {
             const promptBox = document.createElement('div');
             promptBox.className = 'path-prompt-box';
-            // 題目永遠固定在畫面上方
-            promptBox.style.top = '20px';
             promptBox.textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
             stage.appendChild(promptBox);
         }
 
-        // 🌟 小鹿從下方草地 (80%) 一步步跳到上方草地 (15%)
-        const targetTop = 65 - (state.qIndex * 10); 
-        const charStartTop = state.qIndex === 0 ? 82 : (65 - ((state.qIndex - 1) * 10)); 
+        // 🌟 重新調整座標：讓小鹿站在更下方，石頭離小鹿遠一點
+        const targetTop = 60 - (state.qIndex * 10); 
+        const charStartTop = state.qIndex === 0 ? 84 : (60 - ((state.qIndex - 1) * 10)); 
 
-        // 畫出小鹿腳下的石頭 
         if (state.qIndex > 0) {
             const prevStone = document.createElement('div');
             prevStone.className = 'path-stone';
@@ -1591,23 +1621,23 @@
         
         const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
         character.style.left = `calc(${currentX}% - 35px)`;
-        // 第一題站在下方的岸上
-        character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
+        character.style.top = state.qIndex === 0 ? `78%` : `calc(${charStartTop}% - 35px)`; 
         
         character.onerror = function() { 
-            this.src = 'elf.png'; 
-            this.onerror = function() { this.src = 'icon.png'; };
+            this.src = 'icon.png'; 
         };
         
         const totalOpts = q.options.length;
-        const xOffsets = [20, 50, 80]; 
+        // 🌟 加寬石頭間距，讓選擇更清楚
+        const xOffsets = [15, 50, 85]; 
         
         q.options.forEach((opt, idx) => {
             const stone = document.createElement('div');
             stone.className = 'path-stone';
             
             const leftPos = xOffsets[idx];
-            const topPos = targetTop + (idx === 1 ? 6 : -4); 
+            // 🌟 將石頭排列改成「倒 V 型拱門」：中間那顆離小鹿最遠 (位置最高)
+            const topPos = targetTop + (idx === 1 ? -5 : 8); 
             
             stone.style.left = `calc(${leftPos}% - 40px)`;
             stone.style.top = `${topPos}%`;
@@ -1644,7 +1674,7 @@
                     if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                     speak(reply);
 
-                    // 🌟 終極一躍：最後一題跳上對岸 (10%)
+                    // 終極一躍：最後一題跳上對岸
                     if (state.qIndex === state.questionList.length - 1) {
                         setTimeout(() => {
                             playJumpSound();
