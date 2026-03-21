@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.16.0 細節打磨版</title>
+  <title>慢慢變強｜螢光森林 v1.17.0 終極登岸版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -85,18 +85,15 @@
     .quiz-meta{display:flex; gap:10px; flex-wrap:wrap}
     .meta-chip{padding:9px 12px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff}
     
-    .question-card{padding:20px; scroll-margin-top:8px;}
-    
-    /* 🌟 優化題目標題區塊：改為相對定位，極致壓縮留白空間 */
-    .question-head { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 10px; }
+    /* 🌟 大幅壓縮遊戲區塊上下的留白 */
+    .question-card{padding:14px; border-radius:22px; min-height: auto;}
+    .question-head { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 5px; }
     .question-main { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
     .question-main .small-title { margin-bottom: 2px; }
     .question-main h2 { font-size: 38px; line-height: 1.1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
-    
-    /* 🌟 音效按鈕絕對定位到右上角 */
     .question-tools { position: absolute; right: 0; top: 0; display: flex; gap: 8px; }
     
-    .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 8px !important; width:100%;}
+    .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
     .visual-area.collapsed{display:none !important;}
     
     .visual-pill{padding:14px 16px; border-radius:18px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.08); font-size:24px; color:#fff}
@@ -116,6 +113,9 @@
     .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
     .result-pill strong{color:var(--gold-soft)}
     
+    /* 🌟 隱藏小鹿過河中不需要的預設題目框，節省版面空間 */
+    .hide-for-path { display: none !important; }
+
     /* 🌟 大樹鼓遊戲專屬樣式 */
     .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
     .drum-instruction { font-size: 22px; color: var(--gold-soft); margin-bottom: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 999px;}
@@ -181,27 +181,38 @@
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
     .scratch-canvas { position: absolute; inset: 0; z-index: 10; touch-action: none; cursor: crosshair; }
 
-    /* 🌟 小鹿過河 (路徑跳躍) v1.16.0 完美打磨版 */
-    .path-stage { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
+    /* 🌟 小鹿過河 (動態跑步機系統) */
+    .path-stage { position: relative; width: 100%; height: 420px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
     
-    /* 垂直向下水流 */
-    .path-river { position: absolute; inset: 0; background-image: url('river_bg.jpg'); background-size: cover; background-position: center bottom; z-index: 1;}
+    /* 水平流動水面動畫 */
+    .path-river { position: absolute; inset: 0; background-image: url('images/river_bg.jpg'); background-size: cover; background-position: center bottom; z-index: 1;}
     .path-river-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); background-size: 100% 200%; animation: waterFlow 3s linear infinite; z-index: 2; pointer-events: none; mix-blend-mode: overlay; }
     @keyframes waterFlow { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
     
+    /* 🌟 石頭：修正數字覆蓋問題 (z-index 提高) */
     .path-stone { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 5px rgba(0,0,0,0.8); cursor: pointer; z-index: 5; background-size: contain; background-repeat: no-repeat; background-position: center; border-radius: 50%; }
-    
-    /* 🌟 數字置頂魔法：z-index 加大到 100，確保永遠蓋在小鹿頭上 */
     .path-stone span { position: relative; top: 4px; z-index: 100; text-shadow: 0 0 8px rgba(0,0,0,1); pointer-events: none; } 
-    
     .path-stone::before { content: ''; position: absolute; bottom: 5px; width: 60px; height: 20px; background: rgba(0,0,0,0.4); border-radius: 50%; z-index: -1; filter: blur(4px); }
     .path-stone:active { transform: scale(0.9); }
     .path-stone.sink { animation: stoneSink 0.5s forwards; pointer-events: none; }
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     
-    /* 🌟 穿透魔法：pointer-events: none，防止小鹿擋住手指點擊石頭 */
-    .path-character { position: absolute; width: 70px; height: 70px; z-index: 10; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
+    /* 🌟 小鹿穿透魔法：pointer-events: none 防止阻擋點擊 */
+    .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
     
+    /* 起點與終點草地 */
+    .path-shore-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; background: #2E4E3F; border-top: 4px solid #1A3326; z-index: 3; border-radius: 50% 50% 0 0 / 20px 20px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); }
+    .path-shore-top { position: absolute; top: 0; left: 0; width: 100%; height: 60px; background: #2E4E3F; border-bottom: 4px solid #1A3326; z-index: 3; border-radius: 0 0 50% 50% / 0 0 20px 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+    
+    /* 🌟 優化的魔法題目框 (與喇叭按鈕整合) */
+    .path-prompt-box { 
+        position: absolute; top: 15px; left: 50%; transform: translateX(-50%); 
+        background: linear-gradient(180deg, rgba(20, 60, 40, 0.8), rgba(10, 40, 20, 0.9));
+        padding: 6px 24px; border-radius: 20px; color: #fff; z-index: 100; 
+        border: 2px solid rgba(100, 255, 150, 0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(100,255,150,0.1); 
+        backdrop-filter: blur(8px); white-space: nowrap; font-size: 32px; font-weight: 900; letter-spacing: 0.1em;
+    }
+
     /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
@@ -246,12 +257,9 @@
       .quiz-topbar{margin-bottom:8px; padding:10px 12px; top:6px; position:sticky; z-index:20;}
       
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
-      
-      /* 🌟 重新排版題目區域：讓音效按鈕飄浮在右上方，節省垂直空間 */
       .question-head { display: flex !important; justify-content: center !important; position: relative; padding-top: 5px; margin-bottom: 4px; }
       .question-main { align-items: center !important; width: 100%; }
       .question-main h2 { font-size: 38px; line-height: 1.1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
-      /* 🌟 音效按鈕定位在絕對右上方 */
       .question-tools { position: absolute; right: 0; top: 0; display: flex; gap: 8px; }
       
       .feedback-bar{flex-direction:column; align-items:stretch; gap:10px;}
@@ -268,10 +276,11 @@
       
       /* 🌟 大幅壓縮遊戲區塊上下的留白 */
       .visual-area { margin: 8px 0 12px !important; }
-      .path-stage { height: 380px; }
+      .path-stage { height: 400px; }
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
+      .path-prompt-box { font-size: 28px; padding: 4px 16px; top: 12px; }
     }
   </style>
 </head>
@@ -285,13 +294,14 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.16.0 細節打磨版</div>
+        <div class="version-tag">v1.17.0 終極登岸版</div>
       </div>
     </header>
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
-        <div class="hero-illustration"><img src="icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.style.display='none'"></div>
+        <!-- 🌟 首頁與對話使用經典小精靈 icon.png -->
+        <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.style.display='none'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
           <p id="introStoryText" class="story-lines">很久以前，森林裡的樹會發光。<br>每一棵樹，都藏著一種能力。<br>可是有一天，森林的光被封印了。<br>小精靈找了很久，終於找到你。<br>你願意陪我一起，把森林慢慢點亮嗎？</p>
@@ -328,7 +338,7 @@
     <section id="bondScreen" class="screen">
       <div class="card story-card bond-card">
         <div class="bond-top">
-          <img src="icon.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.style.display='none'">
+          <img src="images/icon.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.style.display='none'">
           <div><div class="small-title">準備出發</div><h2 id="bondTitle">小探險家，你好呀。</h2></div>
         </div>
         <p id="bondStoryText" class="story-lines"></p>
@@ -349,7 +359,7 @@
         </div>
 
         <div class="companion-row">
-          <img src="icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.style.display='none'">
+          <img src="images/icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.style.display='none'">
           <div>
             <div class="small-title">你的陪伴精靈</div>
             <h2 id="homeSpiritTitle">希望</h2>
@@ -458,6 +468,7 @@
       </div>
 
       <div class="card question-card">
+        <!-- 🌟 原本笨重的預設題目框 (僅在非 path 模式顯示) -->
         <div id="questionHead" class="question-head">
           <div class="question-main">
             <h2 id="questionPrompt">題目</h2>
@@ -520,9 +531,18 @@
   </main>
 
   <script>
-    /* 🌟 終極防護魔法：防止 iOS 雙擊縮放 */
+    /* 🌟 終極防護魔法：防止 iOS 雙擊與雙指縮放 */
     document.addEventListener('dblclick', function(event) {
         event.preventDefault();
+    }, { passive: false });
+
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
     }, { passive: false });
 
     /* 清除舊版錯誤快取，避免干擾 */
@@ -1024,6 +1044,16 @@
       if(document.getElementById('excludedText')) document.getElementById('excludedText').textContent = '0 個';
       if(document.getElementById('questionPrompt')) document.getElementById('questionPrompt').textContent = q.promptText;
       
+      // 🌟 隱藏小鹿過河中不需要的預設題目框
+      const qHead = document.getElementById('questionHead');
+      if (qHead) {
+          if (q.uiType === 'path') {
+              qHead.classList.add('hide-for-path');
+          } else {
+              qHead.classList.remove('hide-for-path');
+          }
+      }
+      
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
       const optionsWrap = document.getElementById('optionsWrap'); if(optionsWrap) optionsWrap.innerHTML = '';
       if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
@@ -1041,12 +1071,12 @@
         const randomBg = bgList[Math.floor(Math.random() * bgList.length)];
 
         const bgImg = document.createElement('img');
-        bgImg.src = randomBg;
+        bgImg.src = 'images/' + randomBg;
         bgImg.className = 'spotlight-bg';
         bgImg.setAttribute('draggable', 'false');
         bgImg.onerror = function() { 
           this.onerror = function() { this.style.display='none'; this.parentElement.style.background='#1a2f23'; };
-          this.src = 'dark_forest.png'; 
+          this.src = 'images/dark_forest.png'; 
         };
         stage.appendChild(bgImg);
         stage.ondragstart = () => false;
@@ -1059,9 +1089,9 @@
         overlay.style.background = `radial-gradient(circle 100px at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`;
 
         const flashlightImg = document.createElement('img');
-        flashlightImg.src = 'flashlight.png';
+        flashlightImg.src = 'images/flashlight.png';
         flashlightImg.className = 'flashlight-img';
-        flashlightImg.onerror = function() { this.onerror = null; this.src = 'icon.png'; };
+        flashlightImg.onerror = function() { this.onerror = null; this.src = 'images/icon.png'; };
         flashlightImg.style.left = '50%';
         flashlightImg.style.top = '50%';
 
@@ -1113,7 +1143,7 @@
           surpriseBtn.className = 'spotlight-surprise-btn';
           
           const surpriseImg = document.createElement('img');
-          surpriseImg.src = surprise.src;
+          surpriseImg.src = 'images/' + surprise.src;
           surpriseImg.className = 'surprise-img';
           
           surpriseImg.onerror = function() {
@@ -1206,7 +1236,7 @@
         const glowBox = document.createElement('div'); glowBox.className = 'drum-glow-box';
         
         const drumImg = document.createElement('img');
-        drumImg.src = 'drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='icon.png'; }; 
+        drumImg.src = 'images/drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='images/icon.png'; }; 
         
         let taps = 0; const requiredTaps = 2; 
         const answerReveal = document.createElement('div'); answerReveal.className = 'drum-answer-reveal'; answerReveal.textContent = q.answer;
@@ -1216,7 +1246,7 @@
           taps++; playDrumSound();
           
           const note = document.createElement('img');
-          note.src = 'note.png'; note.className = 'flying-note'; note.onerror = function() { this.style.display='none'; };
+          note.src = 'images/note.png'; note.className = 'flying-note'; note.onerror = function() { this.style.display='none'; };
           const rect = drumImg.getBoundingClientRect(); const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
           note.style.left = (e.clientX || cx) + 'px'; note.style.top = (e.clientY || cy) + 'px';
           note.style.setProperty('--dx', (Math.random()*160 - 80) + 'px'); note.style.setProperty('--dy', (Math.random()*-150 - 50) + 'px'); note.style.setProperty('--rot', (Math.random()*60 - 30) + 'deg');
@@ -1254,11 +1284,11 @@
           btn.style.setProperty('--duration', `${duration}s`);
           
           const img = document.createElement('img');
-          img.src = 'bubble.png';
+          img.src = 'images/bubble.png';
           img.className = 'bubble-img';
           img.onerror = function() { 
             this.onerror = null; 
-            this.src = 'icon.png'; 
+            this.src = 'images/icon.png'; 
             this.style.opacity = '0.4'; 
             this.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.8))';
           };
@@ -1327,7 +1357,7 @@
             slot.dataset.val = opt.text;
             
             const slotBg = document.createElement('img');
-            slotBg.src = 'tile.png';
+            slotBg.src = 'images/tile.png';
             slotBg.className = 'puzzle-tile-bg';
             slotBg.onerror = function() { this.style.display = 'none'; slot.classList.add('puzzle-fallback'); };
             
@@ -1344,7 +1374,7 @@
         piece.className = 'puzzle-piece';
         
         const pieceBg = document.createElement('img');
-        pieceBg.src = 'tile.png';
+        pieceBg.src = 'images/tile.png';
         pieceBg.className = 'puzzle-tile-bg';
         pieceBg.onerror = function() { this.style.display = 'none'; piece.classList.add('puzzle-fallback'); };
         
@@ -1496,7 +1526,7 @@
         const ctx = canvas.getContext('2d'); 
 
         const coverImg = new Image();
-        coverImg.src = 'scratch_cover.png';
+        coverImg.src = 'images/scratch_cover.png';
         coverImg.onload = () => { ctx.drawImage(coverImg, 0, 0, 240, 240); };
         coverImg.onerror = () => { ctx.fillStyle = '#2d4a36'; ctx.fillRect(0, 0, 240, 240); };
 
@@ -1572,7 +1602,7 @@
         window.onpointerup = () => { isScratching = false; };
         window.ontouchend = () => { isScratching = false; };
       }
-      /* 🌟 小鹿過河 (路徑跳躍) v1.16.0 完美打磨版 UI 渲染 */
+      /* 🌟 小鹿過河 (動態跑步機系統) v1.17.0 終極登岸版 */
       else if (q.uiType === 'path') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
         
@@ -1587,48 +1617,91 @@
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
+        // 第 1 題才顯示起點岸邊
         if (state.qIndex === 0) {
             const shoreBottom = document.createElement('div');
             shoreBottom.className = 'path-shore-bottom';
             stage.appendChild(shoreBottom);
         }
+        // 第 5 題才顯示終點岸邊
         if (state.qIndex === state.questionList.length - 1) {
             const shoreTop = document.createElement('div');
             shoreTop.className = 'path-shore-top';
             stage.appendChild(shoreTop);
         }
 
+        // 🌟 優雅的魔法題目框 (與喇叭按鈕整合)
         if (q.kind && q.kind.startsWith('math')) {
             const promptBox = document.createElement('div');
             promptBox.className = 'path-prompt-box';
-            promptBox.textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
+            
+            const flexWrap = document.createElement('div');
+            flexWrap.style.display = 'flex';
+            flexWrap.style.alignItems = 'center';
+            flexWrap.style.gap = '12px';
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
+            
+            const spkBtn = document.createElement('button');
+            spkBtn.innerHTML = '🔊';
+            spkBtn.style.background = 'none';
+            spkBtn.style.border = 'none';
+            spkBtn.style.color = '#ffd76a'; 
+            spkBtn.style.fontSize = '26px';
+            spkBtn.style.padding = '0';
+            spkBtn.style.cursor = 'pointer';
+            spkBtn.style.lineHeight = '1';
+            spkBtn.onclick = (e) => { e.stopPropagation(); speak(q.speakText); };
+            
+            flexWrap.appendChild(textSpan);
+            flexWrap.appendChild(spkBtn);
+            promptBox.appendChild(flexWrap);
+            
             stage.appendChild(promptBox);
         }
 
-        const targetTop = 60 - (state.qIndex * 10); 
-        const charStartTop = state.qIndex === 0 ? 84 : (60 - ((state.qIndex - 1) * 10)); 
+        // 🌟 動態跑步機邏輯：目標永遠固定在上方 (40%)，起點永遠固定在下方 (75%)
+        const targetTop = 40; 
+        const charStartTop = 75; 
+
+        // 畫出小鹿腳下踩著的上一顆石頭 (除了第一題)
+        if (state.qIndex > 0) {
+            const prevStone = document.createElement('div');
+            prevStone.className = 'path-stone';
+            prevStone.style.left = `calc(${state.lastPathX}% - 40px)`;
+            prevStone.style.top = `${charStartTop}%`;
+            prevStone.style.backgroundImage = "url('images/stone.png')";
+            prevStone.style.filter = 'brightness(0.5)'; 
+            prevStone.style.pointerEvents = 'none';
+            prevStone.style.zIndex = '4';
+            stage.appendChild(prevStone);
+        }
 
         const character = document.createElement('img');
-        character.src = 'deer.png';
+        character.src = 'images/deer.png';
         character.className = 'path-character';
         
+        // 繼承上次跳躍的 X 座標
         const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
         character.style.left = `calc(${currentX}% - 35px)`;
-        character.style.top = state.qIndex === 0 ? `78%` : `calc(${charStartTop}% - 35px)`; 
+        // 第一題站在最下方的岸上，其餘站在前一顆石頭上
+        character.style.top = state.qIndex === 0 ? `82%` : `calc(${charStartTop}% - 35px)`; 
         
         character.onerror = function() { 
-            this.src = 'icon.png'; 
+            this.src = 'images/icon.png'; 
         };
         
         const totalOpts = q.options.length;
-        const xOffsets = [15, 50, 85]; 
+        const xOffsets = [20, 50, 80]; 
         
         q.options.forEach((opt, idx) => {
             const stone = document.createElement('div');
             stone.className = 'path-stone';
             
             const leftPos = xOffsets[idx];
-            const topPos = targetTop + (idx === 1 ? -5 : 8); 
+            // 中間的石頭稍微低一點點，呈現倒 V 型，讓小鹿有空間
+            const topPos = targetTop + (idx === 1 ? 6 : -4); 
             
             stone.style.left = `calc(${leftPos}% - 40px)`;
             stone.style.top = `${topPos}%`;
@@ -1637,7 +1710,7 @@
             txt.textContent = opt.text;
             stone.appendChild(txt);
             
-            stone.style.backgroundImage = "url('stone.png')";
+            stone.style.backgroundImage = "url('images/stone.png')";
             
             stone.onpointerdown = (e) => {
                 if (state.awaitingNext || stone.classList.contains('excluded')) return;
@@ -1648,8 +1721,10 @@
                     
                     playJumpSound();
                     
+                    // 記錄這次落點的 X 座標，作為下一題的起點
                     state.lastPathX = leftPos; 
                     
+                    // 小鹿跳向新石頭
                     character.style.left = `calc(${leftPos}% - 35px)`;
                     character.style.top = `calc(${topPos}% - 35px)`; 
                     character.style.transform = 'scale(1.3) rotate(5deg)';
@@ -1664,14 +1739,16 @@
                     if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                     speak(reply);
 
+                    // 🌟 終極一躍：最後一題加碼跳上對岸
                     if (state.qIndex === state.questionList.length - 1) {
                         setTimeout(() => {
                             playJumpSound();
                             character.style.left = `calc(50% - 35px)`; 
-                            character.style.top = `10%`; 
+                            character.style.top = `5%`; // 跳到畫面最頂端的草地
                             character.style.transform = 'scale(1.2)';
                             setTimeout(() => character.style.transform = 'scale(1)', 400);
                             
+                            // 延遲顯示「過關按鈕」並加入語音，等待孩子手動點擊
                             setTimeout(() => {
                                 const nextBtn = document.getElementById('nextQuestionBtn');
                                 if (nextBtn) {
@@ -1684,7 +1761,7 @@
                             }, 1000);
                         }, 1200);
                     } else {
-                        /* 🌟 加長等待時間為 2.5 秒，避免下一題語音跟「太好了」打架 */
+                        /* 🌟 延長等待時間至 2.5 秒，讓語音不會跟下一題打架，並模擬鏡頭向下推進感 */
                         setTimeout(() => {
                             const nextBtn = document.getElementById('nextQuestionBtn');
                             if (nextBtn) nextBtn.click();
@@ -1709,7 +1786,8 @@
         });
 
         stage.appendChild(character);
-        optionsWrap.appendChild(stage);
+        visualArea.appendChild(stage);
+        visualArea.classList.remove('collapsed');
       }
       else if (q.uiType === 'math-v1' && visualArea) {
         const strip = document.createElement('div'); strip.className = 'visual-mini-equation v1-style';
