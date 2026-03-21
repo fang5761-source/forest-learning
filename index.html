@@ -2,15 +2,20 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.14.0 終極完美登岸版</title>
+  <!-- 🌟 鎖定螢幕縮放，防止 iPhone 連按兩次放大 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>慢慢變強｜螢光森林 v1.15.0 空間魔法修正版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
-    *{box-sizing:border-box} html,body{margin:0;min-height:100%;scroll-behavior:auto;}
+    
+    /* 🌟 全域加入 touch-action: manipulation 防止連點放大 */
+    *{box-sizing:border-box; touch-action: manipulation;} 
+    html,body{margin:0;min-height:100%;scroll-behavior:auto;}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);overflow-x:hidden;}
-    button{font:inherit} .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
+    button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
+    .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
     .forest-bg{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0;}
     .mist{position:absolute; border-radius:999px; filter:blur(26px); opacity:.35;}
     .mist-1{width:52vw;height:18vw;left:-8vw;bottom:12vh;background:rgba(197,240,190,.08)}
@@ -75,17 +80,26 @@
     .forest-spot{background:linear-gradient(180deg, rgba(39,115,82,.66), rgba(18,71,46,.75))}
     .world-spot.locked{opacity:.62;filter:grayscale(.15);cursor:default;}
     .world-spot.locked:hover{transform:none;}
+    
     .quiz-topbar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-radius:22px; margin-bottom:14px; scroll-margin-top:8px;}
     .quiz-meta{display:flex; gap:10px; flex-wrap:wrap}
     .meta-chip{padding:9px 12px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff}
+    
     .question-card{padding:20px; scroll-margin-top:8px;}
-    .question-head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start}
-    .question-head.centered-head{display:grid !important; grid-template-columns:1fr auto !important; align-items:start !important;}
-    .question-main{display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:flex-start !important; text-align:center !important; padding-top:4px;}
-    .question-main .small-title, .question-main h2{width:100%; text-align:center !important;}
-    .question-tools{display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:flex-end !important; gap:10px !important;}
-    .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin:28px 0 18px !important; width:100%;}
+    
+    /* 🌟 優化題目標題區塊：改為相對定位，壓縮空間，讓音效按鈕飄浮在右上方 */
+    .question-head { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50px; margin-bottom: 4px; padding-right: 50px; /* 留空間給右邊按鈕 */ }
+    .question-main { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
+    .question-main .small-title { margin-bottom: 2px; }
+    /* 🌟 題目強制一行顯示 */
+    .question-main h2 { font-size: 38px; line-height: 1.1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
+    
+    .question-tools { position: absolute; right: 0; top: 0; display: flex; gap: 8px; }
+    
+    /* 🌟 大幅壓縮遊戲區塊上下的留白 */
+    .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
     .visual-area.collapsed{display:none !important;}
+    
     .visual-pill{padding:14px 16px; border-radius:18px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.08); font-size:24px; color:#fff}
     .options-wrap{display:grid; gap:12px; margin-top:6px; transition: opacity 0.3s ease;}
     .option-row{display:grid !important; grid-template-columns:minmax(0,1fr) 64px !important; align-items:center !important; gap:10px !important;}
@@ -102,8 +116,6 @@
     .result-stats{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:16px 0}
     .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
     .result-pill strong{color:var(--gold-soft)}
-    .visual-mini-equation.v1-style {font-size: 64px; font-weight: 900; background: transparent; border: none; box-shadow: none; color: #fff; letter-spacing: 0.1em; margin: 10px 0 20px; text-align: center; text-shadow: 0 4px 16px rgba(0,0,0,0.25);}
-    .visual-mini-equation.v1-style .math-op { color: #6ee7b7; }
     
     /* 🌟 大樹鼓遊戲專屬樣式 */
     .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
@@ -170,19 +182,18 @@
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
     .scratch-canvas { position: absolute; inset: 0; z-index: 10; touch-action: none; cursor: crosshair; }
 
-    /* 🌟 小鹿過河 (路徑跳躍) v1.14.0 終極完美登岸版 */
-    .path-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
-    /* 🪄 旋轉 90 度，讓河流變成橫向流動，且草地在上下兩側！ */
-    .path-river { position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; background-image: url('river_bg.jpg'); background-size: cover; background-position: center; transform: translate(-50%, -50%) rotate(90deg); z-index: 1;}
+    /* 🌟 小鹿過河 (路徑跳躍) v1.15.0 恢復正常上下流動 */
+    .path-stage { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
     
-    /* 水流波紋也改為橫向移動，配合背景 */
-    .path-river-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); background-size: 200% 100%; animation: waterFlowH 3s linear infinite; z-index: 2; pointer-events: none; mix-blend-mode: overlay; }
-    @keyframes waterFlowH { 0% { background-position: 0 0; } 100% { background-position: 100% 0; } }
+    /* 🪄 移除旋轉，恢復從上往下的原圖設定 */
+    .path-river { position: absolute; inset: 0; background-image: url('river_bg.jpg'); background-size: cover; background-position: center bottom; z-index: 1;}
+    
+    /* 水流波紋也恢復為垂直向下 */
+    .path-river-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); background-size: 100% 200%; animation: waterFlow 3s linear infinite; z-index: 2; pointer-events: none; mix-blend-mode: overlay; }
+    @keyframes waterFlow { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
     
     .path-stone { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 5px rgba(0,0,0,0.8); cursor: pointer; z-index: 5; background-size: contain; background-repeat: no-repeat; background-position: center; border-radius: 50%; }
-    /* 把文字稍微往下推，避免被小鹿擋住 */
-    .path-stone span { position: relative; top: 4px; z-index: 2; }
-    
+    .path-stone span { position: relative; top: 4px; z-index: 2; pointer-events: none; } /* 防誤觸 */
     .path-stone::before { content: ''; position: absolute; bottom: 5px; width: 60px; height: 20px; background: rgba(0,0,0,0.4); border-radius: 50%; z-index: -1; filter: blur(4px); }
     .path-stone:active { transform: scale(0.9); }
     .path-stone.sink { animation: stoneSink 0.5s forwards; pointer-events: none; }
@@ -194,9 +205,6 @@
     /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
-
-    /* 隱藏某些遊戲內不需要的預設題目框，節省空間 */
-    .hide-for-path { display: none !important; }
 
     /* 🌟 提示吐司 (Toast) 特效 */
     .toast-msg { position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(22, 56, 38, 0.95); color: #fff; padding: 12px 24px; border-radius: 99px; font-size: 18px; font-weight: bold; border: 2px solid #ffd76a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -240,8 +248,12 @@
       /* 🧹 版面大掃除：移除強制拉長畫面的 min-height，讓畫面在手機上緊湊完美 */
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      .question-head.centered-head{grid-template-columns:1fr !important;}
-      .visual-mini-equation.v1-style { font-size: 52px; margin: 0 0 10px; }
+      /* 🌟 重新排版題目區域：讓音效按鈕飄浮在右上方，節省垂直空間 */
+      .question-head { display: flex !important; justify-content: center !important; position: relative; padding-right: 40px; margin-bottom: 4px; }
+      .question-main { align-items: center !important; width: 100%; }
+      .question-main h2 { font-size: 38px; line-height: 1.1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
+      .question-tools { position: absolute; right: 0; top: 0; display: flex; gap: 8px; }
+      
       .feedback-bar{flex-direction:column; align-items:stretch; gap:10px;}
       .magic-drum { width: 180px; height: 180px; }
       .drum-instruction { font-size: 18px; }
@@ -253,7 +265,10 @@
       .puzzle-slot, .puzzle-piece { width: 75px; height: 75px; font-size: 34px; }
       .scratch-container { width: 200px; height: 200px; }
       .scratch-content { font-size: 80px; }
-      .path-stage { height: 300px; }
+      
+      /* 🌟 大幅壓縮遊戲區塊上下的留白 */
+      .visual-area { margin: 8px 0 12px !important; }
+      .path-stage { height: 360px; }
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
@@ -270,7 +285,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.14.0 終極完美登岸版</div>
+        <div class="version-tag">v1.15.0 空間魔法修正版</div>
       </div>
     </header>
 
@@ -443,14 +458,13 @@
       </div>
 
       <div class="card question-card">
-        <!-- 🌟 題目顯示區塊 -->
-        <div id="questionHead" class="question-head centered-head">
+        <!-- 🌟 題目顯示區塊：已優化版面空間 -->
+        <div id="questionHead" class="question-head">
           <div class="question-main">
             <div id="questionTypeLabel" class="small-title">語言森林</div>
             <h2 id="questionPrompt">題目</h2>
           </div>
           <div class="question-tools">
-            <button id="toggleVisualBtn" class="mini-btn hidden-btn" type="button">展開</button>
             <button id="questionSpeakBtn" class="icon-btn light" type="button" aria-label="朗讀題目">🔊</button>
           </div>
         </div>
@@ -527,6 +541,7 @@
     const SPIRIT_NAMES = ['希望', '勇光', '星語', '小智', '暖暖', '亮亮'];
     const PLAYER_TITLES = ['小探險家', '森林朋友', '小勇士', '小旅人', '小學者', '小光點'];
     
+    // 🌟 全套注音系統 (共 37 個)
     const SYMBOL_SET = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ','ㄚ','ㄛ','ㄜ','ㄝ','ㄞ','ㄟ','ㄠ','ㄡ','ㄢ','ㄣ','ㄤ','ㄥ','ㄦ','ㄧ','ㄨ','ㄩ'];
     const COMBO_SET = ['ㄅㄚ','ㄅㄛ','ㄅㄧ','ㄆㄚ','ㄆㄛ','ㄇㄚ','ㄇㄛ','ㄇㄧ','ㄈㄚ','ㄉㄚ','ㄉㄧ','ㄊㄚ','ㄋㄚ','ㄋㄧ','ㄌㄚ','ㄌㄧ','ㄍㄚ','ㄎㄚ','ㄏㄚ'];
     const COMBO_SOUND = {'ㄅㄚ':'巴','ㄅㄛ':'波','ㄅㄧ':'逼','ㄆㄚ':'趴','ㄆㄛ':'坡','ㄇㄚ':'媽','ㄇㄛ':'摸','ㄇㄧ':'咪','ㄈㄚ':'發','ㄉㄚ':'搭','ㄉㄧ':'低','ㄊㄚ':'他','ㄋㄚ':'拿','ㄋㄧ':'泥','ㄌㄚ':'拉','ㄌㄧ':'梨','ㄍㄚ':'嘎','ㄎㄚ':'咖','ㄏㄚ':'哈'};
@@ -1007,16 +1022,6 @@
       if(document.getElementById('roundText')) document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
       if(document.getElementById('excludedText')) document.getElementById('excludedText').textContent = '0 個';
       if(document.getElementById('questionPrompt')) document.getElementById('questionPrompt').textContent = q.promptText;
-      
-      // 🌟 隱藏某些遊戲不需要的標準題目框 (節省空間)，改用遊戲內自帶的
-      const qHead = document.getElementById('questionHead');
-      if (qHead) {
-          if (q.uiType === 'path') {
-              qHead.classList.add('hide-for-path');
-          } else {
-              qHead.classList.remove('hide-for-path');
-          }
-      }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
       const optionsWrap = document.getElementById('optionsWrap'); if(optionsWrap) optionsWrap.innerHTML = '';
@@ -1566,14 +1571,14 @@
         window.onpointerup = () => { isScratching = false; };
         window.ontouchend = () => { isScratching = false; };
       }
-      /* 🌟 小鹿過河 (路徑跳躍) v1.14.0 終極完美登岸版 */
+      /* 🌟 小鹿過河 (路徑跳躍) v1.15.0 空間魔法修正版 */
       else if (q.uiType === 'path') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
         
         const stage = document.createElement('div');
         stage.className = 'path-stage';
         
-        // 🌟 空間魔法：把姐姐原本直向的河，用 CSS 旋轉成橫向流動！
+        // 🌟 恢復直向水流：從上往下流動
         const riverBg = document.createElement('div');
         riverBg.className = 'path-river';
         stage.appendChild(riverBg);
@@ -1582,9 +1587,10 @@
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
-        // 🌟 小鹿從下方草地 (85%) 一步步跳到上方草地 (5%)，共 5 步
-        const targetTop = 70 - (state.qIndex * 15); 
-        const charStartTop = state.qIndex === 0 ? 85 : (70 - ((state.qIndex - 1) * 15)); 
+        // 🌟 小鹿從下方草地 (82%) 一步步跳到上方草地 (5%)，共 5 步
+        // 為了配合原本直向的美圖，這裡的座標要更精準
+        const targetTop = 60 - (state.qIndex * 12); 
+        const charStartTop = state.qIndex === 0 ? 82 : (60 - ((state.qIndex - 1) * 12)); 
 
         if (state.qIndex > 0) {
             const prevStone = document.createElement('div');
@@ -1604,8 +1610,8 @@
         
         const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
         character.style.left = `calc(${currentX}% - 35px)`;
-        // 把小鹿的位置稍微往上提一點，才不會擋住數字
-        character.style.top = state.qIndex === 0 ? `78%` : `calc(${charStartTop}% - 40px)`; 
+        // 第一題讓小鹿稍微低一點站在岸上
+        character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
         
         character.onerror = function() { 
             this.src = 'icon.png'; 
@@ -1619,6 +1625,7 @@
             stone.className = 'path-stone';
             
             const leftPos = xOffsets[idx];
+            // 中間的石頭稍微高一點點
             const topPos = targetTop + (idx === 1 ? -4 : 6); 
             
             stone.style.left = `calc(${leftPos}% - 40px)`;
@@ -1642,7 +1649,7 @@
                     
                     // 小鹿跳向新石頭
                     character.style.left = `calc(${leftPos}% - 35px)`;
-                    character.style.top = `calc(${topPos}% - 40px)`; 
+                    character.style.top = `calc(${topPos}% - 35px)`; 
                     character.style.transform = 'scale(1.3) rotate(5deg)';
                     setTimeout(() => character.style.transform = 'scale(1)', 400);
 
