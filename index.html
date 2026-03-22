@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.23.0 全螢幕沉浸版</title>
+  <title>慢慢變強｜螢光森林 v1.24.0 極致清爽無遮擋版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -200,8 +200,6 @@
     /* 🌟 穿透魔法：pointer-events: none 讓手指可以直接點擊到背後的石頭！ */
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
     
-    /* 移除了上下假草地，現在直接顯示 river_bg 的絕美圖片 */
-    
     /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
@@ -286,12 +284,13 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.23.0 全螢幕沉浸版</div>
+        <div class="version-tag">v1.24.0 極致清爽無遮擋版</div>
       </div>
     </header>
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
+        <!-- 🌟 首頁使用經典 icon.png -->
         <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
@@ -344,8 +343,7 @@
         <div class="world-topbar">
           <div class="world-badge" id="worldTimeBadge">星夜森林</div>
           <div class="title-actions">
-            <!-- 🌟 加入安裝 APP 提示按鈕 -->
-            <button id="homeInstallBtn" class="mini-btn" type="button">⬇️ 安裝APP</button>
+            <!-- 🌟 先隱藏安裝 APP 提示按鈕，還給畫面清爽 -->
             <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
             <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
           </div>
@@ -1070,6 +1068,15 @@
           document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
       }
       
+      const qHead = document.getElementById('questionHead');
+      if (qHead) {
+          if (q.uiType === 'path') {
+              qHead.style.display = 'none'; // 小鹿過河隱藏預設框
+          } else {
+              qHead.style.display = ''; 
+          }
+      }
+      
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
       const optionsWrap = document.getElementById('optionsWrap'); if(optionsWrap) optionsWrap.innerHTML = '';
       if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
@@ -1630,10 +1637,41 @@
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
+        // 🌟 專屬題目與進度與音效 (整合在一起)
+        if (q.kind && q.kind.startsWith('math')) {
+            const promptBox = document.createElement('div');
+            promptBox.className = 'path-prompt-box';
+            
+            const flexWrap = document.createElement('div');
+            flexWrap.style.display = 'flex';
+            flexWrap.style.alignItems = 'center';
+            flexWrap.style.gap = '12px';
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
+            
+            // 🌟 專屬的進度標籤 (放在問號右邊)
+            const roundSpan = document.createElement('span');
+            roundSpan.textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
+            roundSpan.style.fontSize = '18px';
+            roundSpan.style.color = '#ffd76a';
+            roundSpan.style.background = 'rgba(255,215,106,0.15)';
+            roundSpan.style.border = '1px solid rgba(255,215,106,0.3)';
+            roundSpan.style.padding = '4px 10px';
+            roundSpan.style.borderRadius = '999px';
+            roundSpan.style.marginLeft = '8px';
+            
+            flexWrap.appendChild(textSpan);
+            flexWrap.appendChild(roundSpan);
+            promptBox.appendChild(flexWrap);
+            
+            stage.appendChild(promptBox);
+        }
+
         // 🌟 小鹿過河的動態捲動座標邏輯 (5題)
-        // 起點永遠在下方 (84%)，新的目標在上方 (70%)
-        const targetTop = 70 - (state.qIndex * 13); 
-        const charStartTop = state.qIndex === 0 ? 84 : (70 - ((state.qIndex - 1) * 13)); 
+        // 起點永遠在下方 (84%)，新的目標在上方 (68%)
+        const targetTop = 66 - (state.qIndex * 12); 
+        const charStartTop = state.qIndex === 0 ? 80 : (66 - ((state.qIndex - 1) * 12)); 
 
         // 🌟 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭！
         if (state.qIndex > 0) {
@@ -1669,8 +1707,14 @@
             stone.className = 'path-stone';
             
             const leftPos = xOffsets[idx];
-            // 中間的石頭稍微高一點點，呈現弧型
-            const topPos = targetTop + (idx === 1 ? -4 : 6); 
+            let topPos = targetTop;
+            
+            // 🌟 終極防遮擋斜角推進魔法：如果石頭跟小鹿在同一直線上，就把石頭大幅往上推！
+            if (Math.abs(leftPos - currentX) < 10) {
+                topPos -= 10; // 大幅往上推，避開小鹿頭部
+            } else {
+                topPos += (idx === 1 ? -4 : 6); // 自然的錯落排列
+            }
             
             stone.style.left = `calc(${leftPos}% - 40px)`;
             stone.style.top = `${topPos}%`;
@@ -1713,7 +1757,7 @@
                         setTimeout(() => {
                             playJumpSound();
                             character.style.left = `calc(50% - 35px)`; 
-                            character.style.top = `6%`; // 跳到畫面最頂端的草地
+                            character.style.top = `2%`; // 跳到畫面最頂端的草地上
                             character.style.transform = 'scale(1.2)';
                             setTimeout(() => character.style.transform = 'scale(1)', 400);
                             
@@ -1729,7 +1773,7 @@
                             }, 1000);
                         }, 1200);
                     } else {
-                        /* 🌟 延長等待時間至 2.5 秒，讓語音不會跟下一題打架，並模擬鏡頭向下推進感 */
+                        /* 🌟 延長等待時間至 2.5 秒，讓語音不會跟下一題打架 */
                         setTimeout(() => {
                             const nextBtn = document.getElementById('nextQuestionBtn');
                             if (nextBtn) nextBtn.click();
@@ -1854,23 +1898,6 @@
     if(document.getElementById('topSpeakBtn')) {
         document.getElementById('topSpeakBtn').onclick = () => { 
             if(speakingNow) stopSpeech(); else speak(state.currentQuestion.speakText); 
-        };
-    }
-
-    // 🌟 綁定 PWA 安裝按鈕
-    const installBtn = document.getElementById('homeInstallBtn');
-    if (installBtn) {
-        installBtn.onclick = async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.style.display = 'none';
-                }
-                deferredPrompt = null;
-            } else {
-                showToast("請點擊瀏覽器選單的「加入主畫面」來將遊戲安裝到手機桌面喔！");
-            }
         };
     }
 
