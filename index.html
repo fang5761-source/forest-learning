@@ -16,15 +16,16 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.37.0 完美標題與小鹿回歸版</title>
+  <title>慢慢變強｜螢光森林 v1.37.0 安卓黃金救援版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
     
-    /* 🌟 全域加入 touch-action 防止連點放大 */
-    *{box-sizing:border-box; touch-action: manipulation;} 
-    html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3); scroll-behavior:smooth;}
+    /* 🌟 移除容易造成安卓卡死的全域屬性，僅鎖定按鈕與互動元件 */
+    *{box-sizing:border-box;} 
+    button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card { touch-action: manipulation; }
+    html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
     button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
     .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
@@ -99,10 +100,10 @@
     
     .question-card{padding:20px;}
     
-    /* 🌟 全新黃金彈性排版，適應各種螢幕大小，永不擠壓！ */
-    .question-head-container { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;}
-    .question-prompt { font-size: 34px; font-weight: 900; margin: 0; line-height: 1.2; text-align: left; flex: 1; min-width: 0; word-break: break-word; color: #fff; }
-    .question-tools { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; position: relative;}
+    .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
+    .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
+    .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
     
     .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
     .visual-area.collapsed{display:none !important;}
@@ -154,18 +155,17 @@
 
     /* 🌟 動態泡泡遊戲專屬樣式 */
     .bubble-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to top, #062215, #113622); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
-    .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; touch-action: manipulation; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+    .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; touch-action: none; }
     .bubble-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 12px rgba(100,255,200,0.3)); }
     @keyframes bubbleFloatUp { 0% { transform: translateY(350px) scale(0.7) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.1) rotate(25deg); opacity: 0; } }
     .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
     @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
 
-    /* 🌟 磁鐵拼圖遊戲專屬樣式 (🌟 已移除背景的 touch-action: none 讓滑動順暢) */
+    /* 🌟 磁鐵拼圖遊戲專屬樣式 */
     .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; }
     .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
     .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
     .puzzle-slot.highlight { border-color: #ffd76a; background: rgba(255,215,106,0.1); box-shadow: 0 0 15px rgba(255,215,106,0.3); }
-    /* 🌟 只有拖曳物件本身鎖定 touch-action */
     .puzzle-piece { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 44px; color: #fff; font-weight: 900; text-shadow: 0 3px 5px rgba(0,0,0,0.6); cursor: grab; user-select: none; z-index: 10; transition: transform 0.1s; border-radius: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); touch-action: none;}
     .puzzle-piece:active { cursor: grabbing; transform: scale(1.1) rotate(5deg); z-index: 11; }
     .puzzle-piece.snapped { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) !important; cursor: default; }
@@ -183,7 +183,7 @@
     .path-river { position: absolute; inset: 0; background-image: url('images/river_bg.jpg'); background-size: cover; background-position: center bottom; z-index: 1;}
     .path-river-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); background-size: 100% 200%; animation: waterFlow 4s linear infinite; z-index: 2; pointer-events: none; mix-blend-mode: overlay; }
     @keyframes waterFlow { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
-    .path-stone { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 5px rgba(0,0,0,0.8); cursor: pointer; z-index: 5; background-size: contain; background-repeat: no-repeat; background-position: center; border-radius: 50%; }
+    .path-stone { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 5px rgba(0,0,0,0.8); cursor: pointer; z-index: 5; background-size: contain; background-repeat: no-repeat; background-position: center; border-radius: 50%; touch-action: none; }
     .path-stone span { position: relative; top: 4px; z-index: 100; text-shadow: 0 0 8px rgba(0,0,0,1); pointer-events: none; } 
     .path-stone::before { content: ''; position: absolute; bottom: 5px; width: 60px; height: 20px; background: rgba(0,0,0,0.4); border-radius: 50%; z-index: -1; filter: blur(4px); }
     .path-stone:active { transform: scale(0.9); }
@@ -203,7 +203,7 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 收果子：防遮擋與完美立體拼音版 (🌟 已移除背景的 touch-action: none 讓滑動順暢) */
+    /* 🌟 收果子絕美排版版 */
     .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
     
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
@@ -213,16 +213,16 @@
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
     
-    /* 🌟 絕對隔離魔法：用 gap 強制分開籃子與標籤 */
+    /* 絕對隔離魔法：用 gap 強制分開籃子與標籤 */
     .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 20px; gap: 12px; }
     
-    /* 🌟 籃子設定：使用 object-position: bottom center 強制圖靠下 */
-    .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
+    /* 籃子設定：使用 object-position: bottom center 強制圖靠下 */
+    .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; z-index: -1; pointer-events: none; }
     
-    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; touch-action: manipulation;}
     
-    /* 🌟 全新：垂直站立拼音特效 */
+    /* 垂直站立拼音特效 */
     .vertical-pinyin { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 40px; font-weight: 900; line-height: 1.1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px #ffd76a; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; }
     .vertical-pinyin.show { opacity: 1; transform: translateY(-10px); }
 
@@ -266,8 +266,8 @@
     .hidden-btn{display:none !important;}
 
     @media (max-width:760px){
-      /* 🌟 增加頂部安全距離，避開手機狀態列 */
-      .app-shell{width:min(100%,calc(100% - 20px)); padding-top: max(20px, env(safe-area-inset-top));} 
+      /* 🌟 安全寫法：修正舊款瀏覽器不支援 env() + max() 導致的版面錯誤 */
+      .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: env(safe-area-inset-top, 30px);} 
       .app-header{padding:16px} h1{font-size:34px} h2{font-size:26px}
       .intro-hero{grid-template-columns:1fr; text-align:left} .hero-spirit{width:136px;height:136px;border-radius:28px}
       .name-grid{grid-template-columns:repeat(2,1fr)} .status-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;} .status-pill{padding:10px;} .status-pill strong{font-size:18px;}
@@ -280,9 +280,10 @@
       .quiz-topbar{margin-top: 10px; margin-bottom:8px; padding:10px 12px;}
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      /* 🌟 完美彈性排版，不再擠壓變形 */
-      .question-head-container { margin-bottom: 12px; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .question-prompt { font-size: 28px !important; white-space: normal; overflow: visible; }
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 2px; min-height: 40px; padding-right: 0;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; }
+      .question-main .small-title { display: none; } 
+      .question-main h2 { font-size: 28px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; }
       #roundText { font-size: 14px !important; padding: 2px 8px !important; }
       
       .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
@@ -307,7 +308,7 @@
       .memory-grid { gap: 10px; max-width: 280px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
 
-      /* 🌟 收果子手機版微調：防遮擋安全間距 */
+      /* 收果子手機版微調：防遮擋安全間距 */
       .drag-stage { height: 440px; padding-bottom: 25px; }
       .drag-tree { height: 280px; }
       .drag-fruit-container { height: 280px; }
@@ -327,7 +328,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.37.0 完美標題與小鹿回歸版</div>
+        <div class="version-tag">v1.37.0 安卓黃金救援版</div>
       </div>
     </header>
 
@@ -502,13 +503,11 @@
 
       <div class="card question-card" id="mainQuestionCard" style="padding-top: 15px;">
         
-        <!-- 🌟 完美彈性防擠壓標題列 -->
-        <div id="questionHead" class="question-head-container">
-          <h2 id="questionPrompt" class="question-prompt">題目</h2>
-          <div class="question-tools">
-            <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px;">1 / 5</span>
-            <button id="topSpeakBtn" class="icon-btn light" style="width: 40px; height: 40px; border-radius: 12px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); cursor: pointer; flex-shrink: 0;" type="button" aria-label="朗讀題目">🔊</button>
-          </div>
+        <!-- 🌟 將音效按鈕、題目、進度完美整合在同一行 -->
+        <div id="questionHead" class="question-head" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+          <h2 id="questionPrompt" style="margin: 0; font-size: 32px; font-weight: 900;">題目</h2>
+          <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px;">1 / 5</span>
+          <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
         </div>
 
         <div id="visualArea" class="visual-area collapsed"></div>
@@ -560,11 +559,6 @@
   </main>
 
   <script>
-    /* 🌟 防護魔法：僅保留安全防雙擊，移除會導致安卓背景不能滑動的 touchend 攔截 */
-    document.addEventListener('dblclick', function(event) {
-        event.preventDefault();
-    }, { passive: false });
-
     /* 🌟 安裝 APP PWA 邏輯 (隱藏按鈕，僅保留底層註冊) */
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -653,7 +647,7 @@
                 header.style.display = 'flex';
             }
         }
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // 確保切換畫面在最上方
+        window.scrollTo(0, 0); // 確保每次切換畫面都在最上方 (使用安全寫法)
     }
 
     function showToast(msg) {
@@ -1148,18 +1142,12 @@
     }
 
     function renderQuestion() {
-      // 🌟 確保只有小鹿過河以外的遊戲，才會自動置頂捲動
-      const q = state.questionList[state.qIndex];
-      if (q && q.uiType !== 'path') {
-          setTimeout(() => {
-              const topElement = document.getElementById('mainQuestionCard');
-              if (topElement) {
-                  const y = topElement.getBoundingClientRect().top + window.pageYOffset - 10;
-                  window.scrollTo({ top: y, behavior: 'smooth' });
-              }
-          }, 50);
-      }
+      // 🌟 安全捲動：使用全裝置皆支援的 window.scrollTo(0, 0)
+      setTimeout(() => {
+          window.scrollTo(0, 0);
+      }, 50);
         
+      const q = state.questionList[state.qIndex];  
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
       
       if(document.getElementById('nextQuestionBtn')) { 
@@ -1179,10 +1167,13 @@
           document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
       }
       
-      // 🌟 永遠顯示完美標題列
       const qHead = document.getElementById('questionHead');
       if (qHead) {
-          qHead.style.display = 'flex'; 
+          if (q.uiType === 'path') {
+              qHead.style.display = 'none'; // 小鹿過河隱藏預設框
+          } else {
+              qHead.style.display = ''; 
+          }
       }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
@@ -1239,7 +1230,6 @@
           btn.onclick = () => {
             if (state.awaitingNext || btn.classList.contains('excluded')) return;
             
-            stopSpeech(); // 強制中斷
             if (opt.text === q.answer) {
               btn.classList.add('correct'); 
               state.awaitingNext = true;
@@ -1249,7 +1239,7 @@
               if(document.getElementById('nextQuestionBtn')) {
                   const nextBtn = document.getElementById('nextQuestionBtn');
                   nextBtn.classList.remove('hidden-btn');
-                  setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
               }
 
               const reply = `答案是 ${opt.speak}。太好了，森林亮起來了！`;
@@ -1298,7 +1288,6 @@
           surpriseBtn.onpointerdown = (e) => {
             if (state.awaitingNext || clicked) return;
             clicked = true;
-            stopSpeech(); // 強制中斷
             
             if (surprise.id === 'gem') {
               state.shards += 1;
@@ -1381,7 +1370,6 @@
         drumImg.onpointerdown = (e) => {
           if (state.awaitingNext) return;
           taps++; playDrumSound();
-          stopSpeech(); // 強制中斷
           
           const note = document.createElement('img');
           note.src = 'images/note.png'; note.className = 'flying-note'; note.onerror = function() { this.style.display='none'; };
@@ -1399,7 +1387,7 @@
             if(document.getElementById('nextQuestionBtn')) {
                 const nextBtn = document.getElementById('nextQuestionBtn');
                 nextBtn.classList.remove('hidden-btn');
-                setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
             }
 
             if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！答案就是 ${q.answer}！`;
@@ -1449,7 +1437,6 @@
             if (state.awaitingNext || btn.classList.contains('excluded')) return;
             
             playPopSound();
-            stopSpeech(); // 強制中斷
             
             if (opt.text === q.answer) {
               btn.classList.add('bubble-pop');
@@ -1458,7 +1445,7 @@
               if(document.getElementById('nextQuestionBtn')) {
                   const nextBtn = document.getElementById('nextQuestionBtn');
                   nextBtn.classList.remove('hidden-btn');
-                  setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
               }
 
               let de = '';
@@ -1575,7 +1562,6 @@
             if (!isDragging) return;
             isDragging = false;
             piece.releasePointerCapture(e.pointerId);
-            basket.classList.remove('highlight');
             
             const pieceRect = piece.getBoundingClientRect();
             let droppedSlot = null;
@@ -1591,9 +1577,9 @@
             });
 
             if (droppedSlot) {
-                if (droppedSlot.dataset.val === q.answer) {
+                const val = droppedSlot.dataset.val;
+                if (val === q.answer) {
                     playSnapSound(); 
-                    stopSpeech(); // 強制中斷
                     state.awaitingNext = true;
                     
                     const stageRect = stage.getBoundingClientRect();
@@ -1625,7 +1611,7 @@
                     if(document.getElementById('nextQuestionBtn')) {
                         const nextBtn = document.getElementById('nextQuestionBtn');
                         nextBtn.classList.remove('hidden-btn');
-                        setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                     }
                     
                     const reply = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
@@ -1635,7 +1621,6 @@
                 } else {
                     state.excluded += 1;
                     state.roundMistakes += 1; 
-                    stopSpeech(); // 強制中斷
                     piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     piece.style.transform = 'translate(0px, 0px)';
                     
@@ -1733,7 +1718,6 @@
             if (revealed) return;
             revealed = true;
             playChimeSound(); 
-            stopSpeech(); // 強制中斷
             canvas.style.transition = 'opacity 0.6s ease';
             canvas.style.opacity = '0';
             
@@ -1794,7 +1778,6 @@
                 if (isLocked || cardWrap.classList.contains('flipped') || cardWrap.classList.contains('matched')) return;
                 
                 playPopSound();
-                stopSpeech(); // 強制中斷
                 cardWrap.classList.add('flipped');
                 flippedCards.push({ elem: cardWrap, data: cardItem });
                 
@@ -1819,7 +1802,7 @@
                                     const nextBtn = document.getElementById('nextQuestionBtn');
                                     if (nextBtn) {
                                         nextBtn.classList.remove('hidden-btn');
-                                        nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+                                        nextBtn.scrollIntoView(false);
                                     }
                                 }, 1500);
                             }
@@ -1847,155 +1830,6 @@
 
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
-      }
-      /* 🌟 重新復活的：小鹿過河 (完美回歸版) */
-      else if (q.uiType === 'path') {
-        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
-        
-        const stage = document.createElement('div');
-        stage.className = 'path-stage';
-        
-        const riverBg = document.createElement('div');
-        riverBg.className = 'path-river';
-        stage.appendChild(riverBg);
-
-        const riverOverlay = document.createElement('div');
-        riverOverlay.className = 'path-river-overlay';
-        stage.appendChild(riverOverlay);
-
-        // 🌟 小鹿過河的動態捲動座標邏輯 (5題)
-        // 起點永遠在下方 (84%)，新的目標在上方 (70%)
-        const targetTop = 70 - (state.qIndex * 13); 
-        const charStartTop = state.qIndex === 0 ? 84 : (70 - ((state.qIndex - 1) * 13)); 
-
-        // 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭
-        if (state.qIndex > 0) {
-            const currentStone = document.createElement('div');
-            currentStone.className = 'path-stone';
-            currentStone.style.left = `calc(${state.lastPathX}% - 40px)`;
-            currentStone.style.top = `${charStartTop}%`;
-            currentStone.style.backgroundImage = "url('images/stone.png')";
-            currentStone.style.pointerEvents = 'none'; // 🌟 防止阻擋手指點擊新石頭
-            currentStone.style.zIndex = '4'; // 確保在水面上、小鹿下
-            stage.appendChild(currentStone);
-        }
-
-        const character = document.createElement('img');
-        character.src = 'images/deer.png';
-        character.className = 'path-character';
-        
-        // 繼承上次跳躍的 X 座標
-        const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
-        character.style.left = `calc(${currentX}% - 35px)`;
-        // 第一題站在最下方的岸上，其餘站在前一顆石頭上
-        character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
-        
-        character.onerror = function() { 
-            this.src = 'images/icon.png'; 
-        };
-        
-        const xOffsets = [20, 50, 80]; 
-        
-        q.options.forEach((opt, idx) => {
-            const stone = document.createElement('div');
-            stone.className = 'path-stone';
-            
-            const leftPos = xOffsets[idx];
-            let topPos = targetTop;
-            
-            // 🌟 終極防遮擋斜角推進魔法：如果石頭跟小鹿在同一直線上，就把石頭大幅往上推！
-            if (Math.abs(leftPos - currentX) < 10) {
-                topPos -= 10; // 大幅往上推，避開小鹿頭部
-            } else {
-                topPos += (idx === 1 ? -4 : 6); // 自然的錯落排列
-            }
-            
-            stone.style.left = `calc(${leftPos}% - 40px)`;
-            stone.style.top = `${topPos}%`;
-            
-            const txt = document.createElement('span');
-            txt.textContent = opt.text;
-            stone.appendChild(txt);
-            
-            stone.style.backgroundImage = "url('images/stone.png')";
-            
-            stone.onpointerdown = (e) => {
-                if (state.awaitingNext || stone.classList.contains('excluded')) return;
-                
-                stopSpeech(); // 強制中斷重複音效
-
-                if (opt.text === q.answer) {
-                    stone.classList.add('correct');
-                    state.awaitingNext = true;
-                    
-                    playJumpSound();
-                    
-                    // 記錄這次落點的 X 座標，作為下一題的起點
-                    state.lastPathX = leftPos; 
-                    
-                    // 小鹿跳向新石頭
-                    character.style.left = `calc(${leftPos}% - 35px)`;
-                    character.style.top = `calc(${topPos}% - 35px)`; 
-                    character.style.transform = 'scale(1.3) rotate(5deg)';
-                    setTimeout(() => character.style.transform = 'scale(1)', 400);
-
-                    let de = '';
-                    if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
-                       const ansNum = q.tableBase * q.tableTarget;
-                       if(ansNum <= 10) de = '得';
-                    }
-                    const reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                    speak(reply);
-
-                    // 🌟 終極一躍：最後一題加碼跳上對岸
-                    if (state.qIndex === state.questionList.length - 1) {
-                        setTimeout(() => {
-                            playJumpSound();
-                            character.style.left = `calc(50% - 35px)`; 
-                            character.style.top = `2%`; // 跳到畫面最頂端的草地上
-                            character.style.transform = 'scale(1.2)';
-                            setTimeout(() => character.style.transform = 'scale(1)', 400);
-                            
-                            // 延遲顯示「過關按鈕」並加入語音，等待孩子手動點擊
-                            setTimeout(() => {
-                                const nextBtn = document.getElementById('nextQuestionBtn');
-                                if (nextBtn) {
-                                    nextBtn.textContent = '🎉 成功過河！領取獎勵';
-                                    nextBtn.classList.remove('hidden-btn');
-                                    nextBtn.classList.add('pulse-anim');
-                                    setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
-                                    speak('太棒了，成功過河！請點擊下方按鈕領取獎勵！');
-                                }
-                            }, 1000);
-                        }, 1200);
-                    } else {
-                        /* 🌟 延長等待時間至 2.5 秒，讓語音不會跟下一題打架 */
-                        setTimeout(() => {
-                            const nextBtn = document.getElementById('nextQuestionBtn');
-                            if (nextBtn) nextBtn.click();
-                        }, 2500); 
-                    }
-                    
-                } else {
-                    stone.classList.add('excluded');
-                    stone.classList.add('sink');
-                    state.excluded += 1;
-                    state.roundMistakes += 1;
-                    
-                    playSplashSound();
-                    
-                    const reply = `哎呀，這顆石頭沉下去了！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                    speak(reply);
-                }
-            };
-            stage.appendChild(stone);
-        });
-
-        stage.appendChild(character);
-        visualArea.appendChild(stage);
-        visualArea.classList.remove('collapsed');
       }
       /* 🌟 收果子絕美排版版 */
       else if (q.uiType === 'drag') {
@@ -2029,7 +1863,6 @@
         const basketLabel = document.createElement('div');
         basketLabel.className = 'basket-label';
         
-        // 取消點擊籃子/標籤時會重複發出無法停止的語音
         basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:20px; font-weight:bold;">${q.soundWord}</span>`;
         
         basketWrap.appendChild(basket);
@@ -2117,7 +1950,6 @@
                 if (dist < 80) {
                     if (fruit.dataset.val === q.answer) {
                         playSnapSound();
-                        stopSpeech(); // 強制中斷
                         state.awaitingNext = true;
                         
                         fruit.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -2135,7 +1967,7 @@
                         if(document.getElementById('nextQuestionBtn')) {
                             const nextBtn = document.getElementById('nextQuestionBtn');
                             nextBtn.classList.remove('hidden-btn');
-                            setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                         }
                         
                         const reply = `${p1}... ${p2}... ${q.soundWord}！太棒了！`;
@@ -2145,7 +1977,6 @@
                     } else {
                         state.excluded += 1;
                         state.roundMistakes += 1; 
-                        stopSpeech(); // 強制中斷
                         fruit.classList.add('excluded');
                         
                         origX = 0; origY = 0;
@@ -2175,7 +2006,7 @@
           const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
           btn.onclick = () => handleAnswer(btn, opt);
           const speakBtn = document.createElement('button'); speakBtn.className = 'option-speak-btn'; speakBtn.textContent = '🔊';
-          speakBtn.onclick = (e) => { e.stopPropagation(); stopSpeech(); speak(opt.speak); };
+          speakBtn.onclick = (e) => { e.stopPropagation(); speak(opt.speak); };
           row.appendChild(btn); row.appendChild(speakBtn); optionsWrap.appendChild(row);
         });
       }
@@ -2188,14 +2019,12 @@
       const q = state.currentQuestion;
       if (state.awaitingNext || btn.classList.contains('excluded') || btn.classList.contains('correct')) return;
       
-      stopSpeech(); // 強制中斷
-      
       if (opt.text === q.answer) {
         btn.classList.add('correct'); state.awaitingNext = true;
         if(document.getElementById('nextQuestionBtn')) {
             const nextBtn = document.getElementById('nextQuestionBtn');
             nextBtn.classList.remove('hidden-btn');
-            setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
         }
         
         let de = '';
@@ -2270,3 +2099,21 @@
             if(speakingNow) stopSpeech(); else speak(state.currentQuestion.speakText); 
         };
     }
+
+    // 起始流程
+    if(document.getElementById('introAcceptBtn')) document.getElementById('introAcceptBtn').onclick = () => { showScreen('name'); renderNameGrid(document.getElementById('nameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('nameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmNameBtn').disabled=false;}); };
+    if(document.getElementById('confirmNameBtn')) document.getElementById('confirmNameBtn').onclick = () => { state.spiritName = state.selectedName; showScreen('title'); renderNameGrid(document.getElementById('titleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('titleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmTitleBtn').disabled=false;}); };
+    if(document.getElementById('confirmTitleBtn')) document.getElementById('confirmTitleBtn').onclick = () => { state.playerTitle = state.selectedTitle; showScreen('bond'); };
+    if(document.getElementById('bondContinueBtn')) document.getElementById('bondContinueBtn').onclick = () => { saveState(); updateHome(); showScreen('home'); };
+
+    function renderNameGrid(target, selectedName, options, onSelect) {
+      target.innerHTML = '';
+      options.forEach(name => {
+        const btn = document.createElement('button'); btn.type = 'button'; btn.className = `name-btn${selectedName === name ? ' selected' : ''}`; btn.textContent = name; btn.onclick = () => onSelect(name, btn); target.appendChild(btn);
+      });
+    }
+
+    if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
+  </script>
+</body>
+</html>
