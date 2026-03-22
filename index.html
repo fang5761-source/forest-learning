@@ -16,7 +16,7 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.32.0 絕美收果子優化版</title>
+  <title>慢慢變強｜螢光森林 v1.33.0 完美防遮擋版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -202,7 +202,7 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 全新：收果子絕美排版版 (標籤與籃子分離) */
+    /* 🌟 全新：收果子完美防遮擋版 */
     .drag-stage { position: relative; width: 100%; height: 340px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 15px; touch-action: none; }
     
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 160px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
@@ -212,13 +212,14 @@
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
     
-    /* 🌟 獨立且不被遮擋的籃子與標籤 (修正 margin-top) */
-    .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 10px; }
-    .drag-basket { width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
-    .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; }
+    /* 🌟 絕對隔離魔法：用 flex gap 強制分開籃子圖片與文字標籤，確保永不重疊 */
+    .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 15px; gap: 18px; }
+    .drag-basket { width: 140px; height: 100px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
+    /* 強制將圖片鎖定在底端 */
+    .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom center; z-index: -1; pointer-events: none; }
     
-    /* 將標籤乾淨地放置於籃子下方 */
-    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; color: #fff; margin-top: 12px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;}
+    /* 取消原本的負數 margin，改用安全間距 */
+    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; color: #fff; margin-top: 0; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;}
     
     /* 答對時的黃金吸入光芒 */
     .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -301,13 +302,14 @@
       .memory-grid { gap: 10px; max-width: 280px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
 
-      /* 🌟 收果子手機版微調 (分離標籤) */
-      .drag-stage { height: 400px; }
-      .drag-tree { height: 280px; }
-      .drag-fruit-container { height: 280px; }
+      /* 🌟 收果子手機版微調：給予彈性間距，保證絕對不會重疊 */
+      .drag-stage { height: 420px; padding-bottom: 20px; }
+      .drag-tree { height: 260px; }
+      .drag-fruit-container { height: 260px; }
       .drag-fruit { width: 70px; height: 70px; font-size: 28px;}
-      .drag-basket { width: 120px; height: 120px; padding-bottom: 0;}
-      .basket-label { margin-top: 8px; padding: 4px 12px; }
+      .drag-basket-wrap { gap: 18px; padding-bottom: 5px; }
+      .drag-basket { width: 150px; height: 100px; padding-bottom: 0;}
+      .basket-label { margin-top: 0; padding: 6px 16px; }
     }
   </style>
 </head>
@@ -321,7 +323,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.32.0 絕美收果子優化版</div>
+        <div class="version-tag">v1.33.0 完美防遮擋版</div>
       </div>
     </header>
 
@@ -1140,7 +1142,18 @@
     }
 
     function renderQuestion() {
+      // 🌟 確保只有小鹿過河以外的遊戲，才會自動置頂捲動
       const q = state.questionList[state.qIndex];
+      if (q && q.uiType !== 'path') {
+          setTimeout(() => {
+              const topElement = document.getElementById('mainQuestionCard');
+              if (topElement) {
+                  const y = topElement.getBoundingClientRect().top + window.pageYOffset - 10;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+              }
+          }, 50);
+      }
+        
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
       
       if(document.getElementById('nextQuestionBtn')) { 
@@ -1801,7 +1814,7 @@
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 全新：收果子絕美排版版 (標籤與籃子分離) */
+      /* 🌟 全新：收果子絕美排版版 (標籤與籃子分離，完美防遮擋) */
       else if (q.uiType === 'drag') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把正確的果子拖進籃子裡吧！';
         
@@ -1812,6 +1825,7 @@
         treeBg.className = 'drag-tree';
         stage.appendChild(treeBg);
         
+        // 🌟 獨立且隔離的籃子區塊，透過 gap 強制保持 18px 距離，絕不重疊
         const basketWrap = document.createElement('div');
         basketWrap.className = 'drag-basket-wrap';
         
@@ -1824,7 +1838,6 @@
         
         const basketLabel = document.createElement('div');
         basketLabel.className = 'basket-label';
-        // 點擊籃子或標籤可重新聽語音
         basketLabel.onclick = () => speak(q.speakText);
         basket.onclick = () => speak(q.speakText);
         
@@ -1871,7 +1884,6 @@
                 e.preventDefault();
                 isDragging = true;
                 fruit.setPointerCapture(e.pointerId);
-                // 確保抓取到正確的 clientX
                 let clientX = e.clientX; let clientY = e.clientY;
                 if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
                 
