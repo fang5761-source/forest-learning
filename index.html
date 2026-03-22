@@ -16,7 +16,7 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.34.0 垂直拼音立體版</title>
+  <title>慢慢變強｜螢光森林 v1.35.0 絲滑無礙體驗版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -160,12 +160,13 @@
     .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
     @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
 
-    /* 🌟 磁鐵拼圖遊戲專屬樣式 */
-    .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; touch-action: none; }
+    /* 🌟 磁鐵拼圖遊戲專屬樣式 (🌟 已移除背景的 touch-action: none 讓滑動順暢) */
+    .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; }
     .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
     .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
     .puzzle-slot.highlight { border-color: #ffd76a; background: rgba(255,215,106,0.1); box-shadow: 0 0 15px rgba(255,215,106,0.3); }
-    .puzzle-piece { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 44px; color: #fff; font-weight: 900; text-shadow: 0 3px 5px rgba(0,0,0,0.6); cursor: grab; user-select: none; z-index: 10; transition: transform 0.1s; border-radius: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+    /* 🌟 只有拖曳物件本身鎖定 touch-action */
+    .puzzle-piece { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 44px; color: #fff; font-weight: 900; text-shadow: 0 3px 5px rgba(0,0,0,0.6); cursor: grab; user-select: none; z-index: 10; transition: transform 0.1s; border-radius: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); touch-action: none;}
     .puzzle-piece:active { cursor: grabbing; transform: scale(1.1) rotate(5deg); z-index: 11; }
     .puzzle-piece.snapped { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) !important; cursor: default; }
     .puzzle-tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; border-radius: 18px; }
@@ -202,8 +203,8 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 收果子：防遮擋與完美立體拼音版 */
-    .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; touch-action: none; }
+    /* 🌟 收果子：防遮擋與完美立體拼音版 (🌟 已移除背景的 touch-action: none 讓滑動順暢) */
+    .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
     
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     
@@ -327,7 +328,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.34.0 垂直拼音立體版</div>
+        <div class="version-tag">v1.35.0 絲滑無礙體驗版</div>
       </div>
     </header>
 
@@ -491,7 +492,7 @@
     </section>
 
     <section id="quizScreen" class="screen">
-      <div class="quiz-topbar glass">
+      <div class="quiz-topbar glass" style="margin-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap;">
           <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" type="button">⬅</button>
           <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
@@ -558,7 +559,7 @@
   </main>
 
   <script>
-    /* 🌟 防護魔法：僅保留安全防雙擊，移除會導致安卓按鈕失效的 touchend 攔截 */
+    /* 🌟 防護魔法：僅保留安全防雙擊，移除會導致安卓背景不能滑動的 touchend 攔截 */
     document.addEventListener('dblclick', function(event) {
         event.preventDefault();
     }, { passive: false });
@@ -651,6 +652,7 @@
                 header.style.display = 'flex';
             }
         }
+        window.scrollTo(0, 0); // 確保每次切換畫面都在最上方
     }
 
     function showToast(msg) {
@@ -999,7 +1001,6 @@
       return list;
     }
 
-    /* 🌟 全新：建立收果子的資料結構 (帶有拼音公式籃子) */
     function buildComboDragSet() {
       const list = [];
       for (let i = 0; i < 5; i++) {
@@ -1146,17 +1147,12 @@
     }
 
     function renderQuestion() {
-      // 🌟 確保只有小鹿過河以外的遊戲，才會自動置頂捲動
       const q = state.questionList[state.qIndex];
-      if (q && q.uiType !== 'path') {
-          setTimeout(() => {
-              const topElement = document.getElementById('mainQuestionCard');
-              if (topElement) {
-                  const y = topElement.getBoundingClientRect().top + window.pageYOffset - 10;
-                  window.scrollTo({ top: y, behavior: 'smooth' });
-              }
-          }, 50);
-      }
+      
+      // 🌟 每次換題時，強制平滑捲動回到畫面「最頂端」，確保「返回箭頭」永遠看得見！
+      setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
         
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
       
@@ -1246,7 +1242,12 @@
               overlay.style.background = 'transparent';
               flashlightImg.style.opacity = '0'; 
               
-              if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+              if(document.getElementById('nextQuestionBtn')) {
+                  const nextBtn = document.getElementById('nextQuestionBtn');
+                  nextBtn.classList.remove('hidden-btn');
+                  setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+              }
+
               const reply = `答案是 ${opt.speak}。太好了，森林亮起來了！`;
               if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
               speak(reply);
@@ -1388,7 +1389,13 @@
             let de = ''; const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得';
             const fullSpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${numberToZh(ansNum)}`;
             speak(fullSpeak);
-            if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+            
+            if(document.getElementById('nextQuestionBtn')) {
+                const nextBtn = document.getElementById('nextQuestionBtn');
+                nextBtn.classList.remove('hidden-btn');
+                setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+            }
+
             if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！答案就是 ${q.answer}！`;
           }
         };
@@ -1440,8 +1447,13 @@
             if (opt.text === q.answer) {
               btn.classList.add('bubble-pop');
               state.awaitingNext = true;
-              if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
               
+              if(document.getElementById('nextQuestionBtn')) {
+                  const nextBtn = document.getElementById('nextQuestionBtn');
+                  nextBtn.classList.remove('hidden-btn');
+                  setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+              }
+
               let de = '';
               if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
                  const ansNum = q.tableBase * q.tableTarget;
@@ -1602,7 +1614,11 @@
                     comboFloat.style.animation = 'floatUpFade 1.5s forwards';
                     stage.appendChild(comboFloat);
 
-                    if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+                    if(document.getElementById('nextQuestionBtn')) {
+                        const nextBtn = document.getElementById('nextQuestionBtn');
+                        nextBtn.classList.remove('hidden-btn');
+                        setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                    }
                     
                     const reply = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
                     if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
@@ -1790,7 +1806,10 @@
                                 state.awaitingNext = true;
                                 setTimeout(() => {
                                     const nextBtn = document.getElementById('nextQuestionBtn');
-                                    if (nextBtn) nextBtn.click();
+                                    if (nextBtn) {
+                                        nextBtn.classList.remove('hidden-btn');
+                                        nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+                                    }
                                 }, 1500);
                             }
                         }, 600);
@@ -1818,7 +1837,7 @@
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 全新：收果子絕美排版版 (標籤與籃子分離，完美防遮擋) */
+      /* 🌟 收果子絕美排版版 */
       else if (q.uiType === 'drag') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把正確的果子拖進籃子裡吧！';
         
@@ -1829,7 +1848,6 @@
         treeBg.className = 'drag-tree';
         stage.appendChild(treeBg);
         
-        // 🌟 絕對隔離魔法：用 flex gap 強制分開籃子圖片與文字標籤，確保永不重疊
         const basketWrap = document.createElement('div');
         basketWrap.className = 'drag-basket-wrap';
         
@@ -1840,7 +1858,7 @@
         basketImg.onerror = () => { basketImg.style.display = 'none'; basket.style.background = '#8B5A2B'; basket.style.borderRadius = '20px'; }; 
         basket.appendChild(basketImg);
         
-        // 🌟 垂直立體站立的拼音 (隱藏於籃子中，答對才出現)
+        // 垂直立體站立的拼音 (隱藏於籃子中，答對才出現)
         const verticalPinyin = document.createElement('div');
         verticalPinyin.className = 'vertical-pinyin';
         const p1 = q.answer.charAt(0);
@@ -1872,7 +1890,7 @@
             fruit.dataset.val = opt.text;
             
             fruit.style.position = 'absolute';
-            fruit.style.left = `calc(${xOffsets[idx]}% - 30px)`; // 修正置中偏移
+            fruit.style.left = `calc(${xOffsets[idx]}% - 30px)`; 
             fruit.style.top = `${yOffsets[idx]}%`;
             
             const fruitImg = document.createElement('img');
@@ -1954,9 +1972,13 @@
                         setTimeout(() => verticalPinyin.classList.add('show'), 300);
                         setTimeout(() => basket.classList.remove('basket-success'), 1000);
 
-                        if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+                        if(document.getElementById('nextQuestionBtn')) {
+                            const nextBtn = document.getElementById('nextQuestionBtn');
+                            nextBtn.classList.remove('hidden-btn');
+                            setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+                        }
                         
-                        // 🌟 語音修正：唸出 符號 + 符號 + 拼音
+                        // 🌟 語音：唸出 符號 + 符號 + 拼音
                         const reply = `${p1}... ${p2}... ${q.soundWord}！太棒了！`;
                         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                         speak(reply);
@@ -2008,7 +2030,11 @@
       
       if (opt.text === q.answer) {
         btn.classList.add('correct'); state.awaitingNext = true;
-        if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+        if(document.getElementById('nextQuestionBtn')) {
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            nextBtn.classList.remove('hidden-btn');
+            setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
+        }
         
         let de = '';
         if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
