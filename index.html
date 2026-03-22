@@ -2,10 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  
-  <!-- 🌟 APP 專屬 Icon 與 LINE 分享標籤 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="慢慢變強">
@@ -16,13 +13,11 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.38.0 小鹿強勢回歸與排版鋼鐵版</title>
+  <title>慢慢變強｜螢光森林 v1.39.1 穩定除錯版</title>
   <meta name="theme-color" content="#163826">
   <style>
-    /* ================= CSS 樣式區域 ================= */
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
     
-    /* 🌟 移除容易造成安卓卡死的全域屬性，僅鎖定按鈕與互動元件 */
     *{box-sizing:border-box;} 
     button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label { touch-action: manipulation; }
     html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
@@ -102,7 +97,6 @@
     
     .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; position: relative;}
     .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
-    /* 🌟 鋼鐵防護：確保題目絕對不會換行 */
     .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
     .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
     
@@ -126,7 +120,6 @@
     .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
     .result-pill strong{color:var(--gold-soft)}
     
-    /* 🌟 大樹鼓遊戲專屬樣式 */
     .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
     .drum-instruction { font-size: 22px; color: var(--gold-soft); margin-bottom: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 999px;}
     .drum-glow-box { background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.4) 50%, transparent 75%); border-radius: 50%; padding: 30px; display:flex; justify-content:center; align-items:center; margin-bottom: 10px;}
@@ -137,7 +130,6 @@
     .drum-answer-reveal { font-size: 64px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #ffd76a, 0 0 40px #ffb347; opacity: 0; transition: opacity 0.4s ease-in; position: absolute; bottom: -10px;}
     .drum-answer-reveal.show { opacity: 1; transform: translateY(-10px); }
 
-    /* 🌟 黑夜探照燈遊戲專屬樣式 */
     .spotlight-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; touch-action: none; border: 4px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); background: #0b1a11; user-select: none; -webkit-user-select: none;}
     .spotlight-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: brightness(0.6) contrast(1.2); pointer-events: none; }
     .spotlight-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: rgba(0,0,0,0.95); }
@@ -154,16 +146,14 @@
     .ghost-flee { animation: flee 0.6s forwards; pointer-events: none;}
     @keyframes flee { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(100px, -100px) scale(0); opacity: 0; } }
 
-    /* 🌟 動態泡泡遊戲專屬樣式 */
     .bubble-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to top, #062215, #113622); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
-    .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; touch-action: none; }
+    .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; touch-action: manipulation; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; }
     .bubble-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 12px rgba(100,255,200,0.3)); }
     @keyframes bubbleFloatUp { 0% { transform: translateY(350px) scale(0.7) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.1) rotate(25deg); opacity: 0; } }
     .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
     @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
 
-    /* 🌟 磁鐵拼圖遊戲專屬樣式 */
-    .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; }
+    .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; touch-action: none; }
     .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
     .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
     .puzzle-slot.highlight { border-color: #ffd76a; background: rgba(255,215,106,0.1); box-shadow: 0 0 15px rgba(255,215,106,0.3); }
@@ -173,7 +163,6 @@
     .puzzle-tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; border-radius: 18px; }
     .puzzle-fallback { background: linear-gradient(135deg, #8B5A2B, #5C3A21); border: 2px solid #ffd76a; }
     
-    /* 🌟 魔法刮刮樂專屬樣式 */
     .scratch-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0 10px; width: 100%; position: relative;}
     .scratch-container { position: relative; width: 240px; height: 240px; border-radius: 28px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px solid rgba(255,255,255,0.15); background: #fff; }
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
@@ -192,7 +181,7 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
-    /* 🌟 翻牌配對 (硬體加速與 3D 動畫) */
+    /* 🌟 翻牌配對 */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; }
     .memory-card { aspect-ratio: 3/4; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -206,24 +195,18 @@
 
     /* 🌟 收果子絕美排版版 */
     .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
-    
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
-    
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
     .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
     
-    /* 🌟 鋼鐵排版防擠壓：使用 gap 隔離 */
     .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 20px; gap: 12px; }
-    
     .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; z-index: -1; pointer-events: none; }
     
-    /* 鋼鐵防護：white-space nowrap 確保標籤內文字不換行重疊 */
     .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; touch-action: manipulation; white-space: nowrap;}
     
-    /* 🌟 垂直立體拼音特效 (鋼鐵防擠壓：強制 line-height 和 gap) */
     .vertical-pinyin { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 40px; font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px #ffd76a; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; }
     .vertical-pinyin span { display: block; line-height: 1; }
     .vertical-pinyin.show { opacity: 1; transform: translateY(-10px); }
@@ -235,15 +218,12 @@
         100% { filter: drop-shadow(0 0 10px rgba(0,0,0,0.4)) brightness(1); transform: scale(1); } 
     }
 
-    /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
 
-    /* 🌟 提示吐司 (Toast) 特效 */
     .toast-msg { position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(22, 56, 38, 0.95); color: #fff; padding: 12px 24px; border-radius: 99px; font-size: 18px; font-weight: bold; border: 2px solid #ffd76a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .toast-msg.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* Room Select */
     .room-select-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:18px;}
     .room-card-btn{min-height:120px; padding:16px; border-radius:22px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); color:#fff; text-align:left; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; cursor:pointer; transition: all 0.2s ease;}
     .room-card-btn .room-emoji{font-size:28px} .room-card-btn strong{font-size:22px} .room-card-btn small{color:rgba(255,255,255,.78); line-height:1.5}
@@ -254,7 +234,6 @@
     .table-pick-btn{min-height:64px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.08); color:#fff; font-size:22px; cursor:pointer;}
     .table-pick-btn.selected{background:linear-gradient(180deg, rgba(255,238,176,.26), rgba(255,215,106,.18)); border-color:rgba(255,226,138,.4); color:#fffef4;}
     
-    /* Ranks & Gardens */
     .rank-panel{padding:16px 18px !important; border-radius:24px; margin-bottom:14px;}
     .rank-head{display:flex; justify-content:space-between; gap:14px; align-items:center;} .rank-head h3{font-size:24px; margin-top:4px;}
     .rank-stars-box{min-width:120px; padding:12px 14px; border-radius:18px; background:rgba(255,255,255,.08); text-align:center;}
@@ -262,14 +241,13 @@
     .growth-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:10px !important; display:grid;}
     .growth-pill{position:relative; overflow:hidden; min-height:86px; padding:14px 16px; border-radius:22px; background: radial-gradient(circle at 80% 18%, rgba(255,223,128,.14), transparent 20%), linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); box-shadow:0 10px 24px rgba(0,0,0,.18);}
     .growth-pill strong{font-size:28px; display:block; margin-top:4px;}
-    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;}
-    .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
-    .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08)}
+    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0;}
+    .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;}
+    .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08);}
     .hidden-btn{display:none !important;}
 
     @media (max-width:760px){
-      /* 🌟 安全寫法：修正舊款瀏覽器不支援 env() + max() 導致的版面錯誤 */
-      .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: env(safe-area-inset-top, 30px);} 
+      .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: max(30px, env(safe-area-inset-top));} 
       .app-header{padding:16px} h1{font-size:34px} h2{font-size:26px}
       .intro-hero{grid-template-columns:1fr; text-align:left} .hero-spirit{width:136px;height:136px;border-radius:28px}
       .name-grid{grid-template-columns:repeat(2,1fr)} .status-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;} .status-pill{padding:10px;} .status-pill strong{font-size:18px;}
@@ -279,12 +257,11 @@
       .seed-actions-grid{grid-template-columns:1fr;} .garden-stage-display{grid-template-columns:1fr;}
       .rank-head{flex-direction:column; align-items:flex-start;}
       
-      .quiz-topbar{margin-top: 10px; margin-bottom:8px; padding:10px 12px;}
+      .quiz-topbar{margin-top: 10px; margin-bottom:8px; padding:10px 12px; display: flex; justify-content: space-between;}
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      /* 🌟 鋼鐵防護：確保手機版標題也不換行 */
-      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 2px; min-height: 40px; padding-right: 0; flex-wrap: nowrap; overflow: hidden;}
-      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; flex-wrap: nowrap; }
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 8px; padding-top: 0px; min-height: 36px; padding-right: 0; flex-wrap: nowrap; overflow: hidden;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; text-align: center; flex-wrap: nowrap; }
       .question-main .small-title { display: none; } 
       .question-main h2 { font-size: 26px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; text-overflow: ellipsis;}
       #roundText { font-size: 14px !important; padding: 2px 8px !important; white-space: nowrap;}
@@ -302,7 +279,8 @@
       .scratch-content { font-size: 80px; }
       
       .visual-area { margin: 4px 0 8px !important; }
-      .path-stage { height: 400px; } 
+      
+      .path-stage { height: 360px; } 
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
@@ -311,7 +289,6 @@
       .memory-grid { gap: 10px; max-width: 280px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
 
-      /* 🌟 收果子手機版微調：防遮擋安全間距 */
       .drag-stage { height: 440px; padding-bottom: 25px; }
       .drag-tree { height: 280px; }
       .drag-fruit-container { height: 280px; }
@@ -331,7 +308,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.38.0 小鹿強勢回歸與排版鋼鐵版</div>
+        <div class="version-tag">v1.39.1 穩定除錯版</div>
       </div>
     </header>
 
@@ -495,22 +472,25 @@
     </section>
 
     <section id="quizScreen" class="screen">
-      <div class="quiz-topbar glass" style="margin-bottom: 8px; border: none; background: transparent; box-shadow: none;">
-        <div style="display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap;">
+      <!-- 🌟 將進度與音效全面搬移至最右上方的全局控制列 -->
+      <div class="quiz-topbar glass" style="margin-bottom: 12px; border: none; background: transparent; box-shadow: none; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
           <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" type="button">⬅</button>
-          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-             <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
-          </div>
+          <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px; font-weight: bold;">1 / 5</span>
+          <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
         </div>
       </div>
 
       <div class="card question-card" id="mainQuestionCard" style="padding-top: 15px;">
         
-        <!-- 🌟 將音效按鈕、題目、進度完美整合在同一行 -->
-        <div id="questionHead" class="question-head" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
-          <h2 id="questionPrompt" style="margin: 0; font-size: 32px; font-weight: 900;">題目</h2>
-          <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px;">1 / 5</span>
-          <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
+        <!-- 🌟 單純且置中的完美標題 -->
+        <div id="questionHead" class="question-head" style="display: flex; justify-content: center; margin-bottom: 12px;">
+          <div class="question-main">
+            <h2 id="questionPrompt" style="margin: 0; font-size: 36px; font-weight: 900; color: #fff;">題目</h2>
+          </div>
         </div>
 
         <div id="visualArea" class="visual-area collapsed"></div>
@@ -562,19 +542,16 @@
   </main>
 
   <script>
-    /* 🌟 防護魔法：僅保留安全防雙擊 */
     document.addEventListener('dblclick', function(event) {
         event.preventDefault();
     }, { passive: false });
 
-    /* 🌟 安裝 APP PWA 邏輯 */
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
     });
 
-    /* 清除舊版錯誤快取，避免干擾 */
     try {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
@@ -655,7 +632,7 @@
                 header.style.display = 'flex';
             }
         }
-        window.scrollTo(0, 0); // 確保每次切換畫面都在最上方
+        window.scrollTo(0, 0); 
     }
 
     function showToast(msg) {
@@ -1022,7 +999,7 @@
             speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, 
             answer: targetCombo, 
             soundWord: soundWord, 
-            basketText: `${p1} + ${p2}`, // 籃子上的文字提示
+            basketText: `${p1} + ${p2}`, 
             options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), 
             uiType: 'drag', 
             scene: '🧺 拖曳正確的果子放到籃子裡！' 
@@ -1150,10 +1127,8 @@
     }
 
     function renderQuestion() {
-      // 🌟 安全捲動：使用全裝置皆支援的 window.scrollTo(0, 0) 保證返回按鈕不被吃掉
-      setTimeout(() => {
-          window.scrollTo(0, 0);
-      }, 50);
+      // 🌟 安全捲動：使用全裝置皆支援的 window.scrollTo(0, 0)
+      setTimeout(() => { window.scrollTo(0, 0); }, 50);
         
       const q = state.questionList[state.qIndex];  
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
@@ -1177,10 +1152,10 @@
       
       const qHead = document.getElementById('questionHead');
       if (qHead) {
-          if (q.uiType === 'path') {
-              qHead.style.display = 'none'; 
+          if (q.uiType === 'drag') {
+              qHead.style.display = 'none'; // 收果子隱藏主標題
           } else {
-              qHead.style.display = ''; 
+              qHead.style.display = 'flex'; 
           }
       }
       
@@ -2005,7 +1980,7 @@
         basketImg.onerror = () => { basketImg.style.display = 'none'; basket.style.background = '#8B5A2B'; basket.style.borderRadius = '20px'; }; 
         basket.appendChild(basketImg);
         
-        // 🌟 垂直立體站立的拼音 (隱藏於籃子中，答對才出現) - 鋼鐵防護間距
+        // 垂直立體站立的拼音 (隱藏於籃子中，答對才出現) - 鋼鐵防護間距
         const verticalPinyin = document.createElement('div');
         verticalPinyin.className = 'vertical-pinyin';
         const p1 = q.answer.charAt(0);
