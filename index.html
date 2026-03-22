@@ -16,7 +16,7 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.35.0 絲滑無礙體驗版</title>
+  <title>慢慢變強｜螢光森林 v1.36.0 完美題目標題版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -98,11 +98,6 @@
     .meta-chip{padding:9px 12px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff}
     
     .question-card{padding:20px;}
-    
-    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; position: relative;}
-    .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
-    .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
-    .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
     
     .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
     .visual-area.collapsed{display:none !important;}
@@ -220,7 +215,7 @@
     .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; z-index: -1; pointer-events: none; }
     
-    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;}
+    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     
     /* 🌟 全新：垂直站立拼音特效 */
     .vertical-pinyin { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 40px; font-weight: 900; line-height: 1.1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px #ffd76a; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; }
@@ -281,10 +276,6 @@
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
       .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 2px; min-height: 40px; padding-right: 0;}
-      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; }
-      .question-main .small-title { display: none; } 
-      .question-main h2 { font-size: 28px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; }
-      #roundText { font-size: 14px !important; padding: 2px 8px !important; }
       
       .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
       .magic-drum { width: 180px; height: 180px; }
@@ -328,7 +319,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.35.0 絲滑無礙體驗版</div>
+        <div class="version-tag">v1.36.0 完美題目標題版</div>
       </div>
     </header>
 
@@ -492,22 +483,22 @@
     </section>
 
     <section id="quizScreen" class="screen">
-      <div class="quiz-topbar glass" style="margin-bottom: 8px;">
+      <div class="quiz-topbar glass" style="margin-bottom: 8px; border: none; background: transparent; box-shadow: none;">
         <div style="display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap;">
           <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" type="button">⬅</button>
           <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
              <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
           </div>
         </div>
-        <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; margin-left: 10px;" type="button" aria-label="朗讀題目">🔊</button>
       </div>
 
-      <div class="card question-card" id="mainQuestionCard">
-        <div id="questionHead" class="question-head">
-          <div class="question-main">
-            <h2 id="questionPrompt">題目</h2>
-            <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 18px; padding: 4px 10px; margin-top: 0; margin-left: 0; border-radius: 999px;">1 / 5</span>
-          </div>
+      <div class="card question-card" id="mainQuestionCard" style="padding-top: 15px;">
+        
+        <!-- 🌟 將音效按鈕、題目、進度完美整合在同一行 -->
+        <div id="questionHead" class="question-head" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+          <h2 id="questionPrompt" style="margin: 0; font-size: 32px; font-weight: 900;">題目</h2>
+          <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px;">1 / 5</span>
+          <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
         </div>
 
         <div id="visualArea" class="visual-area collapsed"></div>
@@ -1147,12 +1138,17 @@
     }
 
     function renderQuestion() {
+      // 🌟 確保只有小鹿過河以外的遊戲，才會自動置頂捲動
       const q = state.questionList[state.qIndex];
-      
-      // 🌟 每次換題時，強制平滑捲動回到畫面「最頂端」，確保「返回箭頭」永遠看得見！
-      setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 50);
+      if (q && q.uiType !== 'path') {
+          setTimeout(() => {
+              const topElement = document.getElementById('mainQuestionCard');
+              if (topElement) {
+                  const y = topElement.getBoundingClientRect().top + window.pageYOffset - 10;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+              }
+          }, 50);
+      }
         
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
       
@@ -1171,15 +1167,6 @@
       }
       if(document.getElementById('roundText')) {
           document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
-      }
-      
-      const qHead = document.getElementById('questionHead');
-      if (qHead) {
-          if (q.uiType === 'path') {
-              qHead.style.display = 'none'; // 小鹿過河隱藏預設框
-          } else {
-              qHead.style.display = ''; 
-          }
       }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
@@ -1868,10 +1855,9 @@
         
         const basketLabel = document.createElement('div');
         basketLabel.className = 'basket-label';
-        basketLabel.onclick = () => speak(q.speakText);
-        basket.onclick = () => speak(q.speakText);
         
-        basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:18px;">🔊 ${q.soundWord}</span>`;
+        // 🗑️ 【修改重點】取消點擊籃子/標籤時會重複發出無法停止的語音
+        basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:20px; font-weight:bold;">${q.soundWord}</span>`;
         
         basketWrap.appendChild(basket);
         basketWrap.appendChild(basketLabel);
@@ -1978,7 +1964,6 @@
                             setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
                         }
                         
-                        // 🌟 語音：唸出 符號 + 符號 + 拼音
                         const reply = `${p1}... ${p2}... ${q.soundWord}！太棒了！`;
                         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                         speak(reply);
@@ -2102,6 +2087,7 @@
         }; 
     }
     
+    // 🌟 完美綁定統一的音效按鈕
     if(document.getElementById('topSpeakBtn')) {
         document.getElementById('topSpeakBtn').onclick = () => { 
             if(speakingNow) stopSpeech(); else speak(state.currentQuestion.speakText); 
