@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.20.0 人石合一完美版</title>
+  <title>慢慢變強｜螢光森林 v1.21.0 完美修正版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -183,7 +183,7 @@
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
     .scratch-canvas { position: absolute; inset: 0; z-index: 10; touch-action: none; cursor: crosshair; }
 
-    /* 🌟 小鹿過河 (真實垂直過河版) v1.20.0 */
+    /* 🌟 小鹿過河 (真實垂直過河版) v1.21.0 */
     .path-stage { position: relative; width: 100%; height: 420px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
     
     /* 垂直向下水流動畫 */
@@ -202,9 +202,7 @@
     /* 🌟 穿透魔法：pointer-events: none 讓手指可以直接點擊到背後的石頭！ */
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
     
-    /* 起點與終點草地 */
-    .path-shore-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; background: #2E4E3F; border-top: 4px solid #1A3326; z-index: 3; border-radius: 50% 50% 0 0 / 20px 20px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); }
-    .path-shore-top { position: absolute; top: 0; left: 0; width: 100%; height: 60px; background: #2E4E3F; border-bottom: 4px solid #1A3326; z-index: 3; border-radius: 0 0 50% 50% / 0 0 20px 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+    /* 移除了上下假草地，現在直接顯示 river_bg 的絕美圖片 */
 
     /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
@@ -274,7 +272,7 @@
       
       /* 🌟 壓縮遊戲區塊，讓手機一屏顯示得下 */
       .visual-area { margin: 4px 0 8px !important; }
-      .path-stage { height: 440px; } /* 拉高一點點裝下五步軌跡 */
+      .path-stage { height: 400px; } /* 拉高一點點裝下五步軌跡 */
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
@@ -291,7 +289,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.20.0 人石合一完美版</div>
+        <div class="version-tag">v1.21.0 完美修正版</div>
       </div>
     </header>
 
@@ -1027,8 +1025,11 @@
     }
 
     function renderQuestion() {
-      // 🌟 自動平滑捲動到畫面最上方
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // 🌟 自動平滑捲動到畫面最上方 (加入延遲確保執行)
+      setTimeout(() => {
+          const topElement = document.querySelector('.quiz-topbar');
+          if (topElement) topElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
         
       const q = state.questionList[state.qIndex];
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
@@ -1598,7 +1599,7 @@
         window.onpointerup = () => { isScratching = false; };
         window.ontouchend = () => { isScratching = false; };
       }
-      /* 🌟 小鹿過河 (真實垂直軌跡過河版) v1.20.0 */
+      /* 🌟 小鹿過河 (真實垂直軌跡過河版) v1.21.0 */
       else if (q.uiType === 'path') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
         
@@ -1612,14 +1613,6 @@
         const riverOverlay = document.createElement('div');
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
-
-        const shoreBottom = document.createElement('div');
-        shoreBottom.className = 'path-shore-bottom';
-        stage.appendChild(shoreBottom);
-        
-        const shoreTop = document.createElement('div');
-        shoreTop.className = 'path-shore-top';
-        stage.appendChild(shoreTop);
 
         // 🌟 小鹿真正往上爬的座標邏輯 (5 題 5 步)
         const targetTop = 72 - (state.qIndex * 12); 
