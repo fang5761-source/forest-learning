@@ -16,7 +16,7 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.31.0 收果子極致優化版</title>
+  <title>慢慢變強｜螢光森林 v1.32.0 絕美收果子優化版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -202,10 +202,9 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 全新：收果子極致優化版 (大樹冠與獨立籃子) */
+    /* 🌟 全新：收果子絕美排版版 (標籤與籃子分離) */
     .drag-stage { position: relative; width: 100%; height: 340px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 15px; touch-action: none; }
     
-    /* 🌟 大樹圖片當作頂部樹冠覆蓋 */
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 160px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 160px; z-index: 10; }
@@ -213,11 +212,13 @@
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
     
-    /* 🌟 獨立且不被遮擋的籃子與標籤 */
-    .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; }
-    .drag-basket { width: 110px; height: 110px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
+    /* 🌟 獨立且不被遮擋的籃子與標籤 (修正 margin-top) */
+    .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 10px; }
+    .drag-basket { width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; }
-    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; color: #fff; margin-top: -15px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;}
+    
+    /* 將標籤乾淨地放置於籃子下方 */
+    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; color: #fff; margin-top: 12px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;}
     
     /* 答對時的黃金吸入光芒 */
     .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -270,11 +271,8 @@
       .rank-head{flex-direction:column; align-items:flex-start;}
       
       .quiz-topbar{margin-bottom:8px; padding:10px 12px;}
+      .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      /* 🌟 極致壓縮卡片留白，將空間還給遊戲與下一題按鈕 */
-      .question-card{padding:10px; border-radius:22px; min-height: auto;}
-      
-      /* 🌟 縮小標題與進度標籤 */
       .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 2px; min-height: 40px; padding-right: 0;}
       .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; }
       .question-main .small-title { display: none; } 
@@ -302,6 +300,14 @@
       .memory-stage { min-height: 340px; padding: 15px;}
       .memory-grid { gap: 10px; max-width: 280px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
+
+      /* 🌟 收果子手機版微調 (分離標籤) */
+      .drag-stage { height: 400px; }
+      .drag-tree { height: 280px; }
+      .drag-fruit-container { height: 280px; }
+      .drag-fruit { width: 70px; height: 70px; font-size: 28px;}
+      .drag-basket { width: 120px; height: 120px; padding-bottom: 0;}
+      .basket-label { margin-top: 8px; padding: 4px 12px; }
     }
   </style>
 </head>
@@ -315,7 +321,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.31.0 收果子極致優化版</div>
+        <div class="version-tag">v1.32.0 絕美收果子優化版</div>
       </div>
     </header>
 
@@ -506,7 +512,7 @@
           </div>
         </div>
 
-        <div style="margin-top:12px;">
+        <div style="margin-top:16px;">
           <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%" type="button">下一題</button>
         </div>
       </div>
@@ -1795,19 +1801,17 @@
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 全新：收果子極致優化版 (大樹冠與獨立籃子) */
+      /* 🌟 全新：收果子絕美排版版 (標籤與籃子分離) */
       else if (q.uiType === 'drag') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把正確的果子拖進籃子裡吧！';
         
         const stage = document.createElement('div');
         stage.className = 'drag-stage';
         
-        // 🌟 新增魔法大樹冠背景 (佔據畫面上半部)
         const treeBg = document.createElement('div');
         treeBg.className = 'drag-tree';
         stage.appendChild(treeBg);
         
-        // 🌟 籃子區塊：獨立木牌標籤不遮擋籃子
         const basketWrap = document.createElement('div');
         basketWrap.className = 'drag-basket-wrap';
         
@@ -1833,7 +1837,7 @@
         const fruitContainer = document.createElement('div');
         fruitContainer.className = 'drag-fruit-container';
         
-        // 🌟 將果實放在樹冠的左、中、右合適位置
+        // 將果實放在樹冠的左、中、右合適位置
         const xOffsets = [15, 50, 85];
         const yOffsets = [15, 5, 15]; // 高度錯落
         
