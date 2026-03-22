@@ -16,7 +16,7 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.30.0 發光大樹收果子版</title>
+  <title>慢慢變強｜螢光森林 v1.31.0 收果子極致優化版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -202,20 +202,22 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 全新：收果子 (發光大樹與黃金籃子版) */
-    .drag-stage { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; touch-action: none; }
+    /* 🌟 全新：收果子極致優化版 (大樹冠與獨立籃子) */
+    .drag-stage { position: relative; width: 100%; height: 340px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 15px; touch-action: none; }
     
-    /* 新增魔法大樹背景 */
-    .drag-tree { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 400px; height: 260px; background-image: url('images/tree.png'); background-size: contain; background-repeat: no-repeat; background-position: center bottom; z-index: 1; pointer-events: none; }
+    /* 🌟 大樹圖片當作頂部樹冠覆蓋 */
+    .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 160px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     
-    .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 260px; z-index: 10; }
-    .drag-fruit { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; transition: transform 0.1s;}
-    .drag-fruit:active { cursor: grabbing; transform: scale(1.1); z-index: 11; }
+    .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 160px; z-index: 10; }
+    .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
+    .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
     
-    /* 籃子與發光特效 */
-    .drag-basket { position: relative; width: 150px; height: 150px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 15px; border-radius: 20px; transition: all 0.3s; z-index: 5; margin-top: auto; cursor: pointer;}
+    /* 🌟 獨立且不被遮擋的籃子與標籤 */
+    .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; }
+    .drag-basket { width: 110px; height: 110px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; }
+    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; color: #fff; margin-top: -15px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;}
     
     /* 答對時的黃金吸入光芒 */
     .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -268,11 +270,16 @@
       .rank-head{flex-direction:column; align-items:flex-start;}
       
       .quiz-topbar{margin-bottom:8px; padding:10px 12px;}
-      .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 5px; min-height: 48px; padding-right: 0;}
-      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
-      .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
+      /* 🌟 極致壓縮卡片留白，將空間還給遊戲與下一題按鈕 */
+      .question-card{padding:10px; border-radius:22px; min-height: auto;}
+      
+      /* 🌟 縮小標題與進度標籤 */
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 2px; min-height: 40px; padding-right: 0;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; }
+      .question-main .small-title { display: none; } 
+      .question-main h2 { font-size: 28px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; }
+      #roundText { font-size: 14px !important; padding: 2px 8px !important; }
       
       .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
       .magic-drum { width: 180px; height: 180px; }
@@ -295,13 +302,6 @@
       .memory-stage { min-height: 340px; padding: 15px;}
       .memory-grid { gap: 10px; max-width: 280px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
-
-      /* 收果子手機版微調 */
-      .drag-stage { height: 400px; }
-      .drag-tree { height: 280px; }
-      .drag-fruit-container { height: 280px; }
-      .drag-fruit { width: 70px; height: 70px; font-size: 28px;}
-      .drag-basket { width: 130px; height: 130px; padding-bottom: 10px;}
     }
   </style>
 </head>
@@ -315,7 +315,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.30.0 發光大樹收果子版</div>
+        <div class="version-tag">v1.31.0 收果子極致優化版</div>
       </div>
     </header>
 
@@ -506,7 +506,7 @@
           </div>
         </div>
 
-        <div style="margin-top:16px;">
+        <div style="margin-top:12px;">
           <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%" type="button">下一題</button>
         </div>
       </div>
@@ -1795,62 +1795,47 @@
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 全新：收果子 (拖曳放入籃子) */
+      /* 🌟 全新：收果子極致優化版 (大樹冠與獨立籃子) */
       else if (q.uiType === 'drag') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把正確的果子拖進籃子裡吧！';
-        if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
-
+        
         const stage = document.createElement('div');
         stage.className = 'drag-stage';
         
-        // 🌟 新增魔法大樹背景
+        // 🌟 新增魔法大樹冠背景 (佔據畫面上半部)
         const treeBg = document.createElement('div');
         treeBg.className = 'drag-tree';
         stage.appendChild(treeBg);
         
-        // 籃子區塊：顯示「拼音公式」與「音效按鈕」
+        // 🌟 籃子區塊：獨立木牌標籤不遮擋籃子
+        const basketWrap = document.createElement('div');
+        basketWrap.className = 'drag-basket-wrap';
+        
         const basket = document.createElement('div');
         basket.className = 'drag-basket';
         const basketImg = document.createElement('img');
         basketImg.src = 'images/basket.png';
-        basketImg.onerror = () => { basketImg.style.display = 'none'; basket.style.background = '#8B5A2B'; }; 
-        
-        const basketContent = document.createElement('div');
-        basketContent.style.zIndex = '10';
-        basketContent.style.display = 'flex';
-        basketContent.style.flexDirection = 'column';
-        basketContent.style.alignItems = 'center';
-        
-        const bText = document.createElement('div');
-        bText.textContent = q.basketText; // 顯示: ㄅ + ㄚ
-        bText.style.fontSize = '32px';
-        bText.style.background = 'rgba(0,0,0,0.5)';
-        bText.style.padding = '4px 12px';
-        bText.style.borderRadius = '12px';
-        
-        const bAudio = document.createElement('div');
-        bAudio.innerHTML = `🔊 ${q.soundWord}`; // 顯示: 🔊 巴
-        bAudio.style.fontSize = '22px';
-        bAudio.style.marginTop = '4px';
-        bAudio.style.color = '#ffd76a';
-        bAudio.style.textShadow = '0 2px 4px rgba(0,0,0,0.8)';
-        
-        basketContent.appendChild(bText);
-        basketContent.appendChild(bAudio);
-        
+        basketImg.onerror = () => { basketImg.style.display = 'none'; basket.style.background = '#8B5A2B'; basket.style.borderRadius = '20px'; }; 
         basket.appendChild(basketImg);
-        basket.appendChild(basketContent);
         
-        // 點擊籃子重新發音
+        const basketLabel = document.createElement('div');
+        basketLabel.className = 'basket-label';
+        // 點擊籃子或標籤可重新聽語音
+        basketLabel.onclick = () => speak(q.speakText);
         basket.onclick = () => speak(q.speakText);
+        
+        basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:18px;">🔊 ${q.soundWord}</span>`;
+        
+        basketWrap.appendChild(basket);
+        basketWrap.appendChild(basketLabel);
         
         // 果子區塊
         const fruitContainer = document.createElement('div');
         fruitContainer.className = 'drag-fruit-container';
         
-        // 🌟 將果實放在樹冠的左、中、右三個位置
+        // 🌟 將果實放在樹冠的左、中、右合適位置
         const xOffsets = [15, 50, 85];
-        const yOffsets = [45, 15, 45];
+        const yOffsets = [15, 5, 15]; // 高度錯落
         
         q.options.forEach((opt, idx) => {
             const fruit = document.createElement('div');
@@ -1858,7 +1843,7 @@
             fruit.dataset.val = opt.text;
             
             fruit.style.position = 'absolute';
-            fruit.style.left = `calc(${xOffsets[idx]}% - 40px)`;
+            fruit.style.left = `calc(${xOffsets[idx]}% - 30px)`; // 修正置中偏移
             fruit.style.top = `${yOffsets[idx]}%`;
             
             const fruitImg = document.createElement('img');
@@ -1882,16 +1867,23 @@
                 e.preventDefault();
                 isDragging = true;
                 fruit.setPointerCapture(e.pointerId);
-                startX = e.clientX - origX;
-                startY = e.clientY - origY;
+                // 確保抓取到正確的 clientX
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                startX = clientX - origX;
+                startY = clientY - origY;
                 fruit.style.transition = 'none';
             };
 
             fruit.onpointermove = (e) => {
                 if (!isDragging) return;
-                e.preventDefault();
-                origX = e.clientX - startX;
-                origY = e.clientY - startY;
+                e.preventDefault(); // 防止滾動
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                origX = clientX - startX;
+                origY = clientY - startY;
                 fruit.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
                 
                 const fruitRect = fruit.getBoundingClientRect();
@@ -1924,7 +1916,7 @@
                         
                         fruit.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                         const dx = (basketRect.left + basketRect.width/2) - (fruitRect.left - origX + fruitRect.width/2);
-                        const dy = (basketRect.top + basketRect.height/2) - (fruitRect.top - origY + fruitRect.height/2) + 15; 
+                        const dy = (basketRect.top + basketRect.height/2) - (fruitRect.top - origY + fruitRect.height/2); 
                         
                         fruit.style.transform = `translate(${dx}px, ${dy}px) scale(0.3)`;
                         fruit.style.opacity = '0'; 
@@ -1935,7 +1927,10 @@
 
                         if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
                         
-                        const reply = `${q.answer}... ${q.soundWord}！太棒了！`;
+                        // 🌟 語音修正：唸出 符號 + 符號 + 拼音
+                        const p1 = q.answer.charAt(0);
+                        const p2 = q.answer.charAt(1);
+                        const reply = `${p1}... ${p2}... ${q.soundWord}！太棒了！`;
                         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                         speak(reply);
 
@@ -1961,7 +1956,7 @@
         });
         
         stage.appendChild(fruitContainer);
-        stage.appendChild(basket);
+        stage.appendChild(basketWrap);
         optionsWrap.appendChild(stage);
       }
 
