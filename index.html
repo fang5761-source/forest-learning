@@ -16,7 +16,7 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.25.0 全螢幕無捲動完美版</title>
+  <title>慢慢變強｜螢光森林 v1.26.0 頂級音效與版面優化版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -24,7 +24,7 @@
     
     /* 🌟 全域加入 touch-action 防止連點放大 */
     *{box-sizing:border-box; touch-action: manipulation;} 
-    html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
+    html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3); scroll-behavior:smooth;}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
     button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
     .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
@@ -51,7 +51,6 @@
     .icon-btn,.mini-btn,.ghost-btn,.primary-btn,.secondary-btn,.map-node,.name-btn,.locked-node{border:0; cursor:pointer; border-radius:18px; transition:.18s ease;}
     .icon-btn{width:52px;height:52px; background:rgba(255,250,219,.18); color:#fff; font-size:20px;} 
     
-    /* 🌟 精緻的音效按鈕 */
     .icon-btn.light{width:50px; height:50px; font-size:22px; border-radius:16px; background:linear-gradient(180deg, #fff9e6, #ffe082); border:2px solid #ffd76a; color:#5c3a21; box-shadow:0 4px 10px rgba(0,0,0,0.15);}
     
     .mini-btn{padding:10px 14px; background:rgba(255,255,255,.10); color:#fff; white-space: nowrap;}
@@ -103,10 +102,9 @@
     .question-card{padding:20px;}
     
     /* 🌟 單行優美的標題區域 */
-    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; position: relative;}
+    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; }
     .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
     .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
-    .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
     
     .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
     .visual-area.collapsed{display:none !important;}
@@ -254,14 +252,15 @@
       .seed-actions-grid{grid-template-columns:1fr;} .garden-stage-display{grid-template-columns:1fr;}
       .rank-head{flex-direction:column; align-items:flex-start;}
       
+      /* 🌟 解除回到上一層的置頂干擾，改為自然流動 */
       .quiz-topbar{margin-bottom:8px; padding:10px 12px;}
+      
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      /* 🌟 單行精簡的標題設計，包含音效與進度 */
-      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 8px; padding-top: 0; min-height: 48px; padding-right: 50px;}
-      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; }
-      .question-main h2 { font-size: 36px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; }
-      .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
+      /* 🌟 單行精簡的標題設計，包含進度 */
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 5px; min-height: 48px; padding-right: 0;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
+      .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
       
       .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
       .magic-drum { width: 180px; height: 180px; }
@@ -277,7 +276,7 @@
       
       /* 🌟 壓縮遊戲區塊，給予完美單螢幕體驗 */
       .visual-area { margin: 4px 0 8px !important; }
-      .path-stage { height: 380px; } 
+      .path-stage { height: 400px; } 
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
@@ -295,12 +294,13 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.25.0 全螢幕無捲動完美版</div>
+        <div class="version-tag">v1.26.0 頂級音效與版面優化版</div>
       </div>
     </header>
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
+        <!-- 🌟 首頁使用經典 icon.png -->
         <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
@@ -459,24 +459,25 @@
     </section>
 
     <section id="quizScreen" class="screen">
-      <div class="quiz-topbar glass" style="margin-bottom: 12px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center;" type="button">⬅</button>
-          <span id="modeChip" class="meta-chip" style="font-size: 16px;">任務</span>
+      <!-- 🌟 頂部工具列：左側標籤，右側音效按鈕 -->
+      <div class="quiz-topbar glass" style="margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap;">
+          <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" type="button">⬅</button>
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+             <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
+          </div>
         </div>
-        <!-- 空間保留給下方絕對定位的音效按鈕 -->
+        <!-- 🌟 移到右上角的發光森林風音效按鈕 -->
+        <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; margin-left: 10px;" type="button" aria-label="朗讀題目">🔊</button>
       </div>
 
       <div class="card question-card" id="mainQuestionCard">
-        <!-- 🌟 單行精緻的題目區塊 (含音效與進度) -->
+        <!-- 🌟 單行精緻的題目區塊 (含進度) -->
         <div id="questionHead" class="question-head">
           <div class="question-main">
             <h2 id="questionPrompt">題目</h2>
-            <!-- 進度文字緊貼題目右側 -->
+            <!-- 🌟 進度文字緊貼題目右側 -->
             <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 18px; padding: 4px 10px; margin-top: 0; margin-left: 0; border-radius: 999px;">1 / 5</span>
-          </div>
-          <div class="question-tools">
-            <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);" type="button" aria-label="朗讀題目">🔊</button>
           </div>
         </div>
 
@@ -542,6 +543,13 @@
         }
         lastTouchEnd = now;
     }, { passive: false });
+
+    /* 🌟 安裝 APP PWA 邏輯 (隱藏按鈕，僅保留底層註冊) */
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
 
     /* 清除舊版錯誤快取，避免干擾 */
     try {
@@ -718,8 +726,28 @@
     }
 
     let availableVoices = []; let speakingNow = false;
-    function loadVoices() { availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
-    function pickVoice() { if (!availableVoices.length) loadVoices(); return availableVoices.find(v => /zh-TW/i.test(v.lang)) || availableVoices.find(v => /zh/i.test(v.lang)) || null; }
+    
+    // 🌟 強制載入並過濾高品質台灣女聲 (修正 Android 大陸腔)
+    function loadVoices() { 
+        availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; 
+    }
+    if (window.speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function pickVoice() { 
+        if (!availableVoices.length) loadVoices(); 
+        
+        // 優先選擇 Google 的台灣語音 (品質較佳，可繞過三星預設)
+        let v = availableVoices.find(v => v.name.includes('Google') && (v.lang.includes('TW') || v.lang.includes('tw')));
+        // 其次找語言標籤是 cmn-TW 或 zh-TW
+        if (!v) v = availableVoices.find(v => v.lang.includes('zh-TW') || v.lang.includes('cmn-TW'));
+        // 再其次找名稱含有 Taiwan/台灣/臺灣的語音
+        if (!v) v = availableVoices.find(v => v.name.includes('Taiwan') || v.name.includes('台灣') || v.name.includes('臺灣'));
+        // 最後退而求其次找任何中文
+        if (!v) v = availableVoices.find(v => /zh/i.test(v.lang));
+        return v || null; 
+    }
     
     function syncSpeakButton() { 
         const btn = document.getElementById('topSpeakBtn'); 
@@ -727,6 +755,7 @@
     }
     
     function stopSpeech() { if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} } speakingNow = false; syncSpeakButton(); }
+    
     function speak(text) {
       state.currentSpeechText = text; if (!('speechSynthesis' in window)) return;
       try { window.speechSynthesis.cancel(); } catch (e) {}
