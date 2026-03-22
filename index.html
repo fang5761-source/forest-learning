@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <!-- 🌟 鎖定螢幕縮放，防止 iPhone/Android 雙指或連按放大 -->
+  <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   
   <!-- 🌟 APP 專屬 Icon 與 LINE 分享標籤 -->
@@ -16,12 +16,13 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.28.0 收果子解鎖版</title>
+  <title>慢慢變強｜螢光森林 v1.30.0 發光大樹收果子版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
     
+    /* 🌟 全域加入 touch-action 防止連點放大 */
     *{box-sizing:border-box; touch-action: manipulation;} 
     html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3); scroll-behavior:smooth;}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
@@ -123,7 +124,7 @@
     .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
     .result-pill strong{color:var(--gold-soft)}
     
-    /* 🌟 大樹鼓、探照燈、泡泡、拼圖、刮刮樂 樣式維持不變 */
+    /* 🌟 大樹鼓遊戲專屬樣式 */
     .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
     .drum-instruction { font-size: 22px; color: var(--gold-soft); margin-bottom: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 999px;}
     .drum-glow-box { background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.4) 50%, transparent 75%); border-radius: 50%; padding: 30px; display:flex; justify-content:center; align-items:center; margin-bottom: 10px;}
@@ -134,6 +135,7 @@
     .drum-answer-reveal { font-size: 64px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #ffd76a, 0 0 40px #ffb347; opacity: 0; transition: opacity 0.4s ease-in; position: absolute; bottom: -10px;}
     .drum-answer-reveal.show { opacity: 1; transform: translateY(-10px); }
 
+    /* 🌟 黑夜探照燈遊戲專屬樣式 */
     .spotlight-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; touch-action: none; border: 4px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); background: #0b1a11; user-select: none; -webkit-user-select: none;}
     .spotlight-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: brightness(0.6) contrast(1.2); pointer-events: none; }
     .spotlight-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: rgba(0,0,0,0.95); }
@@ -150,6 +152,7 @@
     .ghost-flee { animation: flee 0.6s forwards; pointer-events: none;}
     @keyframes flee { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(100px, -100px) scale(0); opacity: 0; } }
 
+    /* 🌟 動態泡泡遊戲專屬樣式 */
     .bubble-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to top, #062215, #113622); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
     .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; touch-action: manipulation; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; }
     .bubble-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 12px rgba(100,255,200,0.3)); }
@@ -157,6 +160,7 @@
     .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
     @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
 
+    /* 🌟 磁鐵拼圖遊戲專屬樣式 */
     .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; touch-action: none; }
     .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
     .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
@@ -167,6 +171,7 @@
     .puzzle-tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; border-radius: 18px; }
     .puzzle-fallback { background: linear-gradient(135deg, #8B5A2B, #5C3A21); border: 2px solid #ffd76a; }
     
+    /* 🌟 魔法刮刮樂專屬樣式 */
     .scratch-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0 10px; width: 100%; position: relative;}
     .scratch-container { position: relative; width: 240px; height: 240px; border-radius: 28px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px solid rgba(255,255,255,0.15); background: #fff; }
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
@@ -197,14 +202,28 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 全新：收果子拖曳遊戲專屬樣式 */
-    .drag-stage { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1e3c2f, #0a1f14); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 30px 20px; touch-action: none; }
-    .drag-basket { width: 150px; height: 150px; background-image: url('images/basket.png'); background-size: contain; background-repeat: no-repeat; background-position: center; position: relative; z-index: 5; transition: transform 0.2s; }
-    .drag-basket.highlight { transform: scale(1.15); filter: drop-shadow(0 0 15px #ffd76a); }
-    .drag-items-wrap { display: flex; gap: 20px; justify-content: center; width: 100%; z-index: 10; }
-    .drag-item { width: 80px; height: 80px; background-image: url('images/fruit.png'); background-size: contain; background-repeat: no-repeat; background-position: center; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); cursor: grab; user-select: none; transition: transform 0.1s; position: absolute; left: 0; top: 0; }
-    .drag-item:active { cursor: grabbing; transform: scale(1.15); z-index: 11; filter: brightness(1.2); }
-    .drag-item-container { position: relative; width: 80px; height: 80px; }
+    /* 🌟 全新：收果子 (發光大樹與黃金籃子版) */
+    .drag-stage { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; touch-action: none; }
+    
+    /* 新增魔法大樹背景 */
+    .drag-tree { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 400px; height: 260px; background-image: url('images/tree.png'); background-size: contain; background-repeat: no-repeat; background-position: center bottom; z-index: 1; pointer-events: none; }
+    
+    .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 260px; z-index: 10; }
+    .drag-fruit { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; transition: transform 0.1s;}
+    .drag-fruit:active { cursor: grabbing; transform: scale(1.1); z-index: 11; }
+    .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+    
+    /* 籃子與發光特效 */
+    .drag-basket { position: relative; width: 150px; height: 150px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 15px; border-radius: 20px; transition: all 0.3s; z-index: 5; margin-top: auto; cursor: pointer;}
+    .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; }
+    
+    /* 答對時的黃金吸入光芒 */
+    .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes basketGlow { 
+        0% { filter: drop-shadow(0 0 0px #ffd76a) brightness(1); transform: scale(1); } 
+        50% { filter: drop-shadow(0 0 40px #ffd76a) brightness(1.4); transform: scale(1.1); } 
+        100% { filter: drop-shadow(0 0 10px rgba(0,0,0,0.4)) brightness(1); transform: scale(1); } 
+    }
 
     /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
@@ -251,11 +270,9 @@
       .quiz-topbar{margin-bottom:8px; padding:10px 12px;}
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 5px; min-height: 48px; padding-right: 50px;}
-      .question-main { flex: 1; text-align: center; }
-      .question-main .small-title { display: none; } 
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 5px; min-height: 48px; padding-right: 0;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
       .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
-      .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
       
       .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
       .magic-drum { width: 180px; height: 180px; }
@@ -278,12 +295,13 @@
       .memory-stage { min-height: 340px; padding: 15px;}
       .memory-grid { gap: 10px; max-width: 280px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
-      
-      /* 🌟 拖曳遊戲手機版適配 */
-      .drag-stage { height: 320px; padding: 20px 10px;}
-      .drag-basket { width: 120px; height: 120px; }
-      .drag-item { width: 70px; height: 70px; font-size: 28px; }
-      .drag-item-container { width: 70px; height: 70px; }
+
+      /* 收果子手機版微調 */
+      .drag-stage { height: 400px; }
+      .drag-tree { height: 280px; }
+      .drag-fruit-container { height: 280px; }
+      .drag-fruit { width: 70px; height: 70px; font-size: 28px;}
+      .drag-basket { width: 130px; height: 130px; padding-bottom: 10px;}
     }
   </style>
 </head>
@@ -297,7 +315,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.28.0 收果子解鎖版</div>
+        <div class="version-tag">v1.30.0 發光大樹收果子版</div>
       </div>
     </header>
 
@@ -308,7 +326,7 @@
           <h2>森林正在等一位小探險家</h2>
           <p id="introStoryText" class="story-lines">很久以前，森林裡的樹會發光。<br>每一棵樹，都藏著一種能力。<br>可是有一天，森林的光被封印了。<br>小精靈找了很久，終於找到你。<br>你願意陪我一起，把森林慢慢點亮嗎？</p>
           <div class="action-group">
-            <button id="introAcceptBtn" class="primary-btn" type="button">我願意幫去</button>
+            <button id="introAcceptBtn" class="primary-btn" type="button">我願意幫你</button>
             <button id="introReplayBtn" class="secondary-btn" type="button">再聽一次故事</button>
           </div>
         </div>
@@ -528,26 +546,19 @@
   </main>
 
   <script>
-    /* 🌟 終極防護魔法：防止 iOS 雙擊與雙指縮放 */
+    /* 🌟 防護魔法：僅保留安全防雙擊，移除會導致安卓按鈕失效的 touchend 攔截 */
     document.addEventListener('dblclick', function(event) {
         event.preventDefault();
     }, { passive: false });
 
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (event) {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, { passive: false });
-
+    /* 🌟 安裝 APP PWA 邏輯 (隱藏按鈕，僅保留底層註冊) */
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
     });
 
+    /* 清除舊版錯誤快取，避免干擾 */
     try {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
@@ -590,7 +601,7 @@
       roundMistakes: 0, 
       currentLevelId: null,
       lastPathX: 50,
-      pathHistory: []
+      pathHistory: [] 
     };
 
     const ZHUYIN_LEVELS = [
@@ -653,7 +664,6 @@
       gainNode.gain.setValueAtTime(0.8, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); 
       osc.start(); osc.stop(audioCtx.currentTime + 0.2);
     }
-    
     function playPopSound() {
       if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -666,7 +676,6 @@
       gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); 
       osc.start(); osc.stop(audioCtx.currentTime + 0.1);
     }
-
     function playSnapSound() {
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -679,7 +688,6 @@
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
         osc.start(); osc.stop(audioCtx.currentTime + 0.05);
     }
-
     function playChimeSound() {
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -693,7 +701,6 @@
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
         osc.start(); osc.stop(audioCtx.currentTime + 0.5);
     }
-    
     function playJumpSound() {
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -706,7 +713,6 @@
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
         osc.start(); osc.stop(audioCtx.currentTime + 0.2);
     }
-    
     function playSplashSound() {
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -807,7 +813,6 @@
       combo: [
         { key:'combo-match', emoji:'🎴', title:'翻牌配對', desc:'【記憶類】翻開木牌，找出相同的拼音。', locked: false },
         { key:'combo-puzzle', emoji:'🧩', title:'磁鐵拼圖', desc:'拖曳注音木牌，吸附拼出正確的音。', locked: false },
-        /* 🌟 解鎖收果子遊戲 */
         { key:'combo-drag', emoji:'🧺', title:'收果子', desc:'【拖曳類】把正確的拼音果子收到籃子裡。', locked: false },
         { key:'combo-echo', emoji:'🗣️', title:'回聲谷', desc:'【節奏類】聽完系統發音後，重複一次。', locked: true }
       ],
@@ -967,29 +972,44 @@
             pairs.push({ id: combo + '_2', val: combo, speak: COMBO_SOUND[combo] });
         });
         let shuffledCards = shuffle(pairs);
-        list.push({ area: '拼音練功房', kind: 'combo-match', promptText: `翻牌配對`, speakText: `請翻出兩張一樣的牌`, answer: '配對完成', cardsData: shuffledCards, uiType: 'match', scene: '🎴 記住牌的位置，找出相同的配對！' });
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-match', 
+            promptText: `翻牌配對`, 
+            speakText: `請翻出兩張一樣的牌`, 
+            answer: '配對完成', 
+            cardsData: shuffledCards, 
+            uiType: 'match', 
+            scene: '🎴 記住牌的位置，找出相同的配對！' 
+        });
       }
       return list;
     }
-    
-    /* 🌟 全新：建立收果子拖曳遊戲的資料結構 */
+
+    /* 🌟 全新：建立收果子的資料結構 (帶有拼音公式籃子) */
     function buildComboDragSet() {
       const list = [];
       for (let i = 0; i < 5; i++) {
-        const answer = randomItem(COMBO_SET); 
-        const soundWord = COMBO_SOUND[answer]; 
-        let pool = shuffle(COMBO_SET.filter(c => c !== answer)).slice(0, 2);
-        let options = shuffle([answer, ...pool]);
+        const targetCombo = randomItem(COMBO_SET); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        const p1 = targetCombo.charAt(0);
+        const p2 = targetCombo.charAt(1);
+        
+        let pool = [...COMBO_SET].filter(c => c !== targetCombo);
+        let options = shuffle([targetCombo, ...shuffle(pool).slice(0, 2)]);
+        
         list.push({ 
             area: '拼音練功房', 
             kind: 'combo-drag', 
-            promptText: `收果子`, 
-            speakText: `請把，${soundWord}，收進籃子裡`, 
-            answer: answer, 
-            soundWord: soundWord,
+            promptText: `尋找「${soundWord}」`, 
+            speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, 
+            answer: targetCombo, 
+            soundWord: soundWord, 
+            basketText: `${p1} + ${p2}`, // 籃子上的文字提示
             options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), 
             uiType: 'drag', 
-            scene: '🧺 請把正確的果子拖曳到籃子裡！' 
+            scene: '🧺 拖曳正確的果子放到籃子裡！' 
         });
       }
       return list;
@@ -1137,7 +1157,7 @@
       const qHead = document.getElementById('questionHead');
       if (qHead) {
           if (q.uiType === 'path') {
-              qHead.style.display = 'none'; 
+              qHead.style.display = 'none'; // 小鹿過河隱藏預設框
           } else {
               qHead.style.display = ''; 
           }
@@ -1730,6 +1750,7 @@
                 
                 if (flippedCards.length === 2) {
                     isLocked = true;
+                    // 檢查配對
                     if (flippedCards[0].data.val === flippedCards[1].data.val) {
                         // 配對成功
                         setTimeout(() => {
@@ -1741,15 +1762,12 @@
                             flippedCards = [];
                             isLocked = false;
                             
+                            // 檢查是否全部配對完畢
                             if (matchedCount === q.cardsData.length) {
                                 state.awaitingNext = true;
                                 setTimeout(() => {
                                     const nextBtn = document.getElementById('nextQuestionBtn');
-                                    if (nextBtn) {
-                                        nextBtn.textContent = '🎉 挑戰成功！領取獎勵';
-                                        nextBtn.classList.remove('hidden-btn');
-                                        nextBtn.classList.add('pulse-anim');
-                                    }
+                                    if (nextBtn) nextBtn.click();
                                 }, 1500);
                             }
                         }, 600);
@@ -1763,9 +1781,10 @@
                             flippedCards[1].elem.classList.remove('flipped');
                             flippedCards = [];
                             isLocked = false;
-                        }, 1000); 
+                        }, 1000); // 鎖定 1 秒鐘後蓋回去
                     }
                 } else {
+                    // 翻第一張牌時發音
                     speak(cardItem.speak);
                 }
             };
@@ -1776,130 +1795,285 @@
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 全新遊戲：收果子拖曳類 (Drag and Drop) */
+      /* 🌟 全新：收果子 (拖曳放入籃子) */
       else if (q.uiType === 'drag') {
-        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '把正確的果子拖進籃子裡吧！';
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把正確的果子拖進籃子裡吧！';
         if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
 
         const stage = document.createElement('div');
         stage.className = 'drag-stage';
-
-        // 建立籃子 (Drop Target)
+        
+        // 🌟 新增魔法大樹背景
+        const treeBg = document.createElement('div');
+        treeBg.className = 'drag-tree';
+        stage.appendChild(treeBg);
+        
+        // 籃子區塊：顯示「拼音公式」與「音效按鈕」
         const basket = document.createElement('div');
         basket.className = 'drag-basket';
-        const basketImg = new Image();
+        const basketImg = document.createElement('img');
         basketImg.src = 'images/basket.png';
-        basketImg.onload = () => { basket.style.backgroundImage = `url('images/basket.png')`; };
-        basketImg.onerror = () => { 
-            basket.style.background = '#8B5A2B'; 
-            basket.style.borderRadius = '20px 20px 40px 40px'; 
-            basket.innerHTML = '<span style="font-size:50px; display:flex; justify-content:center; align-items:center; height:100%;">🧺</span>';
-        };
-
-        const itemsWrap = document.createElement('div');
-        itemsWrap.className = 'drag-items-wrap';
-
-        stage.appendChild(basket);
-        stage.appendChild(itemsWrap);
-        optionsWrap.appendChild(stage);
-
-        let activeItem = null;
-        let startX = 0, startY = 0;
-
-        q.options.forEach((opt) => {
-            const itemContainer = document.createElement('div');
-            itemContainer.className = 'drag-item-container';
+        basketImg.onerror = () => { basketImg.style.display = 'none'; basket.style.background = '#8B5A2B'; }; 
+        
+        const basketContent = document.createElement('div');
+        basketContent.style.zIndex = '10';
+        basketContent.style.display = 'flex';
+        basketContent.style.flexDirection = 'column';
+        basketContent.style.alignItems = 'center';
+        
+        const bText = document.createElement('div');
+        bText.textContent = q.basketText; // 顯示: ㄅ + ㄚ
+        bText.style.fontSize = '32px';
+        bText.style.background = 'rgba(0,0,0,0.5)';
+        bText.style.padding = '4px 12px';
+        bText.style.borderRadius = '12px';
+        
+        const bAudio = document.createElement('div');
+        bAudio.innerHTML = `🔊 ${q.soundWord}`; // 顯示: 🔊 巴
+        bAudio.style.fontSize = '22px';
+        bAudio.style.marginTop = '4px';
+        bAudio.style.color = '#ffd76a';
+        bAudio.style.textShadow = '0 2px 4px rgba(0,0,0,0.8)';
+        
+        basketContent.appendChild(bText);
+        basketContent.appendChild(bAudio);
+        
+        basket.appendChild(basketImg);
+        basket.appendChild(basketContent);
+        
+        // 點擊籃子重新發音
+        basket.onclick = () => speak(q.speakText);
+        
+        // 果子區塊
+        const fruitContainer = document.createElement('div');
+        fruitContainer.className = 'drag-fruit-container';
+        
+        // 🌟 將果實放在樹冠的左、中、右三個位置
+        const xOffsets = [15, 50, 85];
+        const yOffsets = [45, 15, 45];
+        
+        q.options.forEach((opt, idx) => {
+            const fruit = document.createElement('div');
+            fruit.className = 'drag-fruit';
+            fruit.dataset.val = opt.text;
             
-            const item = document.createElement('div');
-            item.className = 'drag-item';
-            item.dataset.val = opt.text;
+            fruit.style.position = 'absolute';
+            fruit.style.left = `calc(${xOffsets[idx]}% - 40px)`;
+            fruit.style.top = `${yOffsets[idx]}%`;
             
-            const txt = document.createElement('span');
-            txt.textContent = opt.text;
-            item.appendChild(txt);
-            
-            const fruitImg = new Image();
+            const fruitImg = document.createElement('img');
             fruitImg.src = 'images/fruit.png';
-            fruitImg.onload = () => { item.style.backgroundImage = `url('images/fruit.png')`; };
-            fruitImg.onerror = () => { item.style.background = '#ff6b81'; item.style.borderRadius = '50%'; };
+            fruitImg.onerror = () => { fruitImg.style.display = 'none'; fruit.style.background = '#ff6b81'; }; 
+            
+            const fruitText = document.createElement('span');
+            fruitText.textContent = opt.text; 
+            fruitText.style.zIndex = '10';
+            
+            fruit.appendChild(fruitImg);
+            fruit.appendChild(fruitText);
+            fruitContainer.appendChild(fruit);
 
-            itemContainer.appendChild(item);
-            itemsWrap.appendChild(itemContainer);
-
-            // Pointer Events for Dragging
-            item.onpointerdown = (e) => {
-                if (state.awaitingNext || activeItem || item.classList.contains('snapped') || item.classList.contains('excluded')) return;
+            let isDragging = false;
+            let startX, startY;
+            let origX = 0, origY = 0; 
+            
+            fruit.onpointerdown = (e) => {
+                if (state.awaitingNext || fruit.classList.contains('excluded')) return;
                 e.preventDefault();
-                activeItem = item;
-                item.setPointerCapture(e.pointerId);
-                startX = e.clientX;
-                startY = e.clientY;
-                item.style.transition = 'none';
-                item.style.zIndex = '100';
-                
-                playPopSound();
-                speak(opt.speak); // 摸到果子唸出聲音
+                isDragging = true;
+                fruit.setPointerCapture(e.pointerId);
+                startX = e.clientX - origX;
+                startY = e.clientY - origY;
+                fruit.style.transition = 'none';
             };
 
-            item.onpointermove = (e) => {
-                if (activeItem !== item) return;
+            fruit.onpointermove = (e) => {
+                if (!isDragging) return;
                 e.preventDefault();
-                const dx = e.clientX - startX;
-                const dy = e.clientY - startY;
-                item.style.transform = `translate(${dx}px, ${dy}px) scale(1.15)`;
-
-                // 檢查是否拖到籃子上方
-                const itemRect = item.getBoundingClientRect();
-                const basketRect = basket.getBoundingClientRect();
+                origX = e.clientX - startX;
+                origY = e.clientY - startY;
+                fruit.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
                 
+                const fruitRect = fruit.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
                 const dist = Math.hypot(
-                    (itemRect.left + itemRect.width/2) - (basketRect.left + basketRect.width/2),
-                    (itemRect.top + itemRect.height/2) - (basketRect.top + basketRect.height/2)
+                    (fruitRect.left + fruitRect.width/2) - (basketRect.left + basketRect.width/2),
+                    (fruitRect.top + fruitRect.height/2) - (basketRect.top + basketRect.height/2)
                 );
-
-                if (dist < 90) basket.classList.add('highlight');
+                if (dist < 80) basket.classList.add('highlight');
                 else basket.classList.remove('highlight');
             };
 
-            item.onpointerup = (e) => {
-                if (activeItem !== item) return;
-                activeItem = null;
-                item.releasePointerCapture(e.pointerId);
-                
-                const itemRect = item.getBoundingClientRect();
-                const basketRect = basket.getBoundingClientRect();
+            fruit.onpointerup = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                fruit.releasePointerCapture(e.pointerId);
                 basket.classList.remove('highlight');
-
+                
+                const fruitRect = fruit.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
                 const dist = Math.hypot(
-                    (itemRect.left + itemRect.width/2) - (basketRect.left + basketRect.width/2),
-                    (itemRect.top + itemRect.height/2) - (basketRect.top + basketRect.height/2)
+                    (fruitRect.left + fruitRect.width/2) - (basketRect.left + basketRect.width/2),
+                    (fruitRect.top + fruitRect.height/2) - (basketRect.top + basketRect.height/2)
                 );
 
-                if (dist < 90) {
-                    if (item.dataset.val === q.answer) {
+                if (dist < 80) {
+                    if (fruit.dataset.val === q.answer) {
                         playSnapSound();
                         state.awaitingNext = true;
                         
-                        // 動畫：收進籃子裡 (縮小並飛過去)
-                        const dx = (basketRect.left + basketRect.width/2) - (itemRect.left + itemRect.width/2);
-                        const dy = (basketRect.top + basketRect.height/2) - (itemRect.top + itemRect.height/2);
+                        fruit.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        const dx = (basketRect.left + basketRect.width/2) - (fruitRect.left - origX + fruitRect.width/2);
+                        const dy = (basketRect.top + basketRect.height/2) - (fruitRect.top - origY + fruitRect.height/2) + 15; 
                         
-                        const style = window.getComputedStyle(item);
-                        const matrix = new WebKitCSSMatrix(style.transform);
+                        fruit.style.transform = `translate(${dx}px, ${dy}px) scale(0.3)`;
+                        fruit.style.opacity = '0'; 
                         
-                        item.classList.add('snapped');
-                        item.style.transform = `translate(${matrix.m41 + dx}px, ${matrix.m42 + dy}px) scale(0)`;
-                        
-                        basket.style.transform = 'scale(1.2)';
-                        setTimeout(() => basket.style.transform = 'scale(1)', 300);
+                        // 🌟 答對時的黃金吸入發光特效
+                        basket.classList.add('basket-success');
+                        setTimeout(()=> basket.classList.remove('basket-success'), 1000);
 
-                        const reply = `太棒了！把 ${q.soundWord || q.answer} 收進來了！`;
+                        if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+                        
+                        const reply = `${q.answer}... ${q.soundWord}！太棒了！`;
                         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                         speak(reply);
 
-                        if (state.qIndex === state.questionList.length - 1) {
-                            setTimeout(() => {
-                                const nextBtn = document.getElementById('nextQuestionBtn');
-                                if (nextBtn) {
-                                    nextBtn.textContent = '🎉 收穫滿滿！領取獎勵';
-                                    nextBtn.classList.remove('hidden-btn
+                    } else {
+                        state.excluded += 1;
+                        state.roundMistakes += 1; 
+                        fruit.classList.add('excluded');
+                        
+                        origX = 0; origY = 0;
+                        fruit.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        fruit.style.transform = `translate(0px, 0px)`;
+                        
+                        const reply = `不對喔，這不是 ${q.soundWord}。`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                        speak(reply);
+                    }
+                } else {
+                    origX = 0; origY = 0;
+                    fruit.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    fruit.style.transform = `translate(0px, 0px)`;
+                }
+            };
+        });
+        
+        stage.appendChild(fruitContainer);
+        stage.appendChild(basket);
+        optionsWrap.appendChild(stage);
+      }
+
+      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.options && q.options.length > 0 && optionsWrap) {
+        q.options.forEach(opt => {
+          const row = document.createElement('div'); row.className = 'option-row';
+          const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
+          btn.onclick = () => handleAnswer(btn, opt);
+          const speakBtn = document.createElement('button'); speakBtn.className = 'option-speak-btn'; speakBtn.textContent = '🔊';
+          speakBtn.onclick = (e) => { e.stopPropagation(); speak(opt.speak); };
+          row.appendChild(btn); row.appendChild(speakBtn); optionsWrap.appendChild(row);
+        });
+      }
+
+      if(q.uiType !== 'bubble' && q.uiType !== 'scratch') speak(q.speakText); 
+      else if (q.uiType === 'bubble') setTimeout(()=>speak(q.speakText), 500); 
+    }
+
+    function handleAnswer(btn, opt) {
+      const q = state.currentQuestion;
+      if (state.awaitingNext || btn.classList.contains('excluded') || btn.classList.contains('correct')) return;
+      
+      if (opt.text === q.answer) {
+        btn.classList.add('correct'); state.awaitingNext = true;
+        if(document.getElementById('nextQuestionBtn')) document.getElementById('nextQuestionBtn').classList.remove('hidden-btn');
+        
+        let de = '';
+        if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+           const ansNum = q.tableBase * q.tableTarget;
+           if(ansNum <= 10) de = '得';
+        }
+        let reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+      } else {
+        btn.classList.add('excluded'); state.excluded += 1;
+        state.roundMistakes += 1; 
+        const reply = `你選了 ${opt.speak}。沒關係，我們再想想看。`;
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+      }
+    }
+
+    if(document.getElementById('nextQuestionBtn')) {
+      document.getElementById('nextQuestionBtn').onclick = () => {
+        state.qIndex += 1;
+        if (state.qIndex >= state.questionList.length) {
+            
+          let earnedStars = 3;
+          if (state.roundMistakes >= 4) earnedStars = 1;
+          else if (state.roundMistakes >= 1) earnedStars = 2;
+          
+          let oldStars = state.totalStars;
+          state.totalStars += earnedStars;
+          state.shards += 3; 
+          state.brightness = Math.min(100, state.brightness + 2); 
+          state.normalSeeds += 1;
+          
+          let unlockMsg = '';
+          let oldUnlockedLevels = Math.floor(oldStars / 5) + 1;
+          let newUnlockedLevels = Math.floor(state.totalStars / 5) + 1;
+          
+          if (newUnlockedLevels > oldUnlockedLevels && newUnlockedLevels <= ZHUYIN_LEVELS.length) {
+              unlockMsg = ' 🌟 恭喜解鎖新島嶼！';
+          }
+          
+          saveState(); updateHome();
+          
+          if(document.getElementById('resultEarnedStars')) document.getElementById('resultEarnedStars').textContent = '⭐'.repeat(earnedStars);
+          if(document.getElementById('resultBrightness')) document.getElementById('resultBrightness').textContent = `${state.brightness}%`;
+          if(document.getElementById('resultShards')) document.getElementById('resultShards').textContent = String(state.shards);
+          showScreen('result'); 
+          speak(`過關！獲得 ${earnedStars} 顆星！${unlockMsg}`);
+        } else { renderQuestion(); }
+      };
+    }
+
+    /* 事件綁定 */
+    document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
+    if(document.getElementById('backHomeBtn')) document.getElementById('backHomeBtn').onclick = () => { stopSpeech(); showScreen(state.mode === 'home' ? 'home' : 'roomSelect'); };
+    if(document.getElementById('roomSelectBackBtn')) document.getElementById('roomSelectBackBtn').onclick = () => { showScreen('home'); updateHome(); };
+    if(document.getElementById('resultHomeBtn')) document.getElementById('resultHomeBtn').onclick = () => { if(state.mode === 'today') { showScreen('home'); } else { showScreen('roomSelect'); } updateHome(); };
+    
+    // 🌟 綁定再來一局按鈕
+    if(document.getElementById('resultReplayBtn')) {
+        document.getElementById('resultReplayBtn').onclick = () => { 
+            if(state.subMode) {
+                startSubMode(state.subMode); // 重新開始同一個模式
+            } else {
+                showScreen('roomSelect');
+            }
+        }; 
+    }
+    
+    if(document.getElementById('topSpeakBtn')) {
+        document.getElementById('topSpeakBtn').onclick = () => { 
+            if(speakingNow) stopSpeech(); else speak(state.currentQuestion.speakText); 
+        };
+    }
+
+    // 起始流程
+    if(document.getElementById('introAcceptBtn')) document.getElementById('introAcceptBtn').onclick = () => { showScreen('name'); renderNameGrid(document.getElementById('nameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('nameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmNameBtn').disabled=false;}); };
+    if(document.getElementById('confirmNameBtn')) document.getElementById('confirmNameBtn').onclick = () => { state.spiritName = state.selectedName; showScreen('title'); renderNameGrid(document.getElementById('titleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('titleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmTitleBtn').disabled=false;}); };
+    if(document.getElementById('confirmTitleBtn')) document.getElementById('confirmTitleBtn').onclick = () => { state.playerTitle = state.selectedTitle; showScreen('bond'); };
+    if(document.getElementById('bondContinueBtn')) document.getElementById('bondContinueBtn').onclick = () => { saveState(); updateHome(); showScreen('home'); };
+
+    function renderNameGrid(target, selectedName, options, onSelect) {
+      target.innerHTML = '';
+      options.forEach(name => {
+        const btn = document.createElement('button'); btn.type = 'button'; btn.className = `name-btn${selectedName === name ? ' selected' : ''}`; btn.textContent = name; btn.onclick = () => onSelect(name, btn); target.appendChild(btn);
+      });
+    }
+
+    if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
+  </script>
+</body>
+</html>
