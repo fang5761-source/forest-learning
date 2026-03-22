@@ -4,7 +4,19 @@
   <meta charset="UTF-8">
   <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.24.0 極致清爽無遮擋版</title>
+  
+  <!-- 🌟 APP 專屬 Icon 與 LINE 分享標籤 (對應 images/icon.png) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="慢慢變強">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
+  <link rel="shortcut icon" href="images/icon.png">
+  <meta property="og:title" content="慢慢變強｜螢光森林">
+  <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
+  <meta property="og:image" content="images/icon.png">
+
+  <title>慢慢變強｜螢光森林 v1.25.0 全螢幕無捲動完美版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -12,7 +24,7 @@
     
     /* 🌟 全域加入 touch-action 防止連點放大 */
     *{box-sizing:border-box; touch-action: manipulation;} 
-    html,body{margin:0;min-height:100%;scroll-behavior:smooth; overflow-x: hidden;}
+    html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
     button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
     .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
@@ -91,9 +103,10 @@
     .question-card{padding:20px;}
     
     /* 🌟 單行優美的標題區域 */
-    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; }
+    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; position: relative;}
     .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
     .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
+    .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
     
     .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
     .visual-area.collapsed{display:none !important;}
@@ -106,7 +119,6 @@
     .option-btn.excluded{opacity:.46; text-decoration:line-through; filter:grayscale(.2)}
     .option-btn.correct{background:rgba(219,255,183,.20); border-color:rgba(236,255,204,.28)}
     
-    /* 🌟 重製底部反饋列 (移除排除區塊) */
     .feedback-bar{display:flex; justify-content:flex-start; align-items:center; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.08)}
     .feedback-line{margin:4px 0 0; font-size:18px; line-height:1.6; color:var(--gold-soft)}
     
@@ -242,15 +254,14 @@
       .seed-actions-grid{grid-template-columns:1fr;} .garden-stage-display{grid-template-columns:1fr;}
       .rank-head{flex-direction:column; align-items:flex-start;}
       
-      /* 🌟 解除回到上一層的置頂干擾，改為自然流動 */
       .quiz-topbar{margin-bottom:8px; padding:10px 12px;}
-      
       .question-card{padding:14px; border-radius:22px; min-height: auto;}
       
-      /* 🌟 單行精簡的標題設計 */
-      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0px; padding-top: 5px; min-height: 48px; padding-right: 0;}
-      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
-      .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; }
+      /* 🌟 單行精簡的標題設計，包含音效與進度 */
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 8px; padding-top: 0; min-height: 48px; padding-right: 50px;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; width: 100%; text-align: center; }
+      .question-main h2 { font-size: 36px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; }
+      .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
       
       .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
       .magic-drum { width: 180px; height: 180px; }
@@ -264,9 +275,9 @@
       .scratch-container { width: 200px; height: 200px; }
       .scratch-content { font-size: 80px; }
       
-      /* 🌟 壓縮遊戲區塊，給予絕佳無滑動體驗 */
+      /* 🌟 壓縮遊戲區塊，給予完美單螢幕體驗 */
       .visual-area { margin: 4px 0 8px !important; }
-      .path-stage { height: 420px; } 
+      .path-stage { height: 380px; } 
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
@@ -284,13 +295,12 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.24.0 極致清爽無遮擋版</div>
+        <div class="version-tag">v1.25.0 全螢幕無捲動完美版</div>
       </div>
     </header>
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
-        <!-- 🌟 首頁使用經典 icon.png -->
         <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
@@ -343,7 +353,6 @@
         <div class="world-topbar">
           <div class="world-badge" id="worldTimeBadge">星夜森林</div>
           <div class="title-actions">
-            <!-- 🌟 先隱藏安裝 APP 提示按鈕，還給畫面清爽 -->
             <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
             <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
           </div>
@@ -450,23 +459,24 @@
     </section>
 
     <section id="quizScreen" class="screen">
-      <div class="quiz-topbar glass">
-        <!-- 🌟 左側：向左箭頭與模式標籤 -->
+      <div class="quiz-topbar glass" style="margin-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center;" type="button">⬅</button>
-          <span id="modeChip" class="meta-chip">任務</span>
+          <span id="modeChip" class="meta-chip" style="font-size: 16px;">任務</span>
         </div>
-        <!-- 🌟 右側：森林風音效按鈕 -->
-        <button id="topSpeakBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);" type="button">🔊</button>
+        <!-- 空間保留給下方絕對定位的音效按鈕 -->
       </div>
 
       <div class="card question-card" id="mainQuestionCard">
-        <!-- 🌟 題目區塊：已移至水面之上，且進度標籤緊貼右側 -->
+        <!-- 🌟 單行精緻的題目區塊 (含音效與進度) -->
         <div id="questionHead" class="question-head">
           <div class="question-main">
             <h2 id="questionPrompt">題目</h2>
-            <!-- 進度文字 -->
-            <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 18px; padding: 4px 12px; margin-top: -8px;">1 / 5</span>
+            <!-- 進度文字緊貼題目右側 -->
+            <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 18px; padding: 4px 10px; margin-top: 0; margin-left: 0; border-radius: 999px;">1 / 5</span>
+          </div>
+          <div class="question-tools">
+            <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);" type="button" aria-label="朗讀題目">🔊</button>
           </div>
         </div>
 
@@ -532,13 +542,6 @@
         }
         lastTouchEnd = now;
     }, { passive: false });
-
-    /* 🌟 安裝 APP PWA 邏輯 */
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-    });
 
     /* 清除舊版錯誤快取，避免干擾 */
     try {
@@ -1070,11 +1073,7 @@
       
       const qHead = document.getElementById('questionHead');
       if (qHead) {
-          if (q.uiType === 'path') {
-              qHead.style.display = 'none'; // 小鹿過河隱藏預設框
-          } else {
-              qHead.style.display = ''; 
-          }
+          qHead.style.display = ''; 
       }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
@@ -1637,43 +1636,12 @@
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
-        // 🌟 專屬題目與進度與音效 (整合在一起)
-        if (q.kind && q.kind.startsWith('math')) {
-            const promptBox = document.createElement('div');
-            promptBox.className = 'path-prompt-box';
-            
-            const flexWrap = document.createElement('div');
-            flexWrap.style.display = 'flex';
-            flexWrap.style.alignItems = 'center';
-            flexWrap.style.gap = '12px';
-            
-            const textSpan = document.createElement('span');
-            textSpan.textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
-            
-            // 🌟 專屬的進度標籤 (放在問號右邊)
-            const roundSpan = document.createElement('span');
-            roundSpan.textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
-            roundSpan.style.fontSize = '18px';
-            roundSpan.style.color = '#ffd76a';
-            roundSpan.style.background = 'rgba(255,215,106,0.15)';
-            roundSpan.style.border = '1px solid rgba(255,215,106,0.3)';
-            roundSpan.style.padding = '4px 10px';
-            roundSpan.style.borderRadius = '999px';
-            roundSpan.style.marginLeft = '8px';
-            
-            flexWrap.appendChild(textSpan);
-            flexWrap.appendChild(roundSpan);
-            promptBox.appendChild(flexWrap);
-            
-            stage.appendChild(promptBox);
-        }
-
         // 🌟 小鹿過河的動態捲動座標邏輯 (5題)
-        // 起點永遠在下方 (84%)，新的目標在上方 (68%)
-        const targetTop = 66 - (state.qIndex * 12); 
-        const charStartTop = state.qIndex === 0 ? 80 : (66 - ((state.qIndex - 1) * 12)); 
+        // 起點永遠在下方 (82%)，新的目標在上方 (65%)
+        const targetTop = 65 - (state.qIndex * 13); 
+        const charStartTop = state.qIndex === 0 ? 82 : (65 - ((state.qIndex - 1) * 13)); 
 
-        // 🌟 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭！
+        // 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭！
         if (state.qIndex > 0) {
             const currentStone = document.createElement('div');
             currentStone.className = 'path-stone';
