@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>慢慢變強｜螢光森林 v1.22.0 極致 UI 體驗版</title>
+  <title>慢慢變強｜螢光森林 v1.23.0 全螢幕沉浸版</title>
   <meta name="theme-color" content="#163826">
   <style>
     /* ================= CSS 樣式區域 ================= */
@@ -12,8 +12,8 @@
     
     /* 🌟 全域加入 touch-action 防止連點放大 */
     *{box-sizing:border-box; touch-action: manipulation;} 
-    html,body{margin:0;min-height:100%;scroll-behavior:smooth;} /* 加入平滑捲動 */
-    body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);overflow-x:hidden;}
+    html,body{margin:0;min-height:100%;scroll-behavior:smooth; overflow-x: hidden;}
+    body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
     button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
     .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
     .forest-bg{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0;}
@@ -32,14 +32,17 @@
     .firefly-dot{position:absolute; width:6px; height:6px; border-radius:50%;background:radial-gradient(circle, #fff6be 0%, #ffd76a 58%, rgba(255,215,106,0) 72%);box-shadow:0 0 12px rgba(255,223,128,.7);animation:twinkle 4.6s ease-in-out infinite; opacity:.85;}
     @keyframes twinkle{0%,100%{transform:scale(.78);opacity:.45}50%{transform:scale(1.4);opacity:1}}
     .glass,.card,.glass-soft{background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));border:1px solid var(--line); box-shadow:var(--shadow);backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);}
-    .app-header{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;border-radius:24px; padding:18px 18px 16px; margin-bottom:16px;}
+    .app-header{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;border-radius:24px; padding:18px 18px 16px; margin-bottom:16px; transition: all 0.3s ease;}
     .eyebrow,.small-title,.version-tag{font-size:12px; letter-spacing:.08em; color:rgba(255,255,255,.72)}
     h1{margin:4px 0 6px; font-size:42px; line-height:1.04} h2{margin:0; font-size:32px; line-height:1.18} h3{margin:0; font-size:22px}
     .version-tag{display:inline-block; padding:5px 10px; border-radius:999px; background:rgba(255,255,255,.08)}
     .icon-btn,.mini-btn,.ghost-btn,.primary-btn,.secondary-btn,.map-node,.name-btn,.locked-node{border:0; cursor:pointer; border-radius:18px; transition:.18s ease;}
     .icon-btn{width:52px;height:52px; background:rgba(255,250,219,.18); color:#fff; font-size:20px;} 
     
-    .mini-btn{padding:10px 14px; background:rgba(255,255,255,.10); color:#fff}
+    /* 🌟 精緻的音效按鈕 */
+    .icon-btn.light{width:50px; height:50px; font-size:22px; border-radius:16px; background:linear-gradient(180deg, #fff9e6, #ffe082); border:2px solid #ffd76a; color:#5c3a21; box-shadow:0 4px 10px rgba(0,0,0,0.15);}
+    
+    .mini-btn{padding:10px 14px; background:rgba(255,255,255,.10); color:#fff; white-space: nowrap;}
     .primary-btn{min-height:54px; padding:14px 18px; background:linear-gradient(180deg,#ffd86d,#f0b93f); color:#243417; font-weight:700;}
     .secondary-btn{min-height:54px; padding:14px 18px; background:rgba(255,255,255,.09); color:#fff;}
     .ghost-btn{min-height:48px; padding:0 14px; background:rgba(255,255,255,.08); color:#fff;}
@@ -82,12 +85,12 @@
     .world-spot.locked{opacity:.62;filter:grayscale(.15);cursor:default;}
     .world-spot.locked:hover{transform:none;}
     
-    .quiz-topbar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-radius:22px; margin-bottom:14px; scroll-margin-top:8px;}
+    .quiz-topbar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-radius:22px; margin-bottom:14px;}
     .meta-chip{padding:9px 12px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff}
     
-    .question-card{padding:20px; scroll-margin-top:8px;}
+    .question-card{padding:20px;}
     
-    /* 🌟 單行優美的標題區域：移除絕對定位，回歸簡潔的 flex 排列 */
+    /* 🌟 單行優美的標題區域 */
     .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; }
     .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
     .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
@@ -199,15 +202,6 @@
     
     /* 移除了上下假草地，現在直接顯示 river_bg 的絕美圖片 */
     
-    /* 🌟 專屬的小鹿過河題目框 */
-    .path-prompt-box { 
-        position: absolute; top: 15px; left: 50%; transform: translateX(-50%); 
-        background: linear-gradient(180deg, rgba(20, 60, 40, 0.8), rgba(10, 40, 20, 0.9));
-        padding: 6px 24px; border-radius: 20px; color: #fff; z-index: 100; 
-        border: 2px solid rgba(100, 255, 150, 0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(100,255,150,0.1); 
-        backdrop-filter: blur(8px); white-space: nowrap; font-size: 32px; font-weight: 900; letter-spacing: 0.1em;
-    }
-
     /* 動態按鈕提示動畫 */
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
@@ -272,13 +266,12 @@
       .scratch-container { width: 200px; height: 200px; }
       .scratch-content { font-size: 80px; }
       
-      /* 🌟 壓縮遊戲區塊，讓手機一屏顯示得下 */
+      /* 🌟 壓縮遊戲區塊，給予絕佳無滑動體驗 */
       .visual-area { margin: 4px 0 8px !important; }
-      .path-stage { height: 400px; } 
+      .path-stage { height: 420px; } 
       .path-character { width: 55px; height: 55px; } 
       .path-stone { width: 64px; height: 64px; font-size: 26px; } 
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
-      .path-prompt-box { font-size: 28px; padding: 4px 16px; top: 12px; }
     }
   </style>
 </head>
@@ -288,17 +281,17 @@
   </div>
 
   <main class="app-shell">
-    <header class="app-header glass">
+    <!-- 🌟 動態隱藏的標題區域 -->
+    <header id="mainAppHeader" class="app-header glass">
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.22.0 極致 UI 體驗版</div>
+        <div class="version-tag">v1.23.0 全螢幕沉浸版</div>
       </div>
     </header>
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
-        <!-- 🌟 首頁使用經典 icon.png -->
         <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
@@ -351,6 +344,8 @@
         <div class="world-topbar">
           <div class="world-badge" id="worldTimeBadge">星夜森林</div>
           <div class="title-actions">
+            <!-- 🌟 加入安裝 APP 提示按鈕 -->
+            <button id="homeInstallBtn" class="mini-btn" type="button">⬇️ 安裝APP</button>
             <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
             <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
           </div>
@@ -468,11 +463,11 @@
       </div>
 
       <div class="card question-card" id="mainQuestionCard">
-        <!-- 🌟 題目區塊：進度標籤移至問號右側 -->
+        <!-- 🌟 題目區塊：已移至水面之上，且進度標籤緊貼右側 -->
         <div id="questionHead" class="question-head">
           <div class="question-main">
             <h2 id="questionPrompt">題目</h2>
-            <!-- 🌟 進度文字(原本在右上角，現在與題目緊貼) -->
+            <!-- 進度文字 -->
             <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 18px; padding: 4px 12px; margin-top: -8px;">1 / 5</span>
           </div>
         </div>
@@ -539,6 +534,13 @@
         }
         lastTouchEnd = now;
     }, { passive: false });
+
+    /* 🌟 安裝 APP PWA 邏輯 */
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
 
     /* 清除舊版錯誤快取，避免干擾 */
     try {
@@ -608,7 +610,21 @@
     function randomItem(list) { return list[Math.floor(Math.random() * list.length)]; }
     function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
     function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
-    function showScreen(name) { Object.values(screens).forEach(el => { if(el) el.classList.remove('active'); }); if(screens[name]) screens[name].classList.add('active'); }
+    
+    // 🌟 控制畫面顯示與隱藏「慢慢變強」大標題
+    function showScreen(name) { 
+        Object.values(screens).forEach(el => { if(el) el.classList.remove('active'); }); 
+        if(screens[name]) screens[name].classList.add('active'); 
+        
+        const header = document.getElementById('mainAppHeader');
+        if (header) {
+            if (name === 'quiz') {
+                header.style.display = 'none'; // 遊戲中隱藏，增加畫面空間
+            } else {
+                header.style.display = 'flex';
+            }
+        }
+    }
 
     function showToast(msg) {
         let toast = document.getElementById('appToast');
@@ -704,7 +720,6 @@
     function loadVoices() { availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
     function pickVoice() { if (!availableVoices.length) loadVoices(); return availableVoices.find(v => /zh-TW/i.test(v.lang)) || availableVoices.find(v => /zh/i.test(v.lang)) || null; }
     
-    // 🌟 修正：同步新的音效按鈕狀態
     function syncSpeakButton() { 
         const btn = document.getElementById('topSpeakBtn'); 
         if (btn) btn.innerHTML = speakingNow ? '⏹' : '🔊'; 
@@ -1035,15 +1050,6 @@
     }
 
     function renderQuestion() {
-      // 🌟 自動平滑捲動到畫面題目區塊 (加入延遲確保執行)
-      setTimeout(() => {
-          const topElement = document.getElementById('mainQuestionCard');
-          if (topElement) {
-              const y = topElement.getBoundingClientRect().top + window.pageYOffset - 10;
-              window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-      }, 50);
-        
       const q = state.questionList[state.qIndex];
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
       
@@ -1054,21 +1060,14 @@
           nBtn.classList.remove('pulse-anim');
       }
       
-      // 🌟 確保一般遊戲的預設題目正常顯示 (如果非 path 模式)
       if(document.getElementById('questionPrompt')) {
           document.getElementById('questionPrompt').textContent = q.promptText;
+          if (q.uiType === 'path' && q.kind && q.kind.startsWith('math')) {
+              document.getElementById('questionPrompt').textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
+          }
       }
       if(document.getElementById('roundText')) {
           document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
-      }
-      
-      const qHead = document.getElementById('questionHead');
-      if (qHead) {
-          if (q.uiType === 'path') {
-              qHead.style.display = 'none'; // 小鹿過河隱藏預設框
-          } else {
-              qHead.style.display = ''; 
-          }
       }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
@@ -1631,37 +1630,6 @@
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
-        // 🌟 專屬題目與進度與音效 (整合在一起)
-        if (q.kind && q.kind.startsWith('math')) {
-            const promptBox = document.createElement('div');
-            promptBox.className = 'path-prompt-box';
-            
-            const flexWrap = document.createElement('div');
-            flexWrap.style.display = 'flex';
-            flexWrap.style.alignItems = 'center';
-            flexWrap.style.gap = '12px';
-            
-            const textSpan = document.createElement('span');
-            textSpan.textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
-            
-            // 🌟 專屬的進度標籤 (放在問號右邊)
-            const roundSpan = document.createElement('span');
-            roundSpan.textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
-            roundSpan.style.fontSize = '18px';
-            roundSpan.style.color = '#ffd76a';
-            roundSpan.style.background = 'rgba(255,215,106,0.15)';
-            roundSpan.style.border = '1px solid rgba(255,215,106,0.3)';
-            roundSpan.style.padding = '4px 10px';
-            roundSpan.style.borderRadius = '999px';
-            roundSpan.style.marginLeft = '8px';
-            
-            flexWrap.appendChild(textSpan);
-            flexWrap.appendChild(roundSpan);
-            promptBox.appendChild(flexWrap);
-            
-            stage.appendChild(promptBox);
-        }
-
         // 🌟 小鹿過河的動態捲動座標邏輯 (5題)
         // 起點永遠在下方 (84%)，新的目標在上方 (70%)
         const targetTop = 70 - (state.qIndex * 13); 
@@ -1756,7 +1724,6 @@
                                     nextBtn.textContent = '🎉 成功過河！領取獎勵';
                                     nextBtn.classList.remove('hidden-btn');
                                     nextBtn.classList.add('pulse-anim');
-                                    setTimeout(() => { nextBtn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 100);
                                     speak('太棒了，成功過河！請點擊下方按鈕領取獎勵！');
                                 }
                             }, 1000);
@@ -1887,6 +1854,23 @@
     if(document.getElementById('topSpeakBtn')) {
         document.getElementById('topSpeakBtn').onclick = () => { 
             if(speakingNow) stopSpeech(); else speak(state.currentQuestion.speakText); 
+        };
+    }
+
+    // 🌟 綁定 PWA 安裝按鈕
+    const installBtn = document.getElementById('homeInstallBtn');
+    if (installBtn) {
+        installBtn.onclick = async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            } else {
+                showToast("請點擊瀏覽器選單的「加入主畫面」來將遊戲安裝到手機桌面喔！");
+            }
         };
     }
 
