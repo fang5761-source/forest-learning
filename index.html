@@ -9,17 +9,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <meta property="og:title" content="慢慢變強｜螢光森林">
-  <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
-  <meta property="og:image" content="images/icon.png">
-
-  <title>慢慢變強｜螢光森林 v1.39.1 穩定除錯版</title>
+  <title>慢慢變強｜螢光森林 v1.40.0 回聲谷聲控版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
     
     *{box-sizing:border-box;} 
-    button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label { touch-action: manipulation; }
+    button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label, .mic-btn { touch-action: manipulation; }
     html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
     button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
@@ -120,6 +116,7 @@
     .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
     .result-pill strong{color:var(--gold-soft)}
     
+    /* 🌟 大樹鼓遊戲專屬樣式 */
     .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
     .drum-instruction { font-size: 22px; color: var(--gold-soft); margin-bottom: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 999px;}
     .drum-glow-box { background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.4) 50%, transparent 75%); border-radius: 50%; padding: 30px; display:flex; justify-content:center; align-items:center; margin-bottom: 10px;}
@@ -130,6 +127,7 @@
     .drum-answer-reveal { font-size: 64px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #ffd76a, 0 0 40px #ffb347; opacity: 0; transition: opacity 0.4s ease-in; position: absolute; bottom: -10px;}
     .drum-answer-reveal.show { opacity: 1; transform: translateY(-10px); }
 
+    /* 🌟 黑夜探照燈遊戲專屬樣式 */
     .spotlight-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; touch-action: none; border: 4px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); background: #0b1a11; user-select: none; -webkit-user-select: none;}
     .spotlight-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: brightness(0.6) contrast(1.2); pointer-events: none; }
     .spotlight-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: rgba(0,0,0,0.95); }
@@ -146,6 +144,7 @@
     .ghost-flee { animation: flee 0.6s forwards; pointer-events: none;}
     @keyframes flee { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(100px, -100px) scale(0); opacity: 0; } }
 
+    /* 🌟 動態泡泡遊戲專屬樣式 */
     .bubble-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to top, #062215, #113622); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
     .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; touch-action: manipulation; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; }
     .bubble-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 12px rgba(100,255,200,0.3)); }
@@ -153,6 +152,7 @@
     .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
     @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
 
+    /* 🌟 磁鐵拼圖遊戲專屬樣式 */
     .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; touch-action: none; }
     .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
     .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
@@ -163,6 +163,7 @@
     .puzzle-tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; border-radius: 18px; }
     .puzzle-fallback { background: linear-gradient(135deg, #8B5A2B, #5C3A21); border: 2px solid #ffd76a; }
     
+    /* 🌟 魔法刮刮樂專屬樣式 */
     .scratch-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0 10px; width: 100%; position: relative;}
     .scratch-container { position: relative; width: 240px; height: 240px; border-radius: 28px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px solid rgba(255,255,255,0.15); background: #fff; }
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
@@ -181,7 +182,7 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
-    /* 🌟 翻牌配對 */
+    /* 🌟 翻牌配對 (硬體加速與 3D 動畫) */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; }
     .memory-card { aspect-ratio: 3/4; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -193,31 +194,32 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 收果子絕美排版版 */
+    /* 🌟 收果子排版 */
     .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
     .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
-    
     .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 20px; gap: 12px; }
     .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; z-index: -1; pointer-events: none; }
-    
     .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; touch-action: manipulation; white-space: nowrap;}
-    
     .vertical-pinyin { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 40px; font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px #ffd76a; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; }
     .vertical-pinyin span { display: block; line-height: 1; }
     .vertical-pinyin.show { opacity: 1; transform: translateY(-10px); }
-
     .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    @keyframes basketGlow { 
-        0% { filter: drop-shadow(0 0 0px #ffd76a) brightness(1); transform: scale(1); } 
-        50% { filter: drop-shadow(0 0 40px #ffd76a) brightness(1.4); transform: scale(1.1); } 
-        100% { filter: drop-shadow(0 0 10px rgba(0,0,0,0.4)) brightness(1); transform: scale(1); } 
-    }
+    @keyframes basketGlow { 0% { filter: drop-shadow(0 0 0px #ffd76a) brightness(1); transform: scale(1); } 50% { filter: drop-shadow(0 0 40px #ffd76a) brightness(1.4); transform: scale(1.1); } 100% { filter: drop-shadow(0 0 10px rgba(0,0,0,0.4)) brightness(1); transform: scale(1); } }
 
+    /* 🌟 全新：回聲谷專屬聲控麥克風樣式 */
+    .echo-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #0f1c29, #081015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    .echo-bg { position: absolute; inset: 0; background-image: url('images/valley.png'); background-size: cover; background-position: center; opacity: 0.6; pointer-events: none; z-index: 1;}
+    .mic-btn { width: 120px; height: 120px; border-radius: 50%; background: rgba(22, 56, 38, 0.8); border: 4px solid #ffd76a; display: flex; justify-content: center; align-items: center; font-size: 60px; z-index: 10; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: all 0.3s; touch-action: manipulation; }
+    .mic-btn.listening { animation: micPulse 0.8s infinite alternate; background: #ff6b81; border-color: #ff4757; }
+    @keyframes micPulse { 0% { transform: scale(0.95); box-shadow: 0 0 10px #ff6b81; } 100% { transform: scale(1.1); box-shadow: 0 0 40px #ff6b81, 0 0 80px #ff4757; } }
+    .echo-result { margin-top: 25px; min-height: 48px; font-size: 24px; color: #fff; z-index: 10; font-weight: bold; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.5); padding: 10px 24px; border-radius: 99px; transition: all 0.3s;}
+    .echo-pinyin-target { font-size: 54px; font-weight: 900; color: #ffd76a; z-index: 10; margin-bottom: 25px; text-shadow: 0 0 20px rgba(255,215,106,0.5); text-align: center; display: flex; gap: 15px; align-items: center;}
+    
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
 
@@ -241,9 +243,9 @@
     .growth-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:10px !important; display:grid;}
     .growth-pill{position:relative; overflow:hidden; min-height:86px; padding:14px 16px; border-radius:22px; background: radial-gradient(circle at 80% 18%, rgba(255,223,128,.14), transparent 20%), linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); box-shadow:0 10px 24px rgba(0,0,0,.18);}
     .growth-pill strong{font-size:28px; display:block; margin-top:4px;}
-    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0;}
-    .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;}
-    .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08);}
+    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;}
+    .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
+    .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08)}
     .hidden-btn{display:none !important;}
 
     @media (max-width:760px){
@@ -295,6 +297,12 @@
       .drag-fruit { width: 70px; height: 70px; font-size: 28px;}
       .drag-basket-wrap { gap: 16px; padding-bottom: 10px; }
       .drag-basket { width: 160px; height: 120px; }
+      
+      /* 🌟 回聲谷手機版微調 */
+      .echo-stage { height: 400px; }
+      .mic-btn { width: 100px; height: 100px; font-size: 50px;}
+      .echo-pinyin-target { font-size: 42px; margin-bottom: 20px;}
+      .echo-result { font-size: 20px; min-height: 40px; padding: 8px 16px; margin-top: 20px;}
     }
   </style>
 </head>
@@ -308,7 +316,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.39.1 穩定除錯版</div>
+        <div class="version-tag">v1.40.0 回聲谷聲控版</div>
       </div>
     </header>
 
@@ -472,8 +480,7 @@
     </section>
 
     <section id="quizScreen" class="screen">
-      <!-- 🌟 將進度與音效全面搬移至最右上方的全局控制列 -->
-      <div class="quiz-topbar glass" style="margin-bottom: 12px; border: none; background: transparent; box-shadow: none; display: flex; justify-content: space-between; align-items: center;">
+      <div class="quiz-topbar glass" style="margin-bottom: 8px; border: none; background: transparent; box-shadow: none; display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" type="button">⬅</button>
           <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
@@ -486,7 +493,6 @@
 
       <div class="card question-card" id="mainQuestionCard" style="padding-top: 15px;">
         
-        <!-- 🌟 單純且置中的完美標題 -->
         <div id="questionHead" class="question-head" style="display: flex; justify-content: center; margin-bottom: 12px;">
           <div class="question-main">
             <h2 id="questionPrompt" style="margin: 0; font-size: 36px; font-weight: 900; color: #fff;">題目</h2>
@@ -808,7 +814,8 @@
         { key:'combo-match', emoji:'🎴', title:'翻牌配對', desc:'【記憶類】翻開木牌，找出相同的拼音。', locked: false },
         { key:'combo-puzzle', emoji:'🧩', title:'磁鐵拼圖', desc:'拖曳注音木牌，吸附拼出正確的音。', locked: false },
         { key:'combo-drag', emoji:'🧺', title:'收果子', desc:'【拖曳類】把正確的拼音果子收到籃子裡。', locked: false },
-        { key:'combo-echo', emoji:'🗣️', title:'回聲谷', desc:'【節奏類】聽完系統發音後，重複一次。', locked: true }
+        /* 🌟 解鎖 回聲谷 */
+        { key:'combo-echo', emoji:'🗣️', title:'回聲谷', desc:'【節奏類】按下麥克風大聲唸出來。', locked: false }
       ],
       math: [
         { key:'math-table', emoji:'📘', title:'順序口訣', desc:'從 1 到 9，依序把這一張表練熟。', locked: false },
@@ -1008,6 +1015,30 @@
       return list;
     }
 
+    /* 🌟 全新：建立回聲谷的資料結構 */
+    function buildComboEchoSet() {
+      const list = [];
+      for (let i = 0; i < 5; i++) {
+        const targetCombo = randomItem(COMBO_SET); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        const p1 = targetCombo.charAt(0);
+        const p2 = targetCombo.charAt(1);
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-echo', 
+            promptText: `大聲唸出來`, 
+            speakText: `請按下麥克風，大聲唸出，${p1}，${p2}，${soundWord}`, 
+            answer: soundWord, 
+            soundWord: soundWord, 
+            targetPinyin: `${p1} ${p2}`,
+            uiType: 'echo', 
+            scene: '🗣️ 按下麥克風，大聲說出答案！' 
+        });
+      }
+      return list;
+    }
+
     function buildRoomSelect(mode) {
       state.mode = mode;
       const grid = document.getElementById('roomSelectGrid');
@@ -1121,13 +1152,15 @@
       } else if (subMode === 'combo-drag') {
         state.questionList = buildComboDragSet();
         if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '收果子';
+      } else if (subMode === 'combo-echo') {
+        state.questionList = buildComboEchoSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '回聲谷';
       }
 
       showScreen('quiz'); renderQuestion();
     }
 
     function renderQuestion() {
-      // 🌟 安全捲動：使用全裝置皆支援的 window.scrollTo(0, 0)
       setTimeout(() => { window.scrollTo(0, 0); }, 50);
         
       const q = state.questionList[state.qIndex];  
@@ -1152,8 +1185,8 @@
       
       const qHead = document.getElementById('questionHead');
       if (qHead) {
-          if (q.uiType === 'drag') {
-              qHead.style.display = 'none'; // 收果子隱藏主標題
+          if (q.uiType === 'drag' || q.uiType === 'echo') {
+              qHead.style.display = 'none'; 
           } else {
               qHead.style.display = 'flex'; 
           }
@@ -1164,7 +1197,7 @@
       if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
       
       if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
-      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
+      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
       
       if (q.uiType === 'spotlight') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '在黑黑的地方滑動手指，找找看目標在哪裡！';
@@ -2128,8 +2161,99 @@
         stage.appendChild(basketWrap);
         optionsWrap.appendChild(stage);
       }
+      /* 🌟 全新：回聲谷 (科技聲控房間) */
+      else if (q.uiType === 'echo') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '按下麥克風，大聲唸出來吧！';
+        
+        const stage = document.createElement('div');
+        stage.className = 'echo-stage';
+        
+        const echoBg = document.createElement('div');
+        echoBg.className = 'echo-bg';
+        stage.appendChild(echoBg);
+        
+        const targetDisplay = document.createElement('div');
+        targetDisplay.className = 'echo-pinyin-target';
+        targetDisplay.innerHTML = `${q.targetPinyin} <span style="color:#fff; text-shadow:none;">${q.soundWord}</span>`;
+        stage.appendChild(targetDisplay);
+        
+        const micBtn = document.createElement('div');
+        micBtn.className = 'mic-btn';
+        micBtn.textContent = '🎤';
+        
+        const resultBox = document.createElement('div');
+        resultBox.className = 'echo-result';
+        resultBox.textContent = '等待你的聲音...';
+        
+        stage.appendChild(micBtn);
+        stage.appendChild(resultBox);
+        optionsWrap.appendChild(stage);
+        
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            resultBox.innerHTML = '⚠️ 你的瀏覽器不支援語音辨識喔！<br><small>建議使用 Chrome 或 Edge 瀏覽器</small>';
+            micBtn.style.opacity = '0.5';
+            micBtn.style.pointerEvents = 'none';
+        } else {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'zh-TW';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+            
+            micBtn.onpointerdown = () => {
+                if (state.awaitingNext) return;
+                try {
+                    recognition.start();
+                    micBtn.classList.add('listening');
+                    resultBox.textContent = '正在聽...';
+                } catch(e) {} 
+            };
+            
+            recognition.onresult = (event) => {
+                micBtn.classList.remove('listening');
+                const speechResult = event.results[0][0].transcript;
+                resultBox.textContent = `你說了：「${speechResult}」`;
+                
+                if (speechResult.includes(q.soundWord)) {
+                    playSnapSound();
+                    state.awaitingNext = true;
+                    micBtn.style.background = '#2ed573';
+                    micBtn.style.borderColor = '#fff';
+                    
+                    if(document.getElementById('nextQuestionBtn')) {
+                        const nextBtn = document.getElementById('nextQuestionBtn');
+                        nextBtn.classList.remove('hidden-btn');
+                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                    }
+                    const reply = `太棒了！你唸得非常標準！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                    speak(reply);
+                } else {
+                    state.excluded += 1;
+                    state.roundMistakes += 1;
+                    playSplashSound();
+                    const reply = `哎呀，回聲谷好像沒聽清楚，再試一次吧！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                    speak(reply);
+                }
+            };
+            
+            recognition.onerror = (event) => {
+                micBtn.classList.remove('listening');
+                if (event.error === 'not-allowed') {
+                    resultBox.innerHTML = '⚠️ 請允許麥克風權限喔！<br><small>請在網站安全設定中開啟</small>';
+                } else {
+                    resultBox.textContent = '沒聽到聲音，請再按一次！';
+                }
+            };
+            
+            recognition.onend = () => {
+                micBtn.classList.remove('listening');
+            };
+        }
+      }
 
-      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.options && q.options.length > 0 && optionsWrap) {
+      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.options && q.options.length > 0 && optionsWrap) {
         q.options.forEach(opt => {
           const row = document.createElement('div'); row.className = 'option-row';
           const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
