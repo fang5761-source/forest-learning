@@ -2,10 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <!-- 🌟 鎖定螢幕縮放，防止 iPhone 雙指或連按放大 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  
-  <!-- 🌟 APP 專屬 Icon 與 LINE 分享標籤 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="慢慢變強">
@@ -16,13 +13,11 @@
   <meta property="og:description" content="森林探索學習系統，跟著小精靈一起慢慢變強！">
   <meta property="og:image" content="images/icon.png">
 
-  <title>慢慢變強｜螢光森林 v1.42.0 語音高容錯與防氣餒版</title>
+  <title>慢慢變強｜螢光森林 v1.43.0 注音純淨教學版</title>
   <meta name="theme-color" content="#163826">
   <style>
-    /* ================= CSS 樣式區域 ================= */
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
     
-    /* 🌟 移除容易造成安卓卡死的全域屬性，僅鎖定按鈕與互動元件 */
     *{box-sizing:border-box;} 
     button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label, .mic-btn { touch-action: manipulation; }
     html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
@@ -125,7 +120,6 @@
     .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
     .result-pill strong{color:var(--gold-soft)}
     
-    /* 🌟 大樹鼓遊戲專屬樣式 */
     .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
     .drum-instruction { font-size: 22px; color: var(--gold-soft); margin-bottom: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 999px;}
     .drum-glow-box { background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.4) 50%, transparent 75%); border-radius: 50%; padding: 30px; display:flex; justify-content:center; align-items:center; margin-bottom: 10px;}
@@ -136,7 +130,6 @@
     .drum-answer-reveal { font-size: 64px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #ffd76a, 0 0 40px #ffb347; opacity: 0; transition: opacity 0.4s ease-in; position: absolute; bottom: -10px;}
     .drum-answer-reveal.show { opacity: 1; transform: translateY(-10px); }
 
-    /* 🌟 黑夜探照燈遊戲專屬樣式 */
     .spotlight-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; touch-action: none; border: 4px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); background: #0b1a11; user-select: none; -webkit-user-select: none;}
     .spotlight-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: brightness(0.6) contrast(1.2); pointer-events: none; }
     .spotlight-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: rgba(0,0,0,0.95); }
@@ -153,7 +146,6 @@
     .ghost-flee { animation: flee 0.6s forwards; pointer-events: none;}
     @keyframes flee { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(100px, -100px) scale(0); opacity: 0; } }
 
-    /* 🌟 動態泡泡遊戲專屬樣式 */
     .bubble-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to top, #062215, #113622); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
     .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; touch-action: manipulation; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; }
     .bubble-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 12px rgba(100,255,200,0.3)); }
@@ -161,7 +153,6 @@
     .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
     @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
 
-    /* 🌟 磁鐵拼圖遊戲專屬樣式 */
     .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; touch-action: none; }
     .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
     .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
@@ -172,13 +163,11 @@
     .puzzle-tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; border-radius: 18px; }
     .puzzle-fallback { background: linear-gradient(135deg, #8B5A2B, #5C3A21); border: 2px solid #ffd76a; }
     
-    /* 🌟 魔法刮刮樂專屬樣式 */
     .scratch-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0 10px; width: 100%; position: relative;}
     .scratch-container { position: relative; width: 240px; height: 240px; border-radius: 28px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px solid rgba(255,255,255,0.15); background: #fff; }
     .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
     .scratch-canvas { position: absolute; inset: 0; z-index: 10; touch-action: none; cursor: crosshair; }
 
-    /* 🌟 小鹿過河樣式 */
     .path-stage { position: relative; width: 100%; height: 420px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
     .path-river { position: absolute; inset: 0; background-image: url('images/river_bg.jpg'); background-size: cover; background-position: center bottom; z-index: 1;}
     .path-river-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); background-size: 100% 200%; animation: waterFlow 4s linear infinite; z-index: 2; pointer-events: none; mix-blend-mode: overlay; }
@@ -191,7 +180,6 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
-    /* 🌟 翻牌配對 (硬體加速與 3D 動畫) */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; }
     .memory-card { aspect-ratio: 3/4; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -203,7 +191,6 @@
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    /* 🌟 收果子排版 */
     .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
@@ -220,7 +207,6 @@
     .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     @keyframes basketGlow { 0% { filter: drop-shadow(0 0 0px #ffd76a) brightness(1); transform: scale(1); } 50% { filter: drop-shadow(0 0 40px #ffd76a) brightness(1.4); transform: scale(1.1); } 100% { filter: drop-shadow(0 0 10px rgba(0,0,0,0.4)) brightness(1); transform: scale(1); } }
 
-    /* 🌟 全新：回聲谷專屬聲控麥克風樣式 */
     .echo-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #0f1c29, #081015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
     .echo-bg { position: absolute; inset: 0; background-image: url('images/valley.png'); background-size: cover; background-position: center; opacity: 0.6; pointer-events: none; z-index: 1;}
     .mic-btn { width: 120px; height: 120px; border-radius: 50%; background: rgba(22, 56, 38, 0.8); border: 4px solid #ffd76a; display: flex; justify-content: center; align-items: center; font-size: 60px; z-index: 10; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: all 0.3s; touch-action: manipulation; }
@@ -324,7 +310,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.42.0 語音高容錯與防氣餒版</div>
+        <div class="version-tag">v1.43.0 注音純淨教學版</div>
       </div>
     </header>
 
@@ -585,7 +571,7 @@
     
     const SYMBOL_SET = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ','ㄚ','ㄛ','ㄜ','ㄝ','ㄞ','ㄟ','ㄠ','ㄡ','ㄢ','ㄣ','ㄤ','ㄥ','ㄦ','ㄧ','ㄨ','ㄩ'];
     const COMBO_SET = ['ㄅㄚ','ㄅㄛ','ㄅㄧ','ㄆㄚ','ㄆㄛ','ㄇㄚ','ㄇㄛ','ㄇㄧ','ㄈㄚ','ㄉㄚ','ㄉㄧ','ㄊㄚ','ㄋㄚ','ㄋㄧ','ㄌㄚ','ㄌㄧ','ㄍㄚ','ㄎㄚ','ㄏㄚ'];
-    const COMBO_SOUND = {'ㄅㄚ':'巴','ㄅㄛ':'波','ㄅㄧ':'逼','ㄆㄚ':'趴','ㄆㄛ':'坡','ㄇㄚ':'媽','ㄇㄛ':'摸','ㄇㄧ':'咪','ㄈㄚ':'發','ㄉㄚ':'搭','ㄉㄧ':'低','ㄊㄚ':'他','ㄋㄚ':'拿','ㄋㄧ':'泥','ㄌㄚ':'拉','ㄌㄧ':'梨','ㄍㄚ':'嘎','ㄎㄚ':'咖','ㄏㄚ':'哈'};
+    const COMBO_SOUND = {'ㄅㄚ':'巴','ㄅㄛ':'波','ㄅㄧ':'逼','ㄆㄚ':'趴','ㄆㄛ':'坡','ㄇㄚ':'媽','ㄇㄛ':'摸','ㄇㄧ':'咪','ㄈㄚ':'發','ㄉㄚ':'搭','ㄉㄧ':'滴','ㄊㄚ':'他','ㄋㄚ':'拿','ㄋㄧ':'妮','ㄌㄚ':'拉','ㄌㄧ':'哩','ㄍㄚ':'嘎','ㄎㄚ':'咖','ㄏㄚ':'哈'};
 
     /* 🌟 新增：高容錯諧音與拼音字典，保護孩子不氣餒！ */
     const HOMOPHONES = {
@@ -599,12 +585,12 @@
       '咪': ['咪','迷','謎','米','密','秘','蜜','眯','mi'],
       '發': ['發','乏','伐','罰','法','髮','琺','fa'],
       '搭': ['搭','答','打','大','達','噠','da'],
-      '低': ['低','滴','迪','笛','底','抵','地','第','弟','帝','遞','di'],
+      '滴': ['滴','低','迪','笛','底','抵','地','第','弟','帝','遞','di'],
       '他': ['他','她','它','牠','塔','踏','塌','ta'],
       '拿': ['拿','哪','那','納','吶','na'],
-      '泥': ['泥','尼','你','妳','擬','逆','匿','膩','呢','ni'],
+      '妮': ['妮','泥','尼','你','妳','擬','逆','匿','膩','呢','ni'],
       '拉': ['拉','啦','喇','臘','蠟','辣','la'],
-      '梨': ['梨','離','厘','狸','李','理','裡','禮','力','歷','曆','勵','立','麗','粒','例','li'],
+      '哩': ['哩','梨','離','厘','狸','李','理','裡','禮','力','歷','曆','勵','立','麗','粒','例','li'],
       '嘎': ['嘎','咖','軋','尬','ga'],
       '咖': ['咖','卡','喀','咔','ka'],
       '哈': ['哈','蛤','ha']
@@ -988,7 +974,8 @@
         let allVowels = [...new Set(COMBO_SET.map(c => c.charAt(1)))];
         let otherVowels = shuffle(allVowels.filter(v => v !== rightChar)).slice(0, 2);
         let options = shuffle([rightChar, ...otherVowels]);
-        list.push({ area: '拼音練功房', kind: 'combo-puzzle', promptText: `請拼出「${soundWord}」的聲音`, speakText: `請拼出，${soundWord}`, answer: rightChar, leftChar: leftChar, targetCombo: targetCombo, soundWord: soundWord, options: options.map(o => ({text: o, speak: o})), uiType: 'puzzle', scene: '🧩 把左邊的木牌，拖過去和正確的韻母拼在一起！' });
+        
+        list.push({ area: '拼音練功房', kind: 'combo-puzzle', promptText: `請拼出「${targetCombo}」`, speakText: `請拼出，${soundWord}`, answer: rightChar, leftChar: leftChar, targetCombo: targetCombo, soundWord: soundWord, options: options.map(o => ({text: o, speak: o})), uiType: 'puzzle', scene: '🧩 把左邊的木牌，拖過去和正確的韻母拼在一起！' });
       }
       return list;
     }
@@ -1032,7 +1019,7 @@
         list.push({ 
             area: '拼音練功房', 
             kind: 'combo-drag', 
-            promptText: `尋找「${soundWord}」`, 
+            promptText: `尋找「${targetCombo}」`, 
             speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, 
             answer: targetCombo, 
             soundWord: soundWord, 
@@ -1060,6 +1047,7 @@
             speakText: `請按下麥克風，大聲唸出，${p1}，${p2}，${soundWord}`, 
             answer: soundWord, 
             soundWord: soundWord, 
+            targetCombo: targetCombo,
             targetPinyin: `${p1} ${p2}`,
             uiType: 'echo', 
             scene: '🗣️ 按下麥克風，大聲說出答案！' 
@@ -1640,7 +1628,7 @@
                     droppedSlot.style.color = '#fff';
                     
                     const comboFloat = document.createElement('div');
-                    comboFloat.textContent = q.soundWord;
+                    comboFloat.textContent = q.targetCombo;
                     comboFloat.style.position = 'absolute';
                     comboFloat.style.left = `${targetRect.left - stageRect.left - 48}px`; 
                     comboFloat.style.top = `${targetRect.top - stageRect.top - 20}px`; 
@@ -1659,9 +1647,10 @@
                         setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                     }
                     
-                    const reply = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                    speak(reply);
+                    const replyUI = `${q.leftChar}... ${q.answer}... ${q.targetCombo}！太棒了！`;
+                    const replySpeak = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
 
                 } else {
                     state.excluded += 1;
@@ -1669,9 +1658,10 @@
                     piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     piece.style.transform = 'translate(0px, 0px)';
                     
-                    const reply = `不對喔，這不是 ${q.soundWord}。`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                    speak(reply);
+                    const replyUI = `不對喔，再試試看。`;
+                    const replySpeak = `不對喔，這不是 ${q.soundWord}。`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
                 }
             } else {
                 piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -1692,7 +1682,6 @@
         const container = document.createElement('div');
         container.className = 'scratch-container';
 
-        // 底下的答案內容
         const content = document.createElement('div');
         content.className = 'scratch-content';
         
@@ -2053,7 +2042,8 @@
         const basketLabel = document.createElement('div');
         basketLabel.className = 'basket-label';
         
-        basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:20px; font-weight:bold;">${q.soundWord}</span>`;
+        // 🌟 隱藏中文字，改用純注音 (q.answer 等於 targetCombo)
+        basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:20px; font-weight:bold;">🔊 ${q.answer}</span>`;
         
         basketWrap.appendChild(basket);
         basketWrap.appendChild(basketLabel);
@@ -2160,10 +2150,11 @@
                             setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                         }
                         
-                        // 語音修正：唸出 符號 + 符號 + 拼音
-                        const reply = `${p1}... ${p2}... ${q.soundWord}！太棒了！`;
-                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                        speak(reply);
+                        // 🌟 UI顯示純注音，但語音引擎唸出隱藏的發音字
+                        const replyUI = `${p1}... ${p2}... ${q.answer}！太棒了！`;
+                        const replySpeak = `${p1}... ${p2}... ${q.soundWord}！太棒了！`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
 
                     } else {
                         state.excluded += 1;
@@ -2174,9 +2165,10 @@
                         fruit.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                         fruit.style.transform = `translate(0px, 0px)`;
                         
-                        const reply = `不對喔，這不是 ${q.soundWord}。`;
-                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                        speak(reply);
+                        const replyUI = `不對喔，再找找看。`;
+                        const replySpeak = `不對喔，這不是 ${q.soundWord}。`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
                     }
                 } else {
                     origX = 0; origY = 0;
@@ -2203,7 +2195,8 @@
         
         const targetDisplay = document.createElement('div');
         targetDisplay.className = 'echo-pinyin-target';
-        targetDisplay.innerHTML = `${q.targetPinyin} <span style="color:#fff; text-shadow:none;">${q.soundWord}</span>`;
+        // 🌟 隱藏中文字，只顯示注音
+        targetDisplay.innerHTML = `${q.targetPinyin} <span style="color:#fff; text-shadow:none;">${q.targetCombo}</span>`;
         stage.appendChild(targetDisplay);
         
         const micBtn = document.createElement('div');
@@ -2287,16 +2280,18 @@
                     micBtn.classList.remove('listening');
                     micBtn.style.background = '#2ed573';
                     micBtn.style.borderColor = '#fff';
-                    resultBox.textContent = `太棒了！你說了：「${currentTranscript}」`;
+                    // 🌟 答對時避免顯示奇怪的同音中文字，改顯示注音
+                    resultBox.textContent = `太棒了！是：「${q.targetCombo}」`;
                     
                     if(document.getElementById('nextQuestionBtn')) {
                         const nextBtn = document.getElementById('nextQuestionBtn');
                         nextBtn.classList.remove('hidden-btn');
                         setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                     }
-                    const reply = `太棒了！你唸得非常標準！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                    speak(reply);
+                    const replyUI = `太棒了！你唸出了：「${q.targetCombo}」！`;
+                    const replySpeak = `太棒了！你唸得非常標準！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
                 } 
                 // 如果這句話講完了 (isFinal) 但還是錯的
                 else if (event.results[0].isFinal) {
@@ -2305,11 +2300,15 @@
                     state.roundMistakes += 1;
                     playSplashSound();
                     
-                    let reply = `聽起來像「${currentTranscript}」，再試一次吧！`;
+                    // 🌟 答錯時避免顯示中文字讓孩子困惑
+                    resultBox.textContent = `沒有聽清楚喔...`;
+                    let replyUI = `聽起來不太像喔，再試一次吧！`;
+                    let replySpeak = replyUI;
                     
                     // 🌟 防氣餒機制：失敗 2 次後顯示直接過關按鈕
                     if (failCount >= 2) {
-                        reply = `語音精靈有點聽不懂，沒關係，我們可以直接過關喔！`;
+                        replyUI = `語音精靈有點聽不懂，沒關係，我們可以直接過關喔！`;
+                        replySpeak = replyUI;
                         if(!document.getElementById('skipVoiceBtn')) {
                             const skipBtn = document.createElement('button');
                             skipBtn.id = 'skipVoiceBtn';
@@ -2337,8 +2336,8 @@
                         }
                     }
                     
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
-                    speak(reply);
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
                 }
             };
             
