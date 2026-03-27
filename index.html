@@ -2129,7 +2129,7 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-     /* 🌟 數學：精靈餵食大挑戰版 (動態餵食進度版 + 自動找圖魔法 + PNG背景修復版) */
+     /* 🌟 數學：精靈餵食大挑戰版 (終極找圖防呆版：PNG/JPG 大小寫、裡外通吃) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
@@ -2138,29 +2138,38 @@
         
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
-        // 🌟 修正這裡：把 .jpg 改成 .png 了！
-        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
+        // 🌟 背景終極疊加：利用 CSS 多層背景，找不到的會變透明，直到找到對的圖片顯示！
+        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png'), url('images/feed_bg.jpg'), url('feed_bg.jpg')";
         stage.appendChild(feedBg);
 
         const elfWrap = document.createElement('div');
         elfWrap.className = 'feed-elf-wrap';
         elfWrap.style.transform = 'none'; 
         
-        const elfImg = document.createElement('img');
         const currentStageIndex = state.qIndex + 1;
+        const elfImg = document.createElement('img');
+        elfImg.className = 'feed-elf-img';
+        
+        // 🌟 終極找圖魔法：把所有可能的檔名和路徑都列出來，讓程式自己去闖關嘗試！
+        const tryPaths = [
+            `images/elf_feed_${currentStageIndex}.png`,
+            `elf_feed_${currentStageIndex}.png`,
+            `images/elf_feed_${currentStageIndex}.jpg`,
+            `elf_feed_${currentStageIndex}.jpg`,
+            `images/icon.png`, 
+            `icon.png`
+        ];
+        let pathIdx = 0;
         
         elfImg.onerror = function() { 
-            if (this.src.includes('images/')) {
-                const fileName = this.src.split('/').pop();
-                this.src = fileName; 
+            pathIdx++;
+            if (pathIdx < tryPaths.length) {
+                this.src = tryPaths[pathIdx];
             } else {
                 this.onerror = null; 
-                this.src = 'images/icon.png'; 
             }
         }; 
-        
-        elfImg.src = `images/elf_feed_${currentStageIndex}.png`;
-        elfImg.className = 'feed-elf-img';
+        elfImg.src = tryPaths[0]; // 開始第一輪尋找
         
         const baseScale = 1 + (state.qIndex * 0.02);
         elfImg.style.transform = `scale(${baseScale})`;
@@ -2183,11 +2192,18 @@
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
+            const foodPaths = ['images/food_berry.png', 'food_berry.png', 'images/food_berry.jpg', 'food_berry.jpg'];
+            let fPathIdx = 0;
             foodImg.onerror = function() { 
-                if(this.src.includes('images/')) this.src = 'food_berry.png';
-                else { this.style.display = 'none'; food.style.background = '#ff4757'; }
+                fPathIdx++;
+                if (fPathIdx < foodPaths.length) {
+                    this.src = foodPaths[fPathIdx];
+                } else {
+                    this.style.display = 'none'; 
+                    food.style.background = '#ff4757'; 
+                }
             }; 
-            foodImg.src = 'images/food_berry.png';
+            foodImg.src = foodPaths[0];
             
             const foodText = document.createElement('span');
             foodText.textContent = opt.text; 
@@ -2262,14 +2278,17 @@
                         elfImg.style.transform = `scale(${baseScale + 0.2})`;
                         elfImg.style.filter = 'drop-shadow(0 0 30px #ffd76a)';
                         
-                        // 🌟 滿腹變身判定
+                        // 🌟 吃飽變身判定 (同樣套用終極找圖魔法)
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
+                                const fullPaths = ['images/elf_full.png', 'elf_full.png', 'images/elf_full.jpg', 'elf_full.jpg', 'images/icon.png', 'icon.png'];
+                                let fullIdx = 0;
                                 elfImg.onerror = function() {
-                                    if(this.src.includes('images/')) this.src = 'elf_full.png';
-                                    else { this.onerror = null; this.src = 'images/icon.png'; }
+                                    fullIdx++;
+                                    if(fullIdx < fullPaths.length) this.src = fullPaths[fullIdx];
+                                    else this.onerror = null;
                                 };
-                                elfImg.src = 'images/elf_full.png'; 
+                                elfImg.src = fullPaths[0]; 
                                 elfImg.style.transform = `scale(${baseScale + 0.1})`;
                                 elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
                             }, 400); 
