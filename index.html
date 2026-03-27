@@ -224,15 +224,20 @@
     
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
     
-    /* 🌟 修復 2：加入魔法漂浮動畫！讓空中的精靈看起來超合理、超可愛！ */
+    /* 🌟 精靈專屬漂浮動畫 */
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
-    .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.4)); pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; }
+    
+    /* 🌟 加入 translateZ(0) 強制硬體加速，防止蘋果手機產生裁切破圖 */
+    .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.4)); pointer-events: none; transition: transform 0.4s ease-out, filter 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; transform: translateZ(0); }
     
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
     .feed-food { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); cursor: grab; user-select: none; border-radius: 50%; z-index: 10; touch-action: none; will-change: transform; }
     .feed-food:active { cursor: grabbing; z-index: 11; }
     .feed-food img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
-    .feed-elf-success { transform: scale(1.15); filter: drop-shadow(0 0 30px #ffd76a); }
+    
+    /* 🌟 偵探大樂的終極修復：把發光濾鏡從「透明方塊」轉移到「圖片本身」，徹底消滅 iPhone 的方塊殘影！ */
+    .feed-elf-success { transform: scale(1.15); }
+    .feed-elf-success .feed-elf-img { filter: drop-shadow(0 0 35px #ffd76a) !important; }
 
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
