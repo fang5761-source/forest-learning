@@ -2134,19 +2134,17 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-    /* 🌟 數學：精靈餵食大挑戰版 (終極找圖防呆 + 破解手機偷懶快取版) */
+    /* 🌟 數學：精靈餵食大挑戰版 (純淨路徑版：修復本地端讀取破圖問題) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
         const stage = document.createElement('div');
         stage.className = 'feed-stage';
         
-        // 🪄 破解快取魔法：產生當下時間的亂碼，強迫手機重新下載新圖！
-        const cb = new Date().getTime(); 
-        
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
-        feedBg.style.backgroundImage = `url('images/feed_bg.png?v=${cb}'), url('feed_bg.png?v=${cb}')`;
+        // 🌟 拔除 ?v=，還原乾淨的背景路徑
+        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
         stage.appendChild(feedBg);
 
         const elfWrap = document.createElement('div');
@@ -2157,12 +2155,12 @@
         const elfImg = document.createElement('img');
         elfImg.className = 'feed-elf-img';
         
-        // 🪄 所有的圖片路徑都加上 ?v= 時間戳記
+        // 🌟 拔除 ?v=，只用最乾淨的檔名去尋找
         const tryPaths = [
-            `images/elf_feed_${currentStageIndex}.png?v=${cb}`,
-            `elf_feed_${currentStageIndex}.png?v=${cb}`,
-            `images/icon.png?v=${cb}`, 
-            `icon.png?v=${cb}`
+            `images/elf_feed_${currentStageIndex}.png`,
+            `elf_feed_${currentStageIndex}.png`,
+            `images/icon.png`, 
+            `icon.png`
         ];
         let pathIdx = 0;
         
@@ -2197,7 +2195,7 @@
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
-            const foodPaths = [`images/food_berry.png?v=${cb}`, `food_berry.png?v=${cb}`];
+            const foodPaths = ['images/food_berry.png', 'food_berry.png'];
             let fPathIdx = 0;
             foodImg.onerror = function() { 
                 fPathIdx++;
@@ -2285,7 +2283,8 @@
                         
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
-                                const fullPaths = [`images/elf_full.png?v=${cb}`, `elf_full.png?v=${cb}`, `images/icon.png?v=${cb}`, `icon.png?v=${cb}`];
+                                // 🌟 滿腹變身同樣拔除 ?v=
+                                const fullPaths = ['images/elf_full.png', 'elf_full.png', 'images/icon.png', 'icon.png'];
                                 let fullIdx = 0;
                                 elfImg.onerror = function() {
                                     fullIdx++;
