@@ -1,0 +1,2779 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="慢慢變強">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
+  <link rel="shortcut icon" href="images/icon.png">
+  <title>慢慢變強｜螢光森林 v1.49.0 精靈動態餵食進度版</title>
+  <meta name="theme-color" content="#163826">
+  <style>
+    :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
+    
+    *{box-sizing:border-box;} 
+    button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label, .mic-btn, .feed-food { touch-action: manipulation; }
+    html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
+    body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
+    button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
+    .app-shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:20px 0 32px;position:relative;z-index:2;}
+    .forest-bg{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0;}
+    .mist{position:absolute; border-radius:999px; filter:blur(26px); opacity:.35;}
+    .mist-1{width:52vw;height:18vw;left:-8vw;bottom:12vh;background:rgba(197,240,190,.08)}
+    .mist-2{width:46vw;height:16vw;right:-10vw;top:20vh;background:rgba(255,240,176,.06)}
+    .leaf{position:absolute; background:linear-gradient(135deg, rgba(92,180,110,.18), rgba(15,76,48,.08));border:1px solid rgba(219,255,226,.06); filter:blur(.2px);}
+    .leaf-a{width:230px;height:120px;left:-30px;bottom:70px;border-radius:0 100% 0 100%;transform:rotate(-16deg)}
+    .leaf-b{width:180px;height:96px;right:-20px;bottom:150px;border-radius:100% 0 100% 0;transform:rotate(18deg)}
+    .leaf-c{width:150px;height:80px;right:12%;top:80px;border-radius:100% 0 100% 0;transform:rotate(-24deg)}
+    .glow{position:absolute; border-radius:50%; filter:blur(12px);}
+    .glow-a{width:130px;height:130px;left:16%;top:24%;background:rgba(255,230,136,.10)}
+    .glow-b{width:180px;height:180px;right:9%;top:18%;background:rgba(173,255,189,.08)}
+    .glow-c{width:150px;height:150px;left:50%;bottom:12%;background:rgba(255,220,124,.07)}
+    .fireflies{position:absolute; inset:0}
+    .firefly-dot{position:absolute; width:6px; height:6px; border-radius:50%;background:radial-gradient(circle, #fff6be 0%, #ffd76a 58%, rgba(255,215,106,0) 72%);box-shadow:0 0 12px rgba(255,223,128,.7);animation:twinkle 4.6s ease-in-out infinite; opacity:.85;}
+    @keyframes twinkle{0%,100%{transform:scale(.78);opacity:.45}50%{transform:scale(1.4);opacity:1}}
+    .glass,.card,.glass-soft{background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));border:1px solid var(--line); box-shadow:var(--shadow);backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);}
+    .app-header{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;border-radius:24px; padding:18px 18px 16px; margin-bottom:16px; transition: all 0.3s ease;}
+    .eyebrow,.small-title,.version-tag{font-size:12px; letter-spacing:.08em; color:rgba(255,255,255,.72)}
+    h1{margin:4px 0 6px; font-size:42px; line-height:1.04} h2{margin:0; font-size:32px; line-height:1.18} h3{margin:0; font-size:22px}
+    .version-tag{display:inline-block; padding:5px 10px; border-radius:999px; background:rgba(255,255,255,.08)}
+    .icon-btn,.mini-btn,.ghost-btn,.primary-btn,.secondary-btn,.map-node,.name-btn,.locked-node{border:0; cursor:pointer; border-radius:18px; transition:.18s ease;}
+    .icon-btn{width:52px;height:52px; background:rgba(255,250,219,.18); color:#fff; font-size:20px;} 
+    .icon-btn.light{width:50px; height:50px; font-size:22px; border-radius:16px; background:linear-gradient(180deg, #fff9e6, #ffe082); border:2px solid #ffd76a; color:#5c3a21; box-shadow:0 4px 10px rgba(0,0,0,0.15);}
+    .mini-btn{padding:10px 14px; background:rgba(255,255,255,.10); color:#fff; white-space: nowrap;}
+    .primary-btn{min-height:54px; padding:14px 18px; background:linear-gradient(180deg,#ffd86d,#f0b93f); color:#243417; font-weight:700;}
+    .secondary-btn{min-height:54px; padding:14px 18px; background:rgba(255,255,255,.09); color:#fff;}
+    .ghost-btn{min-height:48px; padding:0 14px; background:rgba(255,255,255,.08); color:#fff;}
+    button:hover,.name-btn:hover{transform:translateY(-1px)}
+    .screen{display:none} .screen.active{display:block}
+    .card{border-radius:28px; padding:22px} .story-card{padding:24px}
+    .intro-hero{display:grid; grid-template-columns:220px 1fr; gap:24px; align-items:center;}
+    .hero-illustration{display:flex; justify-content:center}
+    .hero-spirit{width:190px; height:190px; object-fit:cover; border-radius:36px; box-shadow:0 0 46px rgba(255,223,128,.35);}
+    .story-lines{font-size:20px; line-height:1.9; color:var(--text); text-shadow:0 1px 1px rgba(0,0,0,.14)}
+    .story-text p,.subtle{color:var(--muted)}
+    .action-group{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
+    .name-card{max-width:760px; margin:0 auto}
+    .name-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0}
+    .name-btn{min-height:68px; padding:12px; background:rgba(255,255,255,.08); color:#fff; font-size:22px;border:1px solid rgba(255,255,255,.08)}
+    .name-btn.selected{background:linear-gradient(180deg, rgba(255,238,176,.26), rgba(255,215,106,.18));border-color:rgba(255,226,138,.4); color:#fffef4; box-shadow:0 0 0 2px rgba(255,222,128,.12) inset;}
+    .bond-card{max-width:760px; margin:0 auto}
+    .bond-top{display:flex; align-items:center; gap:16px; margin-bottom:12px}
+    .bond-spirit,.companion-icon{width:88px;height:88px;border-radius:26px;box-shadow:0 0 30px rgba(255,223,128,.30)}
+    .dashboard-card{padding:22px} .companion-row{display:flex; gap:16px; align-items:center; margin-bottom:16px}
+    .status-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0 18px}
+    .status-pill{padding:14px 16px; border-radius:22px; display:flex; flex-direction:column; gap:4px;}
+    .status-pill strong{font-size:28px; color:var(--gold-soft)}
+    .map-panel{margin-top:10px; padding:18px; border-radius:24px; background:rgba(8,25,16,.22); border:1px solid rgba(255,255,255,.08)}
+    .map-title-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px}
+    .world-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .world-spot{min-height:112px;padding:16px;border-radius:24px;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at 80% 18%, rgba(255,223,128,.14), transparent 18%),linear-gradient(180deg, rgba(53,118,80,.62), rgba(18,57,35,.72));color:#fff;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;text-align:left;cursor:pointer;transition:.18s ease;}
+    .world-spot:hover{transform:translateY(-1px);}
+    .world-spot .spot-emoji{font-size:26px;position:relative;top:-2px}
+    .world-spot .spot-name{font-size:22px;font-weight:700}
+    .world-spot small{color:rgba(255,255,255,.76)}
+    .spirit-spot{grid-column:1/-1;min-height:126px;background:radial-gradient(circle at 80% 18%, rgba(255,223,128,.22), transparent 18%),linear-gradient(180deg, rgba(96,111,46,.64), rgba(43,78,27,.76))}
+    .garden-spot{background:linear-gradient(180deg, rgba(51,117,78,.62), rgba(18,57,35,.72))}
+    .village-spot{background:linear-gradient(180deg, rgba(87,101,74,.62), rgba(46,57,39,.76))}
+    .deer-spot{background:linear-gradient(180deg, rgba(72,107,82,.62), rgba(31,63,45,.76))}
+    .symbol-spot{background:linear-gradient(180deg, rgba(44,116,72,.62), rgba(16,68,42,.72))}
+    .combo-spot{background:linear-gradient(180deg, rgba(34,104,92,.62), rgba(16,58,57,.72))}
+    .math-spot{background:linear-gradient(180deg, rgba(53,98,106,.62), rgba(20,54,69,.72))}
+    .forest-spot{background:linear-gradient(180deg, rgba(39,115,82,.66), rgba(18,71,46,.75))}
+    .world-spot.locked{opacity:.62;filter:grayscale(.15);cursor:default;}
+    .world-spot.locked:hover{transform:none;}
+    
+    .quiz-topbar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-radius:22px; margin-bottom:14px;}
+    .meta-chip{padding:9px 12px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff; white-space: nowrap;}
+    
+    .question-card{padding:20px;}
+    
+    .question-head { display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: 48px; padding-top: 5px; margin-bottom: 0px; position: relative;}
+    .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; width: 100%; text-align: center; }
+    .question-main h2 { font-size: 38px; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 2px; display: inline-block;}
+    .question-tools { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 8px; }
+    
+    .visual-area{min-height:90px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin: 8px 0 12px !important; width:100%;}
+    .visual-area.collapsed{display:none !important;}
+    
+    .visual-pill{padding:14px 16px; border-radius:18px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.08); font-size:24px; color:#fff}
+    .options-wrap{display:grid; gap:12px; margin-top:6px; transition: opacity 0.3s ease;}
+    .option-row{display:grid !important; grid-template-columns:minmax(0,1fr) 64px !important; align-items:center !important; gap:10px !important;}
+    .option-btn{width:100%; min-height:68px; padding:14px 16px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.08); color:#fff; text-align:left; font-size:24px; cursor:pointer;}
+    .option-speak-btn{width:64px; min-height:64px; border-radius:18px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.09); color:#fff; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center;}
+    .option-btn.excluded{opacity:.46; text-decoration:line-through; filter:grayscale(.2)}
+    .option-btn.correct{background:rgba(219,255,183,.20); border-color:rgba(236,255,204,.28)}
+    
+    .feedback-bar{display:flex; justify-content:flex-start; align-items:center; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.08)}
+    .feedback-line{margin:4px 0 0; font-size:18px; line-height:1.6; color:var(--gold-soft)}
+    
+    .result-card{text-align:center; padding:30px 22px}
+    .result-glow{font-size:42px; margin-bottom:4px}
+    .result-stats{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:16px 0}
+    .result-pill{padding:12px 14px; border-radius:999px; background:rgba(255,255,255,.08)}
+    .result-pill strong{color:var(--gold-soft)}
+    
+    .drum-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 30px; width: 100%; position: relative;}
+    .drum-instruction { font-size: 22px; color: var(--gold-soft); margin-bottom: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 999px;}
+    .drum-glow-box { background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.4) 50%, transparent 75%); border-radius: 50%; padding: 30px; display:flex; justify-content:center; align-items:center; margin-bottom: 10px;}
+    .magic-drum { width: 220px; height: 220px; object-fit: contain; cursor: pointer; transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; -webkit-user-drag: none; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));}
+    .magic-drum:active { transform: scale(0.9); }
+    .flying-note { position: fixed; width: 60px; height: 60px; object-fit: contain; mix-blend-mode: screen; pointer-events: none; animation: noteFly 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; z-index: 100;}
+    @keyframes noteFly { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.5) rotate(var(--rot)); opacity: 0; } }
+    .drum-answer-reveal { font-size: 64px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #ffd76a, 0 0 40px #ffb347; opacity: 0; transition: opacity 0.4s ease-in; position: absolute; bottom: -10px;}
+    .drum-answer-reveal.show { opacity: 1; transform: translateY(-10px); }
+
+    .spotlight-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; touch-action: none; border: 4px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); background: #0b1a11; user-select: none; -webkit-user-select: none;}
+    .spotlight-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: brightness(0.6) contrast(1.2); pointer-events: none; }
+    .spotlight-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: rgba(0,0,0,0.95); }
+    .spotlight-items-container { position: absolute; inset: 0; z-index: 2; pointer-events: auto;}
+    .spotlight-item { position: absolute; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8), 0 0 15px rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s, background 0.2s;}
+    .spotlight-item:active { transform: scale(0.9); }
+    .spotlight-item.excluded { opacity: 0; pointer-events: none; }
+    .spotlight-item.correct { background: rgba(100,255,100,0.8); text-shadow: none; box-shadow: 0 0 30px #64ff64;}
+    .flashlight-img { position: absolute; width: 140px; height: 140px; object-fit: contain; pointer-events: none; z-index: 10; transform: translate(-25%, -25%); filter: drop-shadow(4px 6px 12px rgba(0,0,0,0.6)); transition: opacity 0.3s ease;}
+    @keyframes floatUpFade { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, calc(-50% - 80px)) scale(1.2); opacity: 0; } }
+    .spotlight-surprise-btn { position: absolute; background: transparent; border: none; cursor: pointer; transition: transform 0.3s; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; padding: 0; }
+    .spotlight-surprise-btn:active { transform: scale(0.8); }
+    .surprise-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+    .ghost-flee { animation: flee 0.6s forwards; pointer-events: none;}
+    @keyframes flee { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(100px, -100px) scale(0); opacity: 0; } }
+
+    .bubble-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to top, #062215, #113622); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
+    .bubble-item { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); user-select: none; touch-action: manipulation; z-index: 2; animation: bubbleFloatUp var(--duration, 8s) linear infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+    .bubble-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 12px rgba(100,255,200,0.3)); }
+    @keyframes bubbleFloatUp { 0% { transform: translateY(350px) scale(0.7) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.1) rotate(25deg); opacity: 0; } }
+    .bubble-pop { animation: popBubble 0.3s forwards !important; pointer-events: none; }
+    @keyframes popBubble { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; filter: brightness(1.5); } 100% { transform: scale(0); opacity: 0; } }
+
+    .puzzle-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; touch-action: none; }
+    .puzzle-drop-zone { display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center;}
+    .puzzle-slot { width: 90px; height: 90px; border: 3px dashed rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,0.3); font-weight: 900; background: rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative;}
+    .puzzle-slot.highlight { border-color: #ffd76a; background: rgba(255,215,106,0.1); box-shadow: 0 0 15px rgba(255,215,106,0.3); }
+    .puzzle-piece { position: absolute; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 44px; color: #fff; font-weight: 900; text-shadow: 0 3px 5px rgba(0,0,0,0.6); cursor: grab; user-select: none; z-index: 10; transition: transform 0.1s; border-radius: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); touch-action: none;}
+    .puzzle-piece:active { cursor: grabbing; transform: scale(1.1) rotate(5deg); z-index: 11; }
+    .puzzle-piece.snapped { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) !important; cursor: default; }
+    .puzzle-tile-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; border-radius: 18px; }
+    .puzzle-fallback { background: linear-gradient(135deg, #8B5A2B, #5C3A21); border: 2px solid #ffd76a; }
+    
+    .scratch-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0 10px; width: 100%; position: relative;}
+    .scratch-container { position: relative; width: 240px; height: 240px; border-radius: 28px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px solid rgba(255,255,255,0.15); background: #fff; }
+    .scratch-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; font-weight: 900; color: #2d4a36; text-shadow: 2px 4px 0px rgba(0,0,0,0.1); background: radial-gradient(circle, #fff, #e6f4ea); z-index: 1;}
+    .scratch-canvas { position: absolute; inset: 0; z-index: 10; touch-action: none; cursor: crosshair; }
+
+    .path-stage { position: relative; width: 100%; height: 420px; border-radius: 20px; overflow: hidden; background-color: #1A4D46; border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
+    .path-river { position: absolute; inset: 0; background-image: url('images/river_bg.jpg'); background-size: cover; background-position: center bottom; z-index: 1;}
+    .path-river-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); background-size: 100% 200%; animation: waterFlow 4s linear infinite; z-index: 2; pointer-events: none; mix-blend-mode: overlay; }
+    @keyframes waterFlow { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
+    .path-stone { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 5px rgba(0,0,0,0.8); cursor: pointer; z-index: 5; background-size: contain; background-repeat: no-repeat; background-position: center; border-radius: 50%; touch-action: manipulation; }
+    .path-stone span { position: relative; top: 4px; z-index: 100; text-shadow: 0 0 8px rgba(0,0,0,1); pointer-events: none; white-space: nowrap; } 
+    .path-stone::before { content: ''; position: absolute; bottom: 5px; width: 60px; height: 20px; background: rgba(0,0,0,0.4); border-radius: 50%; z-index: -1; filter: blur(4px); }
+    .path-stone:active { transform: scale(0.9); }
+    .path-stone.sink { animation: stoneSink 0.5s forwards; pointer-events: none; }
+    @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
+    .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
+
+    .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; }
+    .memory-card { aspect-ratio: 3/4; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .memory-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+    .memory-card.flipped .memory-card-inner { transform: rotateY(180deg); }
+    .memory-card.matched { pointer-events: none; }
+    .memory-card.matched .memory-card-inner { opacity: 0; transform: rotateY(180deg) scale(0.5); transition: all 0.5s ease-in-out; }
+    .memory-card-front, .memory-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+    .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
+    .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+
+    .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
+    .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
+    .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
+    .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
+    .drag-fruit:active { cursor: grabbing; z-index: 11; }
+    .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+    .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 20px; gap: 12px; }
+    .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
+    .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; z-index: -1; pointer-events: none; }
+    .basket-label { background: rgba(20, 60, 40, 0.85); border: 2px solid #ffd76a; border-radius: 99px; padding: 8px 20px; display: flex; align-items: center; gap: 8px; color: #fff; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; touch-action: manipulation; white-space: nowrap;}
+    .vertical-pinyin { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 40px; font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px #ffd76a; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; }
+    .vertical-pinyin span { display: block; line-height: 1; }
+    .vertical-pinyin.show { opacity: 1; transform: translateY(-10px); }
+    .basket-success { animation: basketGlow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes basketGlow { 0% { filter: drop-shadow(0 0 0px #ffd76a) brightness(1); transform: scale(1); } 50% { filter: drop-shadow(0 0 40px #ffd76a) brightness(1.4); transform: scale(1.1); } 100% { filter: drop-shadow(0 0 10px rgba(0,0,0,0.4)) brightness(1); transform: scale(1); } }
+
+    .echo-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #0f1c29, #081015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    .echo-bg { position: absolute; inset: 0; background-image: url('images/valley.png'); background-size: cover; background-position: center; opacity: 0.6; pointer-events: none; z-index: 1;}
+    .mic-btn { width: 120px; height: 120px; border-radius: 50%; background: rgba(22, 56, 38, 0.8); border: 4px solid #ffd76a; display: flex; justify-content: center; align-items: center; font-size: 60px; z-index: 10; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: all 0.3s; touch-action: manipulation; }
+    .mic-btn.listening { animation: micPulse 0.8s infinite alternate; background: #ff6b81; border-color: #ff4757; }
+    @keyframes micPulse { 0% { transform: scale(0.95); box-shadow: 0 0 10px #ff6b81; } 100% { transform: scale(1.1); box-shadow: 0 0 40px #ff6b81, 0 0 80px #ff4757; } }
+    .echo-result { margin-top: 25px; min-height: 48px; font-size: 24px; color: #fff; z-index: 10; font-weight: bold; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.5); padding: 10px 24px; border-radius: 99px; transition: all 0.3s;}
+    
+    .echo-pinyin-target { font-size: 54px; font-weight: 900; color: #ffd76a; z-index: 10; margin-bottom: 25px; text-shadow: 0 0 20px rgba(255,215,106,0.5); text-align: center; display: flex; gap: 20px; align-items: center; justify-content: center;}
+    .echo-char { display: inline-block; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s; }
+    .echo-combo-wrap { width: 50px; display: flex; justify-content: center; } 
+    .vertical-pinyin-echo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 46px; font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px #ffd76a; opacity: 0; transform: scale(0.5); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .vertical-pinyin-echo span { display: block; line-height: 1; }
+    .vertical-pinyin-echo.show { opacity: 1; transform: scale(1); }
+    
+    .feed-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
+    .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.jpg'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
+    .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
+    .feed-elf-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); pointer-events: none; transition: transform 0.4s ease-out; }
+    .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
+    .feed-food { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); cursor: grab; user-select: none; border-radius: 50%; z-index: 10; touch-action: none; will-change: transform; }
+    .feed-food:active { cursor: grabbing; z-index: 11; }
+    .feed-food img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
+    .feed-elf-success { transform: scale(1.15); filter: drop-shadow(0 0 30px #ffd76a); }
+
+    @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
+    .pulse-anim { animation: pulse 1.5s infinite; }
+
+    .toast-msg { position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(22, 56, 38, 0.95); color: #fff; padding: 12px 24px; border-radius: 99px; font-size: 18px; font-weight: bold; border: 2px solid #ffd76a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .toast-msg.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .room-select-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:18px;}
+    .room-card-btn{min-height:120px; padding:16px; border-radius:22px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); color:#fff; text-align:left; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; cursor:pointer; transition: all 0.2s ease;}
+    .room-card-btn .room-emoji{font-size:28px} .room-card-btn strong{font-size:22px} .room-card-btn small{color:rgba(255,255,255,.78); line-height:1.5}
+    .room-card-btn.is-locked { opacity: 0.65; filter: grayscale(0.6); border-style: dashed; }
+    .room-card-btn.is-locked:hover { transform: none; opacity: 0.8; filter: grayscale(0.4); }
+    
+    .table-pick-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:16px;}
+    .table-pick-btn{min-height:64px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.08); color:#fff; font-size:22px; cursor:pointer;}
+    .table-pick-btn.selected{background:linear-gradient(180deg, rgba(255,238,176,.26), rgba(255,215,106,.18)); border-color:rgba(255,226,138,.4); color:#fffef4;}
+    
+    .rank-panel{padding:16px 18px !important; border-radius:24px; margin-bottom:14px;}
+    .rank-head{display:flex; justify-content:space-between; gap:14px; align-items:center;} .rank-head h3{font-size:24px; margin-top:4px;}
+    .rank-stars-box{min-width:120px; padding:12px 14px; border-radius:18px; background:rgba(255,255,255,.08); text-align:center;}
+    .rank-stars-box strong{display:block; margin-top:6px; font-size:24px; color:var(--gold-soft);}
+    .growth-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:10px !important; display:grid;}
+    .growth-pill{position:relative; overflow:hidden; min-height:86px; padding:14px 16px; border-radius:22px; background: radial-gradient(circle at 80% 18%, rgba(255,223,128,.14), transparent 20%), linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); box-shadow:0 10px 24px rgba(0,0,0,.18);}
+    .growth-pill strong{font-size:28px; display:block; margin-top:4px;}
+    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;}
+    .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
+    .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08)}
+    .hidden-btn{display:none !important;}
+
+    @media (max-width:760px){
+      .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: max(30px, env(safe-area-inset-top));} 
+      .app-header{padding:16px} h1{font-size:34px} h2{font-size:26px}
+      .intro-hero{grid-template-columns:1fr; text-align:left} .hero-spirit{width:136px;height:136px;border-radius:28px}
+      .name-grid{grid-template-columns:repeat(2,1fr)} .status-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;} .status-pill{padding:10px;} .status-pill strong{font-size:18px;}
+      .world-map{grid-template-columns:1fr 1fr;gap:8px;} .spirit-spot{grid-column:1 / -1;}
+      .growth-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+      .room-select-grid{grid-template-columns:1fr} .table-pick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .seed-actions-grid{grid-template-columns:1fr;} .garden-stage-display{grid-template-columns:1fr;}
+      .rank-head{flex-direction:column; align-items:flex-start;}
+      
+      .quiz-topbar{margin-top: 10px; margin-bottom:8px; padding:10px 12px; display: flex; justify-content: space-between;}
+      .question-card{padding:14px; border-radius:22px; min-height: auto;}
+      
+      .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 8px; padding-top: 0px; min-height: 36px; padding-right: 0; flex-wrap: nowrap; overflow: hidden;}
+      .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; text-align: center; flex-wrap: nowrap; }
+      .question-main .small-title { display: none; } 
+      .question-main h2 { font-size: 26px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; text-overflow: ellipsis;}
+      #roundText { font-size: 14px !important; padding: 2px 8px !important; white-space: nowrap;}
+      
+      .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
+      .magic-drum { width: 180px; height: 180px; }
+      .drum-instruction { font-size: 18px; }
+      .spotlight-stage { height: 300px; }
+      .flashlight-img { width: 100px; height: 100px; transform: translate(-25%, -25%); }
+      .bubble-stage { height: 300px; }
+      .bubble-item { width: 75px; height: 75px; font-size: 26px; }
+      .puzzle-stage { padding: 10px 20px; }
+      .puzzle-slot, .puzzle-piece { width: 75px; height: 75px; font-size: 34px; }
+      .scratch-container { width: 200px; height: 200px; }
+      .scratch-content { font-size: 80px; }
+      
+      .visual-area { margin: 4px 0 8px !important; }
+      
+      .path-stage { height: 360px; } 
+      .path-character { width: 55px; height: 55px; } 
+      .path-stone { width: 64px; height: 64px; font-size: 26px; } 
+      .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
+      
+      .memory-stage { min-height: 340px; padding: 15px;}
+      .memory-grid { gap: 10px; max-width: 280px;}
+      .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
+
+      .drag-stage { height: 440px; padding-bottom: 25px; }
+      .drag-tree { height: 280px; }
+      .drag-fruit-container { height: 280px; }
+      .drag-fruit { width: 70px; height: 70px; font-size: 28px;}
+      .drag-basket-wrap { gap: 16px; padding-bottom: 10px; }
+      .drag-basket { width: 160px; height: 120px; }
+      
+      .echo-stage { height: 400px; }
+      .mic-btn { width: 100px; height: 100px; font-size: 50px;}
+      .echo-pinyin-target { font-size: 42px; margin-bottom: 20px; gap: 12px;}
+      .echo-result { font-size: 20px; min-height: 40px; padding: 8px 16px; margin-top: 20px;}
+      .echo-combo-wrap { width: 40px; }
+      .vertical-pinyin-echo { font-size: 36px; }
+
+      .feed-stage { height: 380px; padding-bottom: 15px; justify-content: flex-end; }
+      .feed-elf-wrap { width: 160px; height: 160px; margin-top: 5px; margin-bottom: auto;}
+      .feed-food-container { height: 150px; }
+      .feed-food { width: 65px; height: 65px; font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="forest-bg" aria-hidden="true">
+    <div class="mist mist-1"></div><div class="mist mist-2"></div><div class="leaf leaf-a"></div><div class="leaf leaf-b"></div><div class="leaf leaf-c"></div><div class="glow glow-a"></div><div class="glow glow-b"></div><div class="glow glow-c"></div><div class="fireflies" id="fireflies"></div>
+  </div>
+
+  <main class="app-shell">
+    <header id="mainAppHeader" class="app-header glass">
+      <div>
+        <div class="eyebrow">森林探索學習</div>
+        <h1>慢慢變強</h1>
+        <div class="version-tag">v1.49.0 精靈動態餵食進度版</div>
+      </div>
+    </header>
+
+    <section id="introScreen" class="screen active">
+      <div class="card story-card intro-hero">
+        <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
+        <div class="story-text">
+          <h2>森林正在等一位小探險家</h2>
+          <p id="introStoryText" class="story-lines">很久以前，森林裡的樹會發光。<br>每一棵樹，都藏著一種能力。<br>可是有一天，森林的光被封印了。<br>小精靈找了很久，終於找到你。<br>你願意陪我一起，把森林慢慢點亮嗎？</p>
+          <div class="action-group">
+            <button id="introAcceptBtn" class="primary-btn" type="button">我願意幫你</button>
+            <button id="introReplayBtn" class="secondary-btn" type="button">再聽一次故事</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nameScreen" class="screen">
+      <div class="card name-card">
+        <div class="small-title">第一步</div>
+        <h2>選一位小精靈朋友</h2>
+        <div id="nameGrid" class="name-grid"></div>
+        <div class="action-group stack-mobile">
+          <button id="confirmNameBtn" class="primary-btn" type="button" disabled>選這位小精靈</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="titleScreen" class="screen">
+      <div class="card name-card">
+        <div class="small-title">第二步</div>
+        <h2>選你的探險稱號</h2>
+        <div id="titleGrid" class="name-grid"></div>
+        <div class="action-group stack-mobile">
+          <button id="confirmTitleBtn" class="primary-btn" type="button" disabled>用這個稱號</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="bondScreen" class="screen">
+      <div class="card story-card bond-card">
+        <div class="bond-top">
+          <img src="images/icon.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.src='icon.png'">
+          <div><div class="small-title">準備出發</div><h2 id="bondTitle">小探險家，你好呀。</h2></div>
+        </div>
+        <p id="bondStoryText" class="story-lines"></p>
+        <div class="action-group stack-mobile">
+          <button id="bondContinueBtn" class="primary-btn" type="button">一起進入森林</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="homeScreen" class="screen">
+      <div class="card dashboard-card">
+        <div class="world-topbar">
+          <div class="world-badge" id="worldTimeBadge">星夜森林</div>
+          <div class="title-actions">
+            <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
+            <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
+          </div>
+        </div>
+
+        <div class="companion-row">
+          <img src="images/icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.src='icon.png'">
+          <div>
+            <div class="small-title">你的陪伴精靈</div>
+            <h2 id="homeSpiritTitle">希望</h2>
+            <p id="welcomeLine" class="subtle">歡迎回來，小探險家。</p>
+          </div>
+        </div>
+
+        <div class="status-grid">
+          <div class="status-pill glass-soft"><span>森林亮度</span><strong id="brightnessText">12%</strong></div>
+          <div class="status-pill glass-soft"><span>光之碎片</span><strong id="shardText">0</strong></div>
+          <div class="status-pill glass-soft"><span>守護天數</span><strong id="streakText">1</strong></div>
+        </div>
+        
+        <div class="rank-panel glass-soft">
+          <div class="rank-head">
+            <div><div class="small-title">森林升級系統</div><h3 id="forestRankText">新手探險家</h3></div>
+            <div class="rank-stars-box"><span>總計熟練星</span><strong id="totalStarsText">0 ⭐</strong></div>
+          </div>
+          <p id="rankHintText" class="subtle">先從基本功開始，森林就會慢慢亮起來。</p>
+        </div>
+
+        <div class="map-panel">
+          <div class="map-title-row">
+            <h3>森林地圖</h3><small class="subtle">努力會讓森林長出新的地方。</small>
+          </div>
+          <div class="world-map">
+            <button class="world-spot spirit-spot" data-mode="today" type="button"><span class="spot-emoji">⭐</span><span class="spot-name">今日任務</span><small>跟著小精靈先做今天的探索</small></button>
+            <button class="world-spot symbol-spot" data-mode="symbol" type="button"><span class="spot-emoji">ㄅ</span><span class="spot-name">注音符號房</span><small>只練符號辨識</small></button>
+            <button class="world-spot combo-spot" data-mode="combo" type="button"><span class="spot-emoji">🧩</span><span class="spot-name">拼音練功房</span><small>結合與發音訓練</small></button>
+            <button class="world-spot math-spot" data-mode="math" type="button"><span class="spot-emoji">✖️</span><span class="spot-name">九九口訣房</span><small>背熟口訣節奏</small></button>
+            <button class="world-spot forest-spot" data-mode="forest" type="button"><span class="spot-emoji">🌲</span><span class="spot-name">森林冒險</span><small>終極綜合挑戰</small></button>
+            <button class="world-spot garden-spot compact-spot" id="gardenVisitBtn" type="button"><span class="spot-emoji" id="gardenVisual">🟫</span><span class="spot-name">森林花圃</span><small id="gardenText">空地</small></button>
+            <button class="world-spot village-spot compact-spot locked" id="villageBtn" type="button"><span class="spot-emoji">🌳</span><span class="spot-name">小精靈村</span><small id="villageHint">種下 5 顆種子後出現</small></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gardenScreen" class="screen">
+      <div class="card settings-card garden-page-card">
+        <div class="screen-topbar" style="display:flex; justify-content:space-between; margin-bottom:14px;">
+          <button id="gardenBackBtn" class="ghost-btn" type="button">← 回森林</button>
+          <div class="small-title">森林花圃</div>
+        </div>
+        <h2 id="gardenPageTitle">森林花圃</h2>
+        
+        <div class="growth-panel glass-soft integrated-seed-panel" style="padding:18px; border-radius:24px; margin-top:16px;">
+          <div class="growth-head" style="margin-bottom:12px;"><h3>我的種子袋</h3></div>
+          <div class="growth-grid">
+            <div class="growth-pill"><span>普通種子</span><strong id="gardenSeedNormalText">0 顆</strong></div>
+            <div class="growth-pill"><span>稀重種子</span><strong id="gardenSeedRareText">0 顆</strong></div>
+            <div class="growth-pill"><span>星光種子</span><strong id="gardenSeedStarText">0 顆</strong></div>
+            <div class="growth-pill"><span>已種下</span><strong id="gardenPlantedText">0 顆</strong></div>
+          </div>
+        </div>
+
+        <div class="garden-stage-display glass-soft" style="padding:18px; border-radius:24px; margin-top:16px;">
+          <div class="garden-big-visual" id="gardenBigVisual" style="background:transparent;">🟫</div>
+          <div>
+            <div class="small-title">目前進度</div>
+            <h3 id="gardenStageTitle">空地</h3>
+          </div>
+        </div>
+
+        <div class="seed-actions-grid">
+          <button id="plantNormalBtn" class="primary-btn" type="button">種普通種子</button>
+          <button id="plantRareBtn" class="secondary-btn" type="button">種稀有種子</button>
+          <button id="plantStarBtn" class="secondary-btn" type="button">種星光種子</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="villageScreen" class="screen">
+      <div class="card settings-card">
+        <div class="screen-topbar" style="margin-bottom:14px;"><button id="villageBackBtn" class="ghost-btn" type="button">← 回森林</button></div>
+        <h2>大樹樹洞村</h2>
+        <div class="tree-village glass-soft" style="padding:24px; border-radius:24px; margin-top:16px; text-align:center;">
+          <div style="font-size:84px; margin-bottom:12px;">🌳</div>
+          <div id="treeHoles" style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px;">
+            <div class="tree-hole">✨</div><div class="tree-hole">○</div><div class="tree-hole">○</div><div class="tree-hole">○</div>
+          </div>
+          <p id="villageStory" class="subtle">先多種幾顆種子，讓朋友慢慢搬進來。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="roomSelectScreen" class="screen">
+      <div class="card settings-card">
+        <div class="screen-topbar" style="margin-bottom:14px;">
+          <button id="roomSelectBackBtn" class="ghost-btn" type="button">← 回森林</button>
+        </div>
+        <h2 id="roomSelectTitle">房間</h2>
+        <p id="roomSelectDesc" class="subtle">請選擇挑戰模式</p>
+        <div id="roomTablePickArea" class="hidden-btn"></div>
+        <div id="roomSelectGrid" class="room-select-grid"></div>
+      </div>
+    </section>
+
+    <section id="quizScreen" class="screen">
+      <div class="quiz-topbar glass" style="margin-bottom: 8px; border: none; background: transparent; box-shadow: none; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button id="backHomeBtn" class="icon-btn" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); font-size: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" type="button">⬅</button>
+          <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px; font-weight: bold;">1 / 5</span>
+          <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
+        </div>
+      </div>
+
+      <div class="card question-card" id="mainQuestionCard" style="padding-top: 15px;">
+        
+        <div id="questionHead" class="question-head" style="display: flex; justify-content: center; margin-bottom: 12px;">
+          <div class="question-main">
+            <h2 id="questionPrompt" style="margin: 0; font-size: 36px; font-weight: 900; color: #fff;">題目</h2>
+          </div>
+        </div>
+
+        <div id="visualArea" class="visual-area collapsed"></div>
+        <div id="optionsWrap" class="options-wrap"></div>
+
+        <div class="feedback-bar">
+          <div style="width:100%;">
+            <p id="feedbackLine" class="feedback-line" style="text-align: center; color: var(--gold-soft); font-weight: bold; font-size: 22px;">慢慢來，我們一起試試看。</p>
+          </div>
+        </div>
+
+        <!-- 🌟 修復 iPhone 底部小白條卡住按鈕的問題 -->
+        <div style="margin-top:16px; padding-bottom: env(safe-area-inset-bottom); margin-bottom: 15px;">
+          <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" type="button">下一題</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="settingsScreen" class="screen">
+      <div class="card settings-card">
+        <div class="small-title">設定</div>
+        <h2>重新選擇</h2>
+        <h3 style="margin-top:16px;">小精靈</h3>
+        <div id="settingsNameGrid" class="name-grid"></div>
+        <h3 style="margin-top:16px;">探險稱號</h3>
+        <div id="settingsTitleGrid" class="name-grid"></div>
+        <div class="action-group stack-mobile">
+          <button id="settingsSaveBtn" class="primary-btn" type="button">保存設定</button>
+          <button id="settingsResetBtn" class="secondary-btn" type="button">清除所有進度</button>
+          <button id="settingsCancelBtn" class="secondary-btn" type="button">回到森林</button>
+        </div>
+        
+        <!-- 🌟 新增：防汛簽證APP傳承下來的「強制清除快取」按鈕 -->
+        <button id="forceClearCacheBtn" style="margin-top:24px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
+          ⚠️ 畫面卡住？點此強制清除快取
+        </button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen">
+      <div class="card result-card">
+        <div class="result-glow">✨</div>
+        <h2 id="resultTitle">今天森林亮了一點。</h2>
+        <div class="result-stats">
+          <div class="result-pill">獲得星星 <strong id="resultEarnedStars">⭐⭐⭐</strong></div>
+          <div class="result-pill">森林亮度 <strong id="resultBrightness">12%</strong></div>
+          <div class="result-pill">光之碎片 <strong id="resultShards">0</strong></div>
+        </div>
+        <div class="action-group stack-mobile" style="justify-content:center; margin-top:24px;">
+          <button id="resultReplayBtn" class="secondary-btn" type="button">再來一局</button>
+          <button id="resultHomeBtn" class="primary-btn" type="button">回地圖</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('dblclick', function(event) {
+        event.preventDefault();
+    }, { passive: false });
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+
+    try {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) { registration.unregister(); }
+        }).catch(e => {});
+      }
+    } catch(e){}
+
+    const safeStorage = {
+      get: function(key) { try { return localStorage.getItem(key); } catch(e) { return null; } },
+      set: function(key, val) { try { localStorage.setItem(key, val); } catch(e) {} },
+      clear: function() { try { localStorage.clear(); } catch(e) {} }
+    };
+
+    const SPIRIT_NAMES = ['希望', '勇光', '星語', '小智', '暖暖', '亮亮'];
+    const PLAYER_TITLES = ['小探險家', '森林朋友', '小勇士', '小旅人', '小學者', '小光點'];
+    
+    const SYMBOL_SET = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ','ㄚ','ㄛ','ㄜ','ㄝ','ㄞ','ㄟ','ㄠ','ㄡ','ㄢ','ㄣ','ㄤ','ㄥ','ㄦ','ㄧ','ㄨ','ㄩ'];
+    const COMBO_SET = ['ㄅㄚ','ㄅㄛ','ㄅㄧ','ㄆㄚ','ㄆㄛ','ㄇㄚ','ㄇㄛ','ㄇㄧ','ㄈㄚ','ㄉㄚ','ㄉㄧ','ㄊㄚ','ㄋㄚ','ㄋㄧ','ㄌㄚ','ㄌㄧ','ㄍㄚ','ㄎㄚ','ㄏㄚ'];
+    const COMBO_SOUND = {'ㄅㄚ':'巴','ㄅㄛ':'波','ㄅㄧ':'逼','ㄆㄚ':'趴','ㄆㄛ':'坡','ㄇㄚ':'媽','ㄇㄛ':'摸','ㄇㄧ':'咪','ㄈㄚ':'發','ㄉㄚ':'搭','ㄉㄧ':'滴','ㄊㄚ':'他','ㄋㄚ':'拿','ㄋㄧ':'妮','ㄌㄚ':'拉','ㄌㄧ':'哩','ㄍㄚ':'嘎','ㄎㄚ':'咖','ㄏㄚ':'哈'};
+
+    const HOMOPHONES = {
+      '巴': ['巴','八','吧','拔','把','爸','叭','疤','芭','ba'],
+      '波': ['波','撥','播','伯','脖','博','柏','卜','玻','剝','bo'],
+      '逼': ['逼','鼻','比','筆','必','畢','幣','閉','避','臂','壁','嗶','bi'],
+      '趴': ['趴','怕','帕','爬','琶','pa'],
+      '坡': ['坡','潑','婆','破','迫','魄','po'],
+      '媽': ['媽','麻','馬','瑪','碼','罵','嗎','嘛','ma'],
+      '摸': ['摸','魔','摩','膜','抹','默','莫','墨','沒','mo'],
+      '咪': ['咪','迷','謎','米','密','秘','蜜','眯','mi'],
+      '發': ['發','乏','伐','罰','法','髮','琺','fa'],
+      '搭': ['搭','答','打','大','達','噠','da'],
+      '滴': ['滴','低','迪','笛','底','抵','地','第','弟','帝','遞','di'],
+      '他': ['他','她','它','牠','塔','踏','塌','ta'],
+      '拿': ['拿','哪','那','納','吶','na'],
+      '妮': ['妮','泥','尼','你','妳','擬','逆','匿','膩','呢','ni'],
+      '拉': ['拉','啦','喇','臘','蠟','辣','la'],
+      '哩': ['哩','梨','離','厘','狸','李','理','裡','禮','力','歷','曆','勵','立','麗','粒','例','li'],
+      '嘎': ['嘎','咖','軋','尬','ga'],
+      '咖': ['咖','卡','喀','咔','ka'],
+      '哈': ['哈','蛤','ha']
+    };
+
+    let initialMastery = {};
+    try { initialMastery = JSON.parse(safeStorage.get('mm_mastery') || '{}'); } catch(e) {}
+
+    const state = {
+      spiritName: safeStorage.get('mm_strength_name') || '',
+      playerTitle: safeStorage.get('mm_player_title') || '',
+      brightness: Number(safeStorage.get('mm_strength_brightness') || 12),
+      shards: Number(safeStorage.get('mm_strength_shards') || 0),
+      normalSeeds: Number(safeStorage.get('mm_strength_seed_normal') || 0),
+      rareSeeds: Number(safeStorage.get('mm_strength_seed_rare') || 0),
+      starSeeds: Number(safeStorage.get('mm_strength_seed_star') || 0),
+      plantedSeeds: Number(safeStorage.get('mm_strength_planted_seeds') || 0),
+      gardenStage: Number(safeStorage.get('mm_strength_garden_stage') || 0),
+      streak: Number(safeStorage.get('mm_strength_streak') || 1),
+      mode: 'home', subMode: '', qIndex: 0, excluded: 0, questionList: [],
+      mastery: initialMastery, lastRank: safeStorage.get('mm_forest_rank') || '新手探險家',
+      selectedTable: 2, currentSpeechText: '', awaitingNext: false,
+      totalStars: Number(safeStorage.get('mm_total_stars') || 0), 
+      roundMistakes: 0, 
+      currentLevelId: null,
+      lastPathX: 50,
+      pathHistory: [] 
+    };
+
+    const ZHUYIN_LEVELS = [
+        { id: 1, title: '第一關：起步之島', symbols: ['ㄅ','ㄆ','ㄇ','ㄈ'], games: ['symbol-bubble', 'symbol-hear'] },
+        { id: 2, title: '第二關：微光之島', symbols: ['ㄉ','ㄊ','ㄋ','ㄌ'], games: ['symbol-scratch', 'symbol-hear'] },
+        { id: 3, title: '第三關：回聲之島', symbols: ['ㄍ','ㄎ','ㄏ'], games: ['symbol-spotlight', 'symbol-bubble'] },
+        { id: 4, title: '第四關：迷霧之島', symbols: ['ㄐ','ㄑ','ㄒ'], games: ['symbol-scratch', 'symbol-spotlight'] },
+        { id: 5, title: '第五關：勇氣之島', symbols: ['ㄓ','ㄔ','ㄕ','ㄖ'], games: ['symbol-bubble', 'symbol-scratch'] },
+        { id: 6, title: '第六關：微風之島', symbols: ['ㄗ','ㄘ','ㄙ'], games: ['symbol-spotlight', 'symbol-hear'] },
+        { id: 7, title: '第七關：大地之島', symbols: ['ㄚ','ㄛ','ㄜ','ㄝ'], games: ['symbol-bubble', 'symbol-scratch'] },
+        { id: 8, title: '第八關：星空之島', symbols: ['ㄞ','ㄟ','ㄠ','ㄡ'], games: ['symbol-spotlight', 'symbol-bubble'] },
+        { id: 9, title: '第九關：晨露之島', symbols: ['ㄢ','ㄣ','ㄤ','ㄥ'], games: ['symbol-scratch', 'symbol-hear'] },
+        { id: 10, title: '第十關：彩虹之島', symbols: ['ㄦ','ㄧ','ㄨ','ㄩ'], games: ['symbol-spotlight', 'symbol-bubble', 'symbol-scratch'] }
+    ];
+
+    const screens = {
+      intro: document.getElementById('introScreen'), name: document.getElementById('nameScreen'), title: document.getElementById('titleScreen'), bond: document.getElementById('bondScreen'),
+      home: document.getElementById('homeScreen'), garden: document.getElementById('gardenScreen'), village: document.getElementById('villageScreen'), roomSelect: document.getElementById('roomSelectScreen'),
+      quiz: document.getElementById('quizScreen'), settings: document.getElementById('settingsScreen'), result: document.getElementById('resultScreen')
+    };
+
+    function randomItem(list) { return list[Math.floor(Math.random() * list.length)]; }
+    function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+    
+    function showScreen(name) { 
+        Object.values(screens).forEach(el => { if(el) el.classList.remove('active'); }); 
+        if(screens[name]) screens[name].classList.add('active'); 
+        
+        const header = document.getElementById('mainAppHeader');
+        if (header) {
+            if (name === 'quiz') {
+                header.style.display = 'none'; 
+            } else {
+                header.style.display = 'flex';
+            }
+        }
+        window.scrollTo(0, 0); 
+    }
+
+    function showToast(msg) {
+        let toast = document.getElementById('appToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'appToast';
+            toast.className = 'toast-msg';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    let audioCtx = null;
+    function playDrumSound() {
+      if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+      osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+      osc.type = 'sine'; osc.frequency.setValueAtTime(250, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.15); 
+      gainNode.gain.setValueAtTime(0.8, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); 
+      osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+    }
+    function playPopSound() {
+      if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+      osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
+      gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); 
+      osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    }
+    function playSnapSound() {
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+        gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+    }
+    function playChimeSound() {
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+    }
+    function playJumpSound() {
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+    }
+    function playSplashSound() {
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    let availableVoices = []; let speakingNow = false;
+    
+    function loadVoices() { 
+        availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; 
+    }
+    if (window.speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function pickVoice() { 
+        if (!availableVoices.length) loadVoices(); 
+        let v = availableVoices.find(v => v.name.includes('Google') && (v.lang.includes('TW') || v.lang.includes('tw')));
+        if (!v) v = availableVoices.find(v => v.lang.includes('zh-TW') || v.lang.includes('cmn-TW'));
+        if (!v) v = availableVoices.find(v => v.name.includes('Taiwan') || v.name.includes('台灣') || v.name.includes('臺灣'));
+        if (!v) v = availableVoices.find(v => /zh/i.test(v.lang));
+        return v || null; 
+    }
+    
+    function syncSpeakButton() { 
+        const btn = document.getElementById('topSpeakBtn'); 
+        if (btn) btn.innerHTML = speakingNow ? '⏹' : '🔊'; 
+    }
+    
+    function stopSpeech() { 
+        if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} } 
+        speakingNow = false; 
+        syncSpeakButton(); 
+    }
+    
+    function speak(text) {
+      state.currentSpeechText = text; if (!('speechSynthesis' in window)) return;
+      try { window.speechSynthesis.cancel(); } catch (e) {}
+      const utter = new SpeechSynthesisUtterance(String(text).replace(/\n/g, ' '));
+      utter.lang = 'zh-TW'; utter.rate = 0.9;
+      const voice = pickVoice(); if (voice) utter.voice = voice;
+      utter.onend = () => { speakingNow = false; syncSpeakButton(); };
+      utter.onerror = () => { speakingNow = false; syncSpeakButton(); };
+      speakingNow = true; syncSpeakButton();
+      setTimeout(() => { try { window.speechSynthesis.speak(utter); } catch (e) { speakingNow = false; syncSpeakButton(); } }, 0);
+    }
+
+    function speakSequence(items, onComplete) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        speakingNow = true;
+        syncSpeakButton();
+        
+        let i = 0;
+        function next() {
+            if (!speakingNow) return; 
+            if (i >= items.length) {
+                speakingNow = false;
+                syncSpeakButton();
+                if(onComplete) onComplete();
+                return;
+            }
+            
+            let item = items[i];
+            if(item.action) item.action();
+            
+            if(item.text) {
+                const utter = new SpeechSynthesisUtterance(item.text);
+                utter.lang = 'zh-TW';
+                utter.rate = 0.85; 
+                const voice = pickVoice(); 
+                if (voice) utter.voice = voice;
+                
+                utter.onend = () => {
+                    i++;
+                    if(speakingNow) setTimeout(next, item.delay || 100);
+                };
+                utter.onerror = () => {
+                    i++; 
+                    if(speakingNow) setTimeout(next, item.delay || 100);
+                };
+                
+                setTimeout(() => { 
+                    if(speakingNow) window.speechSynthesis.speak(utter); 
+                }, 0);
+            } else {
+                i++;
+                if(speakingNow) setTimeout(next, item.delay || 100);
+            }
+        }
+        next();
+    }
+
+    function numberToZh(n) {
+      const zh = ['零','一','二','三','四','五','六','七','八','九'];
+      if (n <= 10) return n === 10 ? '十' : zh[n]; 
+      if (n < 20) return `十${zh[n % 10] || ''}`;
+      return `${zh[Math.floor(n / 10)]}十${n % 10 ? zh[n % 10] : ''}`;
+    }
+
+    function saveState() {
+      safeStorage.set('mm_strength_name', state.spiritName); safeStorage.set('mm_player_title', state.playerTitle);
+      safeStorage.set('mm_strength_brightness', String(state.brightness)); safeStorage.set('mm_strength_shards', String(state.shards));
+      safeStorage.set('mm_strength_seed_normal', String(state.normalSeeds)); safeStorage.set('mm_strength_seed_rare', String(state.rareSeeds));
+      safeStorage.set('mm_strength_seed_star', String(state.starSeeds)); safeStorage.set('mm_strength_planted_seeds', String(state.plantedSeeds));
+      safeStorage.set('mm_strength_garden_stage', String(state.gardenStage)); safeStorage.set('mm_forest_rank', state.lastRank || '新手探險家');
+      safeStorage.set('mm_total_stars', String(state.totalStars)); 
+      safeStorage.set('mm_mastery', JSON.stringify(state.mastery));
+    }
+
+    function updateHome() {
+      if(document.getElementById('homeSpiritTitle')) document.getElementById('homeSpiritTitle').textContent = `小精靈：${state.spiritName || '希望'}`;
+      if(document.getElementById('brightnessText')) document.getElementById('brightnessText').textContent = `${state.brightness}%`;
+      if(document.getElementById('shardText')) document.getElementById('shardText').textContent = String(state.shards);
+      if(document.getElementById('totalStarsText')) document.getElementById('totalStarsText').textContent = state.totalStars + ' ⭐'; 
+      if(document.getElementById('forestRankText')) document.getElementById('forestRankText').textContent = state.lastRank;
+      
+      const stages = ['空地', '發芽', '長葉', '開花', '小樹', '花園']; const visuals = ['🟫', '🌱', '🌿', '🌸', '🌳', '🌺'];
+      const currentStageStr = stages[Math.min(state.gardenStage, 5)];
+      
+      if(document.getElementById('gardenText')) document.getElementById('gardenText').textContent = currentStageStr;
+      if(document.getElementById('gardenVisual')) document.getElementById('gardenVisual').textContent = visuals[Math.min(state.gardenStage, 5)];
+      if(document.getElementById('gardenSeedNormalText')) document.getElementById('gardenSeedNormalText').textContent = `${state.normalSeeds} 顆`;
+      if(document.getElementById('gardenSeedRareText')) document.getElementById('gardenSeedRareText').textContent = `${state.rareSeeds} 顆`;
+      if(document.getElementById('gardenSeedStarText')) document.getElementById('gardenSeedStarText').textContent = `${state.starSeeds} 顆`;
+      if(document.getElementById('gardenPlantedText')) document.getElementById('gardenPlantedText').textContent = `${state.plantedSeeds} 顆`;
+      if(document.getElementById('gardenStageTitle')) document.getElementById('gardenStageTitle').textContent = currentStageStr;
+      if(document.getElementById('gardenBigVisual')) document.getElementById('gardenBigVisual').textContent = visuals[Math.min(state.gardenStage, 5)];
+
+      const treeHoles = document.getElementById('treeHoles');
+      if (treeHoles) {
+        const holes = [...treeHoles.children];
+        holes[0].textContent = '✨'; holes[0].classList.add('active');
+        holes[1].textContent = state.plantedSeeds >= 6 ? '🌱' : '○'; if(state.plantedSeeds >= 6) holes[1].classList.add('active');
+        holes[2].textContent = state.plantedSeeds >= 10 ? '📚' : '○'; if(state.plantedSeeds >= 10) holes[2].classList.add('active');
+        holes[3].textContent = state.plantedSeeds >= 14 ? '✖️' : '○'; if(state.plantedSeeds >= 14) holes[3].classList.add('active');
+      }
+    }
+
+    const ROOM_GAME_LIBRARY = {
+      combo: [
+        { key:'combo-match', emoji:'🎴', title:'翻牌配對', desc:'【記憶類】翻開木牌，找出相同的拼音。', locked: false },
+        { key:'combo-puzzle', emoji:'🧩', title:'磁鐵拼圖', desc:'拖曳注音木牌，吸附拼出正確的音。', locked: false },
+        { key:'combo-drag', emoji:'🧺', title:'收果子', desc:'【拖曳類】把正確的拼音果子收到籃子裡。', locked: false },
+        { key:'combo-echo', emoji:'🗣️', title:'回聲谷', desc:'【節奏類】按下麥克風大聲唸出來。', locked: false }
+      ],
+      math: [
+        { key:'math-table', emoji:'📘', title:'順序口訣', desc:'從 1 到 9，依序把這一張表練熟。', locked: false },
+        { key:'math-drum', emoji:'🥁', title:'節奏鼓', desc:'跟著口訣節奏，敲擊大樹鼓！', locked: false },
+        { key:'math-bubble', emoji:'🫧', title:'泡泡森林', desc:'戳破藏著正確答案的泡泡。', locked: false },
+        { key:'math-scratch', emoji:'🪙', title:'魔法刮刮樂', desc:'刮開迷霧，看看是哪個答案！', locked: false },
+        { key:'math-path', emoji:'🦌', title:'小鹿過河', desc:'讓小鹿跳向正確的石頭過河！', locked: false }, 
+        { key:'math-feed', emoji:'🍓', title:'精靈餵食', desc:'【拖曳類】把寫著答案的食物餵給小精靈。', locked: false }
+      ],
+      forest: [
+        { key:'forest-catch', emoji:'🧚', title:'抓精靈', desc:'【捕捉類】綜合測驗！抓出正確的小精靈。', locked: true },
+        { key:'forest-meteor', emoji:'🌠', title:'流星捕捉', desc:'【捕捉類】接住天上掉下來的流星答案。', locked: true },
+        { key:'forest-maze', emoji:'🗺️', title:'森林迷宮', desc:'【路徑類】在迷宮路口選出正確的答案前進。', locked: true },
+        { key:'forest-parkour', emoji:'🏃', title:'森林跑酷', desc:'【動作類】極速挑戰！3秒內選出正確的路。', locked: true },
+        { key:'forest-lightning', emoji:'⚡', title:'閃電選擇', desc:'【動作類】限時內極速答題。', locked: true },
+        { key:'forest-fish', emoji:'🎣', title:'森林釣魚', desc:'【收集類】釣起身上寫著正確答案的魚。', locked: true }
+      ]
+    };
+
+    function generateSymbolLevelQuestion(levelData) {
+        const answer = randomItem(levelData.symbols);
+        const gameType = randomItem(levelData.games);
+        
+        let pool = [...levelData.symbols].filter(x => x !== answer);
+        pool = shuffle(pool);
+        let fakes = pool.slice(0, 3);
+        
+        if (fakes.length < 3) {
+           let allUnlocked = [];
+           ZHUYIN_LEVELS.forEach(l => {
+              if (state.totalStars >= (l.id - 1) * 5) allUnlocked.push(...l.symbols);
+           });
+           let extraPool = shuffle(allUnlocked.filter(x => x !== answer && !fakes.includes(x)));
+           fakes = [...fakes, ...extraPool].slice(0, 3 - fakes.length);
+        }
+        
+        const opts = shuffle([{ text: answer, speak: answer }, ...fakes.map(x => ({ text: x, speak: x }))]);
+        
+        let promptText, speakText, uiType, scene;
+
+        if (gameType === 'symbol-bubble') {
+            promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`;
+            uiType = 'bubble'; scene = '🫧 戳破往上飄的正確泡泡！';
+        } else if (gameType === 'symbol-spotlight') {
+            promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`;
+            uiType = 'spotlight'; scene = '🔦 在黑黑的地方找找看目標在哪裡！';
+        } else if (gameType === 'symbol-scratch') {
+            promptText = `刮開表面，看看底下藏著什麼？`; speakText = `請刮開青苔`;
+            uiType = 'scratch'; scene = '🪙 用手狂搓！刮開青苔看看是什麼！';
+        } else {
+            promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`;
+            uiType = 'tiles'; scene = '🎧 仔細聽，選出正確的符號！';
+        }
+
+        return {
+            area: levelData.title, kind: gameType, promptText, speakText, answer, options: opts, uiType, scene
+        };
+    }
+
+    function buildTablePractice(table) {
+      const list = [];
+      for (let step = 1; step <= 9; step += 1) {
+        const answer = table * step;
+        const candidates = [];
+        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
+        while (candidates.length < 2) {
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
+        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
+        list.push({ area: '九九口訣房', kind: 'math-basic', promptText: `${numberToZh(table)}${numberToZh(step)}`, speakText: `${numberToZh(table)}${numberToZh(step)}？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'math-v1', scene: '🌟 依照順序，把這張表練成直覺反射。', options });
+      }
+      return list;
+    }
+    function buildDrumGameSet(table) {
+      const list = [];
+      for (let step = 1; step <= 9; step += 1) {
+        const answer = table * step;
+        list.push({ area: '九九口訣房', kind: 'math-drum', promptText: `${table} × ${step} = ?`, speakText: `${numberToZh(table)}${numberToZh(step)}`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'drum', scene: '🥁 森林節奏鼓：跟著心裡的節奏敲擊！', options: [] });
+      }
+      return list;
+    }
+    function buildMathBubbleSet(table) {
+      const list = [];
+      for (let i = 0; i < 5; i += 1) {
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
+        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
+        while (candidates.length < 3) {
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
+        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }, { text: String(candidates[2]), speak: numberToZh(candidates[2]) }]);
+        list.push({ area: '九九口訣房', kind: 'math-bubble', promptText: `${table} × ${step} = ?`, speakText: `${numberToZh(table)}${numberToZh(step)}？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'bubble', scene: '🫧 戳破藏著正確答案的泡泡！', options });
+      }
+      return list;
+    }
+    function buildMathScratchSet(table) {
+      const list = [];
+      for (let i = 0; i < 5; i += 1) {
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
+        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
+        while (candidates.length < 3) {
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
+        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }, { text: String(candidates[2]), speak: numberToZh(candidates[2]) }]);
+        list.push({ area: '九九口訣房', kind: 'math-scratch', promptText: `請問答案是多少？`, speakText: `刮開青苔看看題目是什麼`, answer: String(answer), scratchText: `${table} × ${step}`, tableBase: table, tableTarget: step, uiType: 'scratch', scene: '🪙 刮刮看，底下藏著什麼題目！', options });
+      }
+      return list;
+    }
+
+    function buildMathPathSet(table) {
+      const list = [];
+      for (let i = 0; i < 5; i += 1) {
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
+        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
+        while (candidates.length < 2) { 
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
+        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
+        list.push({ area: '九九口訣房', kind: 'math-path', promptText: `${table} × ${step} = ?`, speakText: `${numberToZh(table)}${numberToZh(step)}？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'path', scene: '🦌 點擊正確的石頭讓小鹿過河！', options });
+      }
+      return list;
+    }
+    
+    /* 🌟 新增：精靈動態餵食敘事資料結構 */
+    function buildMathFeedSet(table) {
+      const list = [];
+      const feedDialogues = [
+        '肚子好餓喔...可以餵我吃正確的數字果實嗎？',
+        '好好吃喔！我還要吃！',
+        '有感覺一點點飽了，再給我一點！',
+        '哇！肚子快要裝不下了！',
+        '最後一口了！吃完這口就飽了！'
+      ];
+      
+      const feedVoiceScenes = [
+        '肚子好餓喔，可以餵我嗎？',
+        '好好吃喔！我還要吃！',
+        '有一點點飽了，再給我一點！',
+        '哇！肚子快裝不下了！',
+        '最後一口了！'
+      ];
+
+      for (let i = 0; i < 5; i += 1) {
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
+        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
+        while (candidates.length < 2) { 
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
+        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
+        list.push({ 
+            area: '九九口訣房', 
+            kind: 'math-feed', 
+            promptText: `${table} × ${step} = ?`, 
+            speakText: `${feedVoiceScenes[i]} ${numberToZh(table)}${numberToZh(step)}是多少？`, 
+            answer: String(answer), 
+            tableBase: table, 
+            tableTarget: step, 
+            uiType: 'feed', 
+            scene: '🍓 把正確答案的果實餵給小精靈！', 
+            feedPrompt: feedDialogues[i], /* 視覺顯示台詞 */
+            options 
+        });
+      }
+      return list;
+    }
+
+    function buildComboPuzzleSet() {
+      const list = [];
+      for (let i = 0; i < 5; i++) {
+        const targetCombo = randomItem(COMBO_SET); 
+        const leftChar = targetCombo.charAt(0); 
+        const rightChar = targetCombo.charAt(1); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        let allVowels = [...new Set(COMBO_SET.map(c => c.charAt(1)))];
+        let otherVowels = shuffle(allVowels.filter(v => v !== rightChar)).slice(0, 2);
+        let options = shuffle([rightChar, ...otherVowels]);
+        
+        list.push({ area: '拼音練功房', kind: 'combo-puzzle', promptText: `請拼出「${targetCombo}」`, speakText: `請拼出，${soundWord}`, answer: rightChar, leftChar: leftChar, targetCombo: targetCombo, soundWord: soundWord, options: options.map(o => ({text: o, speak: o})), uiType: 'puzzle', scene: '🧩 把左邊的木牌，拖過去和正確的韻母拼在一起！' });
+      }
+      return list;
+    }
+    
+    function buildComboMatchSet() {
+      const list = [];
+      for (let i = 0; i < 3; i++) {
+        let chosenCombos = shuffle(COMBO_SET).slice(0, 3);
+        let pairs = [];
+        chosenCombos.forEach(combo => {
+            pairs.push({ id: combo + '_1', val: combo, speak: COMBO_SOUND[combo] });
+            pairs.push({ id: combo + '_2', val: combo, speak: COMBO_SOUND[combo] });
+        });
+        let shuffledCards = shuffle(pairs);
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-match', 
+            promptText: `翻牌配對`, 
+            speakText: `請翻出兩張一樣的牌`, 
+            answer: '配對完成', 
+            cardsData: shuffledCards, 
+            uiType: 'match', 
+            scene: '🎴 記住牌的位置，找出相同的配對！' 
+        });
+      }
+      return list;
+    }
+
+    function buildComboDragSet() {
+      const list = [];
+      for (let i = 0; i < 5; i++) {
+        const targetCombo = randomItem(COMBO_SET); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        const p1 = targetCombo.charAt(0);
+        const p2 = targetCombo.charAt(1);
+        
+        let pool = [...COMBO_SET].filter(c => c !== targetCombo);
+        let options = shuffle([targetCombo, ...shuffle(pool).slice(0, 2)]);
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-drag', 
+            promptText: `尋找「${targetCombo}」`, 
+            speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, 
+            answer: targetCombo, 
+            soundWord: soundWord, 
+            basketText: `${p1} + ${p2}`, 
+            options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), 
+            uiType: 'drag', 
+            scene: '🧺 拖曳正確的果子放到籃子裡！' 
+        });
+      }
+      return list;
+    }
+
+    function buildComboEchoSet() {
+      const list = [];
+      for (let i = 0; i < 5; i++) {
+        const targetCombo = randomItem(COMBO_SET); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        const p1 = targetCombo.charAt(0);
+        const p2 = targetCombo.charAt(1);
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-echo', 
+            promptText: `大聲唸出來`, 
+            speakText: `請按下麥克風，大聲唸出，${p1}，${p2}，${soundWord}`, 
+            answer: soundWord, 
+            soundWord: soundWord, 
+            targetCombo: targetCombo,
+            targetPinyin: `${p1} ${p2}`,
+            uiType: 'echo', 
+            scene: '🗣️ 按下麥克風，大聲說出答案！' 
+        });
+      }
+      return list;
+    }
+
+    function buildRoomSelect(mode) {
+      state.mode = mode;
+      const grid = document.getElementById('roomSelectGrid');
+      const tablePickArea = document.getElementById('roomTablePickArea');
+      if(!grid || !tablePickArea) return; 
+      
+      grid.innerHTML = '';
+      tablePickArea.innerHTML = '';
+      tablePickArea.className = 'hidden-btn';
+      
+      if (mode === 'symbol') {
+        document.getElementById('roomSelectTitle').textContent = '注音符號島嶼 (闖關模式)';
+        document.getElementById('roomSelectDesc').textContent = `目前收集：${state.totalStars} 顆熟練星 🌟`;
+        
+        ZHUYIN_LEVELS.forEach(lvl => {
+          const reqStars = (lvl.id - 1) * 5;
+          const isLocked = state.totalStars < reqStars;
+          
+          const btn = document.createElement('button'); 
+          btn.className = `room-card-btn ${isLocked ? 'is-locked' : ''}`;
+          
+          let statusHtml = isLocked 
+              ? `<small style="color:#ff9f43">🔒 需要 ${reqStars} 顆星解鎖</small>` 
+              : `<small style="color:#ffd76a">${lvl.symbols.join(' ')}</small>`;
+              
+          btn.innerHTML = `<span class="room-emoji">${isLocked ? '🔒' : '🏝️'}</span><strong>${lvl.title}</strong>${statusHtml}`;
+          
+          btn.onclick = () => {
+              if (isLocked) {
+                  showToast(`🚧 需要累積 ${reqStars} 顆熟練星才能解鎖喔！(目前 ${state.totalStars} 顆)`);
+              } else {
+                  startZhuyinLevel(lvl); 
+              }
+          };
+          grid.appendChild(btn);
+        });
+      } 
+      else {
+          if (mode === 'combo') document.getElementById('roomSelectTitle').textContent = '拼音練功房';
+          else if (mode === 'forest') document.getElementById('roomSelectTitle').textContent = '森林冒險 (綜合)';
+          else if (mode === 'math') {
+            document.getElementById('roomSelectTitle').textContent = '九九口訣房';
+            tablePickArea.className = 'table-pick-grid';
+            for (let t = 2; t <= 9; t += 1) {
+              const btn = document.createElement('button'); btn.className = `table-pick-btn${state.selectedTable === t ? ' selected' : ''}`;
+              btn.textContent = `${t} 的表`;
+              btn.onclick = () => { state.selectedTable = t; [...tablePickArea.children].forEach(n => n.classList.remove('selected')); btn.classList.add('selected'); };
+              tablePickArea.appendChild(btn);
+            }
+          }
+          
+          const lib = ROOM_GAME_LIBRARY[mode] || [];
+          lib.forEach(item => {
+            const btn = document.createElement('button'); 
+            btn.className = `room-card-btn ${item.locked ? 'is-locked' : ''}`;
+            btn.innerHTML = `<span class="room-emoji">${item.emoji}</span><strong>${item.title}</strong><small>${item.desc}</small>`;
+            btn.onclick = () => {
+                if (item.locked) showToast(`🚧 ${item.title} 正在努力建造中，敬請期待！`);
+                else startSubMode(item.key); 
+            };
+            grid.appendChild(btn);
+          });
+      }
+      showScreen('roomSelect');
+    }
+
+    function startZhuyinLevel(lvl) {
+        state.subMode = 'zhuyin-level';
+        state.currentLevelId = lvl.id;
+        state.qIndex = 0; state.excluded = 0; state.awaitingNext = false;
+        state.roundMistakes = 0; 
+        state.lastPathX = 50; 
+        state.pathHistory = []; 
+        stopSpeech();
+        window.onpointerup = null; window.ontouchend = null;
+
+        state.questionList = Array.from({ length: 5 }, () => generateSymbolLevelQuestion(lvl));
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = lvl.title;
+
+        showScreen('quiz'); renderQuestion();
+    }
+
+    function startSubMode(subMode) {
+      state.subMode = subMode; state.currentLevelId = null; state.qIndex = 0; state.excluded = 0; state.awaitingNext = false;
+      state.roundMistakes = 0; 
+      state.lastPathX = 50; 
+      state.pathHistory = []; 
+      stopSpeech(); window.onpointerup = null; window.ontouchend = null;
+      
+      if(subMode === 'math-table') {
+        state.questionList = buildTablePractice(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `${state.selectedTable} 的表`;
+      } else if (subMode === 'math-drum') {
+        state.questionList = buildDrumGameSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `節奏鼓｜${state.selectedTable}的表`;
+      } else if (subMode === 'math-bubble') {
+        state.questionList = buildMathBubbleSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `泡泡森林｜${state.selectedTable}的表`;
+      } else if (subMode === 'combo-puzzle') {
+        state.questionList = buildComboPuzzleSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '磁鐵拼圖';
+      } else if (subMode === 'math-scratch') {
+        state.questionList = buildMathScratchSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `魔法刮刮樂｜${state.selectedTable}的表`;
+      } else if (subMode === 'math-path') {
+        state.questionList = buildMathPathSet(state.selectedTable); 
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `小鹿過河｜${state.selectedTable}的表`;
+      } else if (subMode === 'combo-match') {
+        state.questionList = buildComboMatchSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '翻牌配對';
+      } else if (subMode === 'combo-drag') {
+        state.questionList = buildComboDragSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '收果子';
+      } else if (subMode === 'combo-echo') {
+        state.questionList = buildComboEchoSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '回聲谷';
+      } else if (subMode === 'math-feed') {
+        /* 🌟 啟動精靈餵食 */
+        state.questionList = buildMathFeedSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `精靈餵食｜${state.selectedTable}的表`;
+      }
+
+      showScreen('quiz'); renderQuestion();
+    }
+
+    function renderQuestion() {
+      setTimeout(() => { window.scrollTo(0, 0); }, 50);
+        
+      const q = state.questionList[state.qIndex];  
+      state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
+      q.playVoice = null;
+      
+      if(document.getElementById('nextQuestionBtn')) { 
+          const nBtn = document.getElementById('nextQuestionBtn');
+          nBtn.classList.add('hidden-btn'); 
+          nBtn.textContent = '下一題'; 
+          nBtn.classList.remove('pulse-anim');
+      }
+      
+      if(document.getElementById('questionPrompt')) {
+          document.getElementById('questionPrompt').textContent = q.promptText;
+          if ((q.uiType === 'path' || q.uiType === 'feed') && q.kind && q.kind.startsWith('math')) {
+              document.getElementById('questionPrompt').textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
+          }
+      }
+      if(document.getElementById('roundText')) {
+          document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
+      }
+      
+      const qHead = document.getElementById('questionHead');
+      if (qHead) {
+          if (q.uiType === 'drag' || q.uiType === 'echo') {
+              qHead.style.display = 'none'; 
+          } else {
+              qHead.style.display = 'flex'; 
+          }
+      }
+      
+      const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
+      const optionsWrap = document.getElementById('optionsWrap'); if(optionsWrap) optionsWrap.innerHTML = '';
+      if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
+      
+      if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
+      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
+      
+      if (q.uiType === 'spotlight') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '在黑黑的地方滑動手指，找找看目標在哪裡！';
+
+        const stage = document.createElement('div'); 
+        stage.className = 'spotlight-stage';
+        
+        const bgList = ['dark_forest_1.png', 'dark_forest_2.png', 'dark_forest_3.png'];
+        const randomBg = bgList[Math.floor(Math.random() * bgList.length)];
+
+        const bgImg = document.createElement('img');
+        bgImg.src = 'images/' + randomBg;
+        bgImg.className = 'spotlight-bg';
+        bgImg.setAttribute('draggable', 'false');
+        bgImg.onerror = function() { 
+          this.onerror = function() { this.style.display='none'; this.parentElement.style.background='#1a2f23'; };
+          this.src = 'images/dark_forest.png'; 
+        };
+        stage.appendChild(bgImg);
+        stage.ondragstart = () => false;
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.className = 'spotlight-items-container';
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'spotlight-overlay';
+        overlay.style.background = `radial-gradient(circle 100px at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`;
+
+        const flashlightImg = document.createElement('img');
+        flashlightImg.src = 'images/flashlight.png';
+        flashlightImg.className = 'flashlight-img';
+        flashlightImg.onerror = function() { this.onerror = null; this.src = 'images/icon.png'; };
+        flashlightImg.style.left = '50%';
+        flashlightImg.style.top = '50%';
+
+        q.options.forEach((opt) => {
+          const btn = document.createElement('button');
+          btn.className = 'spotlight-item';
+          btn.textContent = opt.text;
+          
+          const posX = 15 + Math.random() * 70;
+          const posY = 15 + Math.random() * 70;
+          btn.style.left = `calc(${posX}% - 32px)`;
+          btn.style.top = `calc(${posY}% - 32px)`;
+          
+          btn.onclick = () => {
+            if (state.awaitingNext || btn.classList.contains('excluded')) return;
+            
+            if (opt.text === q.answer) {
+              btn.classList.add('correct'); 
+              state.awaitingNext = true;
+              overlay.style.background = 'transparent';
+              flashlightImg.style.opacity = '0'; 
+              
+              if(document.getElementById('nextQuestionBtn')) {
+                  const nextBtn = document.getElementById('nextQuestionBtn');
+                  nextBtn.classList.remove('hidden-btn');
+                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+              }
+
+              const reply = `答案是 ${opt.speak}。太好了，森林亮起來了！`;
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+              speak(reply);
+            } else {
+              btn.classList.add('excluded'); 
+              state.excluded += 1;
+              state.roundMistakes += 1; 
+              const reply = `你找到了 ${opt.speak}。沒關係，我們繼續用手電筒找找看。`;
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+              speak(reply);
+            }
+          };
+          itemsContainer.appendChild(btn);
+        });
+
+        if (Math.random() < 0.7) { 
+          const surprises = [
+            { id: 'gem', src: 'gem.png', icon: '💎', msg: '發現了隱藏寶石！碎片 +1 ✨', color: '#ffd76a', float: '+1 ✨' },
+            { id: 'animal', src: 'animal.png', icon: '❤️', msg: '噓...小動物睡得好香。', color: '#ff6b81', float: '❤️❤️❤️' },
+            { id: 'ghost', src: 'ghost.png', icon: '💨', msg: '噗！是調皮的搗蛋幽靈！', color: '#a29bfe', float: '😜 噗~' }
+          ];
+          const surprise = surprises[Math.floor(Math.random() * surprises.length)];
+          
+          const surpriseBtn = document.createElement('button');
+          surpriseBtn.className = 'spotlight-surprise-btn';
+          
+          const surpriseImg = document.createElement('img');
+          surpriseImg.src = 'images/' + surprise.src;
+          surpriseImg.className = 'surprise-img';
+          
+          surpriseImg.onerror = function() {
+            this.style.display = 'none';
+            this.parentElement.innerHTML = `<span style="font-size:50px; filter:drop-shadow(0 0 10px rgba(255,255,255,0.8));">${surprise.icon}</span>`;
+          };
+          
+          surpriseBtn.appendChild(surpriseImg);
+          
+          const posX = 15 + Math.random() * 70;
+          const posY = 15 + Math.random() * 70;
+          surpriseBtn.style.left = `calc(${posX}% - 40px)`;
+          surpriseBtn.style.top = `calc(${posY}% - 40px)`;
+          
+          let clicked = false;
+          surpriseBtn.onpointerdown = (e) => {
+            if (state.awaitingNext || clicked) return;
+            clicked = true;
+            
+            if (surprise.id === 'gem') {
+              state.shards += 1;
+              updateHome();
+              playDrumSound(); 
+            }
+            
+            const floatEl = document.createElement('div');
+            floatEl.textContent = surprise.float;
+            floatEl.style.position = 'fixed';
+            const rect = surpriseBtn.getBoundingClientRect();
+            floatEl.style.left = (rect.left + rect.width/2) + 'px';
+            floatEl.style.top = (rect.top) + 'px';
+            floatEl.style.color = surprise.color;
+            floatEl.style.fontSize = '32px';
+            floatEl.style.fontWeight = '900';
+            floatEl.style.pointerEvents = 'none';
+            floatEl.style.zIndex = '9999';
+            floatEl.style.textShadow = '0 2px 10px rgba(0,0,0,0.5)';
+            floatEl.style.animation = 'floatUpFade 1s forwards';
+            document.body.appendChild(floatEl);
+            setTimeout(() => floatEl.remove(), 1000);
+            
+            if (document.getElementById('feedbackLine')) {
+              document.getElementById('feedbackLine').textContent = surprise.msg;
+              speak(surprise.msg);
+            }
+            
+            if (surprise.id === 'ghost') {
+              surpriseBtn.classList.add('ghost-flee');
+              setTimeout(() => surpriseBtn.remove(), 600);
+            } else {
+              surpriseBtn.style.transform = 'scale(0)';
+              setTimeout(() => surpriseBtn.remove(), 300);
+            }
+          };
+          itemsContainer.appendChild(surpriseBtn);
+        }
+
+        stage.appendChild(itemsContainer);
+        stage.appendChild(overlay);
+        stage.appendChild(flashlightImg);
+
+        function moveLight(e) {
+          if(state.awaitingNext) return; 
+          e.preventDefault(); 
+          const rect = stage.getBoundingClientRect();
+          let clientX = e.clientX || 0;
+          let clientY = e.clientY || 0;
+          if (e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } 
+          else if (clientX === 0 && clientY === 0 && e.changedTouches && e.changedTouches.length > 0) { clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY; }
+
+          const x = clientX - rect.left;
+          const y = clientY - rect.top;
+          
+          overlay.style.background = `radial-gradient(circle 100px at ${x}px ${y}px, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`;
+          flashlightImg.style.left = `${x}px`; flashlightImg.style.top = `${y}px`;
+        }
+
+        stage.addEventListener('mousemove', moveLight);
+        stage.addEventListener('touchmove', moveLight, {passive: false});
+        stage.addEventListener('touchstart', moveLight, {passive: false});
+        stage.addEventListener('mousedown', moveLight);
+
+        optionsWrap.appendChild(stage);
+      }
+      else if (q.uiType === 'drum') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '打開耳朵聽小精靈怎麼說，再敲出答案！';
+
+        const stage = document.createElement('div'); stage.className = 'drum-stage';
+        const instruction = document.createElement('div'); instruction.className = 'drum-instruction'; instruction.textContent = '👇 請跟著節奏敲擊 2 下 👇';
+        const glowBox = document.createElement('div'); glowBox.className = 'drum-glow-box';
+        
+        const drumImg = document.createElement('img');
+        drumImg.src = 'images/drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='images/icon.png'; }; 
+        
+        let taps = 0; const requiredTaps = 2; 
+        const answerReveal = document.createElement('div'); answerReveal.className = 'drum-answer-reveal'; answerReveal.textContent = q.answer;
+
+        drumImg.onpointerdown = (e) => {
+          if (state.awaitingNext) return;
+          taps++; playDrumSound();
+          
+          const note = document.createElement('img');
+          note.src = 'images/note.png'; note.className = 'flying-note'; note.onerror = function() { this.style.display='none'; };
+          const rect = drumImg.getBoundingClientRect(); const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
+          note.style.left = (e.clientX || cx) + 'px'; note.style.top = (e.clientY || cy) + 'px';
+          note.style.setProperty('--dx', (Math.random()*160 - 80) + 'px'); note.style.setProperty('--dy', (Math.random()*-150 - 50) + 'px'); note.style.setProperty('--rot', (Math.random()*60 - 30) + 'deg');
+          document.body.appendChild(note); setTimeout(() => note.remove(), 1000);
+
+          if (taps >= requiredTaps) {
+            state.awaitingNext = true; answerReveal.classList.add('show');
+            let de = ''; const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得';
+            const fullSpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${numberToZh(ansNum)}`;
+            speak(fullSpeak);
+            
+            if(document.getElementById('nextQuestionBtn')) {
+                const nextBtn = document.getElementById('nextQuestionBtn');
+                nextBtn.classList.remove('hidden-btn');
+                setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+            }
+
+            if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！答案就是 ${q.answer}！`;
+          }
+        };
+
+        glowBox.appendChild(drumImg); stage.appendChild(instruction); stage.appendChild(glowBox); stage.appendChild(answerReveal); optionsWrap.appendChild(stage);
+      } 
+      else if (q.uiType === 'bubble') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '戳破寫著正確答案的泡泡！';
+        if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
+
+        const stage = document.createElement('div'); 
+        stage.className = 'bubble-stage';
+        
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('div');
+          btn.className = 'bubble-item';
+          
+          const leftPos = 10 + Math.random() * 65; 
+          const delay = Math.random() * 3; 
+          const duration = 6 + Math.random() * 5; 
+          
+          btn.style.left = `${leftPos}%`;
+          btn.style.setProperty('--delay', `${delay}s`);
+          btn.style.setProperty('--duration', `${duration}s`);
+          
+          const img = document.createElement('img');
+          img.src = 'images/bubble.png';
+          img.className = 'bubble-img';
+          img.onerror = function() { 
+            this.onerror = null; 
+            this.src = 'images/icon.png'; 
+            this.style.opacity = '0.4'; 
+            this.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.8))';
+          };
+          
+          const txt = document.createElement('span');
+          txt.textContent = opt.text;
+          txt.style.zIndex = '1';
+          
+          btn.appendChild(img);
+          btn.appendChild(txt);
+          
+          btn.onpointerdown = (e) => {
+            e.preventDefault();
+            if (state.awaitingNext || btn.classList.contains('excluded')) return;
+            
+            playPopSound();
+            
+            if (opt.text === q.answer) {
+              btn.classList.add('bubble-pop');
+              state.awaitingNext = true;
+              
+              if(document.getElementById('nextQuestionBtn')) {
+                  const nextBtn = document.getElementById('nextQuestionBtn');
+                  nextBtn.classList.remove('hidden-btn');
+                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+              }
+
+              let de = '';
+              if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+                 const ansNum = q.tableBase * q.tableTarget;
+                 if(ansNum <= 10) de = '得';
+              }
+              const reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+              
+              Array.from(stage.children).forEach(child => {
+                  if (child !== btn) {
+                      child.style.animationPlayState = 'paused';
+                      child.style.opacity = '0.3';
+                  }
+              });
+            } else {
+              btn.classList.add('bubble-pop');
+              btn.classList.add('excluded');
+              state.excluded += 1;
+              state.roundMistakes += 1; 
+              const reply = `你戳破了 ${opt.speak}。沒關係，等下一顆泡泡。`;
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+            }
+          };
+          stage.appendChild(btn);
+        });
+
+        optionsWrap.appendChild(stage);
+      }
+      else if (q.uiType === 'puzzle') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '將左邊的木牌拖到右邊拼在一起吧！';
+        if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
+
+        const stage = document.createElement('div'); 
+        stage.className = 'puzzle-stage';
+        
+        const leftArea = document.createElement('div');
+        const rightArea = document.createElement('div');
+        rightArea.className = 'puzzle-drop-zone';
+
+        q.options.forEach(opt => {
+            const slot = document.createElement('div');
+            slot.className = 'puzzle-slot';
+            slot.dataset.val = opt.text;
+            
+            const slotBg = document.createElement('img');
+            slotBg.src = 'images/tile.png';
+            slotBg.className = 'puzzle-tile-bg';
+            slotBg.onerror = function() { this.style.display = 'none'; slot.classList.add('puzzle-fallback'); };
+            
+            const slotText = document.createElement('span');
+            slotText.textContent = opt.text;
+            slotText.style.zIndex = '1';
+            
+            slot.appendChild(slotBg);
+            slot.appendChild(slotText);
+            rightArea.appendChild(slot);
+        });
+
+        const piece = document.createElement('div');
+        piece.className = 'puzzle-piece';
+        
+        const pieceBg = document.createElement('img');
+        pieceBg.src = 'images/tile.png';
+        pieceBg.className = 'puzzle-tile-bg';
+        pieceBg.onerror = function() { this.style.display = 'none'; piece.classList.add('puzzle-fallback'); };
+        
+        const pieceText = document.createElement('span');
+        pieceText.textContent = q.leftChar;
+        pieceText.style.zIndex = '1';
+
+        piece.appendChild(pieceBg);
+        piece.appendChild(pieceText);
+        leftArea.appendChild(piece);
+
+        stage.appendChild(leftArea);
+        stage.appendChild(rightArea);
+        optionsWrap.appendChild(stage);
+
+        let isDragging = false;
+        let startX, startY;
+
+        piece.onpointerdown = (e) => {
+            if (state.awaitingNext) return;
+            e.preventDefault();
+            isDragging = true;
+            piece.setPointerCapture(e.pointerId);
+            startX = e.clientX;
+            startY = e.clientY;
+            piece.style.transition = 'none';
+        };
+
+        piece.onpointermove = (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            piece.style.transform = `translate(${dx}px, ${dy}px) scale(1.1) rotate(5deg)`;
+            
+            const pieceRect = piece.getBoundingClientRect();
+            Array.from(rightArea.children).forEach(slot => {
+                const slotRect = slot.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (pieceRect.left + pieceRect.width/2) - (slotRect.left + slotRect.width/2),
+                    (pieceRect.top + pieceRect.height/2) - (slotRect.top + slotRect.height/2)
+                );
+                if (dist < 60) slot.classList.add('highlight');
+                else slot.classList.remove('highlight');
+            });
+        };
+
+        piece.onpointerup = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            piece.releasePointerCapture(e.pointerId);
+            
+            const pieceRect = piece.getBoundingClientRect();
+            let droppedSlot = null;
+
+            Array.from(rightArea.children).forEach(slot => {
+                slot.classList.remove('highlight');
+                const slotRect = slot.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (pieceRect.left + pieceRect.width/2) - (slotRect.left + slotRect.width/2),
+                    (pieceRect.top + pieceRect.height/2) - (slotRect.top + slotRect.height/2)
+                );
+                if (dist < 60) droppedSlot = slot;
+            });
+
+            if (droppedSlot) {
+                const val = droppedSlot.dataset.val;
+                if (val === q.answer) {
+                    playSnapSound(); 
+                    state.awaitingNext = true;
+                    
+                    const stageRect = stage.getBoundingClientRect();
+                    const targetRect = droppedSlot.getBoundingClientRect();
+                    
+                    piece.classList.add('snapped');
+                    piece.style.transform = 'none';
+                    piece.style.left = `${targetRect.left - stageRect.left - 96}px`; 
+                    piece.style.top = `${targetRect.top - stageRect.top}px`;
+
+                    droppedSlot.classList.add('highlight');
+                    droppedSlot.style.borderColor = '#64ff64';
+                    droppedSlot.style.color = '#fff';
+                    
+                    const comboFloat = document.createElement('div');
+                    comboFloat.textContent = q.targetCombo;
+                    comboFloat.style.position = 'absolute';
+                    comboFloat.style.left = `${targetRect.left - stageRect.left - 48}px`; 
+                    comboFloat.style.top = `${targetRect.top - stageRect.top - 20}px`; 
+                    comboFloat.style.color = '#fff';
+                    comboFloat.style.fontSize = '80px';
+                    comboFloat.style.fontWeight = '900';
+                    comboFloat.style.pointerEvents = 'none';
+                    comboFloat.style.zIndex = '999';
+                    comboFloat.style.textShadow = '0 0 20px #ffd76a, 0 0 40px #ffb347, 0 4px 10px rgba(0,0,0,0.5)';
+                    comboFloat.style.animation = 'floatUpFade 1.5s forwards';
+                    stage.appendChild(comboFloat);
+
+                    if(document.getElementById('nextQuestionBtn')) {
+                        const nextBtn = document.getElementById('nextQuestionBtn');
+                        nextBtn.classList.remove('hidden-btn');
+                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                    }
+                    
+                    const replyUI = `${q.leftChar}... ${q.answer}... ${q.targetCombo}！太棒了！`;
+                    const replySpeak = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
+
+                } else {
+                    state.excluded += 1;
+                    state.roundMistakes += 1; 
+                    piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    piece.style.transform = 'translate(0px, 0px)';
+                    
+                    const replyUI = `不對喔，再試試看。`;
+                    const replySpeak = `不對喔，這不是 ${q.soundWord}。`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
+                }
+            } else {
+                piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                piece.style.transform = 'translate(0px, 0px)';
+            }
+        };
+
+      }
+      else if (q.uiType === 'scratch') {
+        optionsWrap.style.opacity = '0.3';
+        optionsWrap.style.pointerEvents = 'none';
+
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把表面刮乾淨看看底下是什麼！';
+        
+        const stage = document.createElement('div');
+        stage.className = 'scratch-stage';
+
+        const container = document.createElement('div');
+        container.className = 'scratch-container';
+
+        const content = document.createElement('div');
+        content.className = 'scratch-content';
+        
+        if (q.scratchText) {
+            content.textContent = q.scratchText;
+            content.style.fontSize = '70px'; 
+        } else {
+            content.textContent = q.answer;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'scratch-canvas';
+        canvas.width = 240;
+        canvas.height = 240;
+        const ctx = canvas.getContext('2d'); 
+
+        const coverImg = new Image();
+        coverImg.src = 'images/scratch_cover.png';
+        coverImg.onload = () => { ctx.drawImage(coverImg, 0, 0, 240, 240); };
+        coverImg.onerror = () => { ctx.fillStyle = '#2d4a36'; ctx.fillRect(0, 0, 240, 240); };
+
+        container.appendChild(content);
+        container.appendChild(canvas);
+        stage.appendChild(container);
+        visualArea.appendChild(stage);
+        visualArea.classList.remove('collapsed');
+
+        let isScratching = false;
+        let revealed = false;
+        
+        const scratchedCells = new Set();
+        const cols = 10, rows = 10;
+        const cellW = 240 / cols, cellH = 240 / rows;
+
+        function scratch(e) {
+            if (!isScratching || revealed) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            let clientX = e.clientX, clientY = e.clientY;
+            if (e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+            else if (clientX === undefined && e.changedTouches) { clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY; }
+
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 35, 0, Math.PI * 2); 
+            ctx.fill();
+
+            const minC = Math.max(0, Math.floor((x - 35) / cellW));
+            const maxC = Math.min(cols - 1, Math.floor((x + 35) / cellW));
+            const minR = Math.max(0, Math.floor((y - 35) / cellH));
+            const maxR = Math.min(rows - 1, Math.floor((y + 35) / cellH));
+
+            for (let c = minC; c <= maxC; c++) {
+                for (let r = minR; r <= maxR; r++) {
+                    scratchedCells.add(`${c},${r}`);
+                }
+            }
+
+            if (scratchedCells.size > 50) {
+                checkReveal();
+            }
+        }
+
+        function checkReveal() {
+            if (revealed) return;
+            revealed = true;
+            playChimeSound(); 
+            canvas.style.transition = 'opacity 0.6s ease';
+            canvas.style.opacity = '0';
+            
+            optionsWrap.style.opacity = '1';
+            optionsWrap.style.pointerEvents = 'auto';
+
+            let reply = `原來是 ${q.answer}！請選出正確的答案！`;
+            if (q.kind === 'math-scratch') {
+                reply = `${numberToZh(q.tableBase)} ${numberToZh(q.tableTarget)} 是多少？`;
+            }
+            if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+            speak(reply);
+
+            setTimeout(() => canvas.remove(), 600);
+        }
+
+        canvas.addEventListener('pointerdown', (e) => { isScratching = true; scratch(e); });
+        canvas.addEventListener('pointermove', scratch);
+        canvas.addEventListener('touchmove', scratch, {passive: false});
+        
+        window.onpointerup = () => { isScratching = false; };
+        window.ontouchend = () => { isScratching = false; };
+      }
+      /* 🌟 翻牌配對 (硬體加速 3D 翻轉) */
+      else if (q.uiType === 'match') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '點擊卡片翻開，找出相同的兩個字！';
+        if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
+
+        const stage = document.createElement('div');
+        stage.className = 'memory-stage';
+        
+        const grid = document.createElement('div');
+        grid.className = 'memory-grid';
+
+        let flippedCards = [];
+        let matchedCount = 0;
+        let isLocked = false;
+
+        q.cardsData.forEach((cardItem) => {
+            const cardWrap = document.createElement('div');
+            cardWrap.className = 'memory-card';
+            
+            const cardInner = document.createElement('div');
+            cardInner.className = 'memory-card-inner';
+            
+            const cardFront = document.createElement('div');
+            cardFront.className = 'memory-card-front';
+            cardFront.textContent = cardItem.val;
+            
+            const cardBack = document.createElement('div');
+            cardBack.className = 'memory-card-back';
+            
+            cardInner.appendChild(cardFront);
+            cardInner.appendChild(cardBack);
+            cardWrap.appendChild(cardInner);
+            
+            cardWrap.onpointerdown = (e) => {
+                if (isLocked || cardWrap.classList.contains('flipped') || cardWrap.classList.contains('matched')) return;
+                
+                playPopSound();
+                cardWrap.classList.add('flipped');
+                flippedCards.push({ elem: cardWrap, data: cardItem });
+                
+                if (flippedCards.length === 2) {
+                    isLocked = true;
+                    // 檢查配對
+                    if (flippedCards[0].data.val === flippedCards[1].data.val) {
+                        // 配對成功
+                        setTimeout(() => {
+                            playChimeSound();
+                            speak(`太棒了！是 ${flippedCards[0].data.speak}`);
+                            flippedCards[0].elem.classList.add('matched');
+                            flippedCards[1].elem.classList.add('matched');
+                            matchedCount += 2;
+                            flippedCards = [];
+                            isLocked = false;
+                            
+                            // 檢查是否全部配對完畢
+                            if (matchedCount === q.cardsData.length) {
+                                state.awaitingNext = true;
+                                setTimeout(() => {
+                                    const nextBtn = document.getElementById('nextQuestionBtn');
+                                    if (nextBtn) {
+                                        nextBtn.classList.remove('hidden-btn');
+                                        nextBtn.scrollIntoView(false);
+                                    }
+                                }, 1500);
+                            }
+                        }, 600);
+                    } else {
+                        // 配對失敗
+                        state.excluded += 1;
+                        state.roundMistakes += 1;
+                        setTimeout(() => {
+                            playSplashSound();
+                            flippedCards[0].elem.classList.remove('flipped');
+                            flippedCards[1].elem.classList.remove('flipped');
+                            flippedCards = [];
+                            isLocked = false;
+                        }, 1000); // 鎖定 1 秒鐘後蓋回去
+                    }
+                } else {
+                    // 翻第一張牌時發音
+                    speak(cardItem.speak);
+                }
+            };
+            
+            grid.appendChild(cardWrap);
+        });
+
+        stage.appendChild(grid);
+        optionsWrap.appendChild(stage);
+      }
+      /* 🌟 復活：小鹿過河 (真實垂直過河版) */
+      else if (q.uiType === 'path') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
+        
+        const stage = document.createElement('div');
+        stage.className = 'path-stage';
+        
+        const riverBg = document.createElement('div');
+        riverBg.className = 'path-river';
+        stage.appendChild(riverBg);
+
+        const riverOverlay = document.createElement('div');
+        riverOverlay.className = 'path-river-overlay';
+        stage.appendChild(riverOverlay);
+
+        // 小鹿過河的動態捲動座標邏輯 (5題)
+        // 起點永遠在下方 (84%)，新的目標在上方 (70%)
+        const targetTop = 70 - (state.qIndex * 13); 
+        const charStartTop = state.qIndex === 0 ? 84 : (70 - ((state.qIndex - 1) * 13)); 
+
+        // 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭！
+        if (state.qIndex > 0) {
+            const currentStone = document.createElement('div');
+            currentStone.className = 'path-stone';
+            currentStone.style.left = `calc(${state.lastPathX}% - 40px)`;
+            currentStone.style.top = `${charStartTop}%`;
+            currentStone.style.backgroundImage = "url('images/stone.png')";
+            currentStone.style.pointerEvents = 'none'; // 防止阻擋手指點擊新石頭
+            currentStone.style.zIndex = '4'; // 確保在水面上、小鹿下
+            stage.appendChild(currentStone);
+        }
+
+        const character = document.createElement('img');
+        character.src = 'images/deer.png';
+        character.className = 'path-character';
+        
+        // 繼承上次跳躍的 X 座標
+        const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
+        character.style.left = `calc(${currentX}% - 35px)`;
+        // 第一題站在最下方的岸上，其餘站在前一顆石頭上
+        character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
+        
+        character.onerror = function() { 
+            this.src = 'images/icon.png'; 
+        };
+        
+        const totalOpts = q.options.length;
+        const xOffsets = [20, 50, 80]; 
+        
+        q.options.forEach((opt, idx) => {
+            const stone = document.createElement('div');
+            stone.className = 'path-stone';
+            
+            const leftPos = xOffsets[idx];
+            let topPos = targetTop;
+            
+            // 終極防遮擋斜角推進魔法：如果石頭跟小鹿在同一直線上，就把石頭大幅往上推！
+            if (Math.abs(leftPos - currentX) < 10) {
+                topPos -= 10; // 大幅往上推，避開小鹿頭部
+            } else {
+                topPos += (idx === 1 ? -4 : 6); // 自然的錯落排列
+            }
+            
+            stone.style.left = `calc(${leftPos}% - 40px)`;
+            stone.style.top = `${topPos}%`;
+            
+            const txt = document.createElement('span');
+            txt.textContent = opt.text;
+            stone.appendChild(txt);
+            
+            stone.style.backgroundImage = "url('images/stone.png')";
+            
+            stone.onpointerdown = (e) => {
+                if (state.awaitingNext || stone.classList.contains('excluded')) return;
+                
+                if (opt.text === q.answer) {
+                    stone.classList.add('correct');
+                    state.awaitingNext = true;
+                    
+                    playJumpSound();
+                    
+                    // 記錄這次落點的 X 座標，作為下一題的起點
+                    state.lastPathX = leftPos; 
+                    
+                    // 小鹿跳向新石頭
+                    character.style.left = `calc(${leftPos}% - 35px)`;
+                    character.style.top = `calc(${topPos}% - 35px)`; 
+                    character.style.transform = 'scale(1.3) rotate(5deg)';
+                    setTimeout(() => character.style.transform = 'scale(1)', 400);
+
+                    let de = '';
+                    if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+                       const ansNum = q.tableBase * q.tableTarget;
+                       if(ansNum <= 10) de = '得';
+                    }
+                    const reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                    speak(reply);
+
+                    // 終極一躍：最後一題加碼跳上對岸
+                    if (state.qIndex === state.questionList.length - 1) {
+                        setTimeout(() => {
+                            playJumpSound();
+                            character.style.left = `calc(50% - 35px)`; 
+                            character.style.top = `2%`; // 跳到畫面最頂端的草地上
+                            character.style.transform = 'scale(1.2)';
+                            setTimeout(() => character.style.transform = 'scale(1)', 400);
+                            
+                            // 延遲顯示「過關按鈕」並加入語音，等待孩子手動點擊
+                            setTimeout(() => {
+                                const nextBtn = document.getElementById('nextQuestionBtn');
+                                if (nextBtn) {
+                                    nextBtn.classList.remove('hidden-btn');
+                                    setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                                    speak('太棒了，成功過河！請點擊下方按鈕領取獎勵！');
+                                }
+                            }, 1000);
+                        }, 1200);
+                    } else {
+                        /* 延長等待時間至 2.5 秒，讓語音不會跟下一題打架 */
+                        setTimeout(() => {
+                            const nextBtn = document.getElementById('nextQuestionBtn');
+                            if (nextBtn) nextBtn.click();
+                        }, 2500); 
+                    }
+                    
+                } else {
+                    stone.classList.add('excluded');
+                    stone.classList.add('sink');
+                    state.excluded += 1;
+                    state.roundMistakes += 1;
+                    
+                    playSplashSound();
+                    
+                    const reply = `哎呀，這顆石頭沉下去了！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                    speak(reply);
+                }
+            };
+            stage.appendChild(stone);
+        });
+
+        stage.appendChild(character);
+        optionsWrap.appendChild(stage);
+      }
+    /* 🌟 數學：精靈餵食大挑戰版 (極速流暢版：移除亂碼，讓瀏覽器自然快取不閃爍) */
+      else if (q.uiType === 'feed') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
+        
+        const stage = document.createElement('div');
+        stage.className = 'feed-stage';
+        
+        const feedBg = document.createElement('div');
+        feedBg.className = 'feed-bg';
+        // 🌟 移除亂碼，讓手機快取背景，切換題目時背景就會乖乖不動了！
+        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
+        stage.appendChild(feedBg);
+
+        const elfWrap = document.createElement('div');
+        elfWrap.className = 'feed-elf-wrap';
+        elfWrap.style.transform = 'none'; 
+        
+        const currentStageIndex = state.qIndex + 1;
+        const elfImg = document.createElement('img');
+        elfImg.className = 'feed-elf-img';
+        
+        const tryPaths = [
+            `images/elf_feed_${currentStageIndex}.png`,
+            `elf_feed_${currentStageIndex}.png`,
+            `images/icon.png`, 
+            `icon.png`
+        ];
+        let pathIdx = 0;
+        
+        elfImg.onerror = function() { 
+            pathIdx++;
+            if (pathIdx < tryPaths.length) {
+                this.src = tryPaths[pathIdx];
+            } else {
+                this.onerror = null; 
+            }
+        }; 
+        elfImg.src = tryPaths[0]; 
+        
+        const baseScale = 1 + (state.qIndex * 0.02);
+        elfImg.style.transform = `scale(${baseScale})`;
+        
+        elfWrap.appendChild(elfImg);
+        stage.appendChild(elfWrap);
+        
+        const foodContainer = document.createElement('div');
+        foodContainer.className = 'feed-food-container';
+        
+        const xOffsets = [15, 50, 85];
+        const yOffsets = [20, 45, 20];
+        
+        q.options.forEach((opt, idx) => {
+            const food = document.createElement('div');
+            food.className = 'feed-food';
+            food.dataset.val = opt.text;
+            
+            food.style.left = `calc(${xOffsets[idx]}% - 35px)`; 
+            food.style.top = `${yOffsets[idx]}%`;
+            
+            const foodImg = document.createElement('img');
+            const foodPaths = [`images/food_berry.png`, `food_berry.png`];
+            let fPathIdx = 0;
+            foodImg.onerror = function() { 
+                fPathIdx++;
+                if (fPathIdx < foodPaths.length) {
+                    this.src = foodPaths[fPathIdx];
+                } else {
+                    this.style.display = 'none'; 
+                    food.style.background = '#ff4757'; 
+                }
+            }; 
+            foodImg.src = foodPaths[0];
+            
+            const foodText = document.createElement('span');
+            foodText.textContent = opt.text; 
+            foodText.style.zIndex = '10';
+            
+            food.appendChild(foodImg);
+            food.appendChild(foodText);
+            foodContainer.appendChild(food);
+
+            let isDragging = false;
+            let startX, startY;
+            let origX = 0, origY = 0; 
+            
+            food.onpointerdown = (e) => {
+                if (state.awaitingNext || food.classList.contains('excluded')) return;
+                e.preventDefault();
+                isDragging = true;
+                food.setPointerCapture(e.pointerId);
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                startX = clientX - origX;
+                startY = clientY - origY;
+                food.style.transition = 'none';
+            };
+
+            food.onpointermove = (e) => {
+                if (!isDragging) return;
+                e.preventDefault(); 
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                origX = clientX - startX;
+                origY = clientY - startY;
+                food.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
+                
+                const foodRect = food.getBoundingClientRect();
+                const elfRect = elfWrap.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (foodRect.left + foodRect.width/2) - (elfRect.left + elfRect.width/2),
+                    (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
+                );
+                
+                if (dist < 90) elfImg.style.transform = `scale(${baseScale + 0.15})`;
+                else elfImg.style.transform = `scale(${baseScale})`;
+            };
+
+            food.onpointerup = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                food.releasePointerCapture(e.pointerId);
+                
+                const foodRect = food.getBoundingClientRect();
+                const elfRect = elfWrap.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (foodRect.left + foodRect.width/2) - (elfRect.left + elfRect.width/2),
+                    (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
+                );
+
+                if (dist < 90) {
+                    if (food.dataset.val === q.answer) {
+                        playSnapSound();
+                        state.awaitingNext = true;
+                        
+                        food.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        const dx = (elfRect.left + elfRect.width/2) - (foodRect.left - origX + foodRect.width/2);
+                        const dy = (elfRect.top + elfRect.height/2) - (foodRect.top - origY + foodRect.height/2); 
+                        
+                        food.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`;
+                        food.style.opacity = '0'; 
+                        
+                        elfImg.style.transform = `scale(${baseScale + 0.2})`;
+                        elfImg.style.filter = 'drop-shadow(0 0 30px #ffd76a)';
+                        
+                        if (state.qIndex === state.questionList.length - 1) {
+                            setTimeout(() => {
+                                const fullPaths = [`images/elf_full.png`, `elf_full.png`, `images/icon.png`, `icon.png`];
+                                let fullIdx = 0;
+                                elfImg.onerror = function() {
+                                    fullIdx++;
+                                    if(fullIdx < fullPaths.length) this.src = fullPaths[fullIdx];
+                                    else this.onerror = null;
+                                };
+                                elfImg.src = fullPaths[0]; 
+                                elfImg.style.transform = `scale(${baseScale + 0.1})`;
+                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
+                            }, 400); 
+                        } else {
+                            setTimeout(() => {
+                                elfImg.style.transform = `scale(${baseScale})`;
+                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
+                            }, 800);
+                        }
+
+                        if(document.getElementById('nextQuestionBtn')) {
+                            const nextBtn = document.getElementById('nextQuestionBtn');
+                            nextBtn.classList.remove('hidden-btn');
+                            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                        }
+                        
+                        let de = '';
+                        if (q.tableBase && q.tableTarget) {
+                           const ansNum = q.tableBase * q.tableTarget;
+                           if(ansNum <= 10) de = '得';
+                        }
+                        
+                        let replyUI = `${q.tableBase} × ${q.tableTarget} = ${q.answer}！`;
+                        let replySpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。`;
+                        
+                        if (state.qIndex === state.questionList.length - 1) {
+                            const title = state.playerTitle || '小探險家';
+                            replyUI += `謝謝${title}，我吃得好飽喔！`;
+                            replySpeak += `謝謝${title}，我吃得好飽喔！`;
+                        } else {
+                            replyUI += `好吃好吃！`;
+                            replySpeak += `太好了！`;
+                        }
+
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
+
+                    } else {
+                        state.excluded += 1;
+                        state.roundMistakes += 1; 
+                        food.classList.add('excluded');
+                        
+                        origX = 0; origY = 0;
+                        food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        food.style.transform = `translate(0px, 0px)`;
+                        elfImg.style.transform = `scale(${baseScale})`;
+                        
+                        playSplashSound();
+                        const replyUI = `這個不是我要的答案喔！`;
+                        const replySpeak = `這個不是我要的答案喔！`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
+                    }
+                } else {
+                    origX = 0; origY = 0;
+                    food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    food.style.transform = `translate(0px, 0px)`;
+                    elfImg.style.transform = `scale(${baseScale})`;
+                }
+            };
+        });
+        
+        stage.appendChild(foodContainer);
+        optionsWrap.appendChild(stage);
+      }
+      /* 🌟 全新進化版：回聲谷即時聲控 (字隨音動、魔術揭曉拼音版) */
+      else if (q.uiType === 'echo') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '聽完語音，按下麥克風大聲唸出來吧！';
+        
+        const stage = document.createElement('div');
+        stage.className = 'echo-stage';
+        
+        const echoBg = document.createElement('div');
+        echoBg.className = 'echo-bg';
+        stage.appendChild(echoBg);
+        
+        // 🌟 分離注音符號，並準備最後揭曉的直立拼音
+        const p1 = q.targetCombo.charAt(0);
+        const p2 = q.targetCombo.charAt(1);
+        
+        const targetDisplay = document.createElement('div');
+        targetDisplay.className = 'echo-pinyin-target';
+        targetDisplay.innerHTML = `
+            <span id="echo-p1" class="echo-char">${p1}</span>
+            <span id="echo-p2" class="echo-char">${p2}</span>
+            <div class="echo-combo-wrap">
+                <div id="echo-combo" class="vertical-pinyin-echo">
+                    <span>${p1}</span><span>${p2}</span>
+                </div>
+            </div>
+        `;
+        stage.appendChild(targetDisplay);
+        
+        const micBtn = document.createElement('div');
+        micBtn.className = 'mic-btn';
+        micBtn.textContent = '🎤';
+        
+        const resultBox = document.createElement('div');
+        resultBox.className = 'echo-result';
+        resultBox.textContent = '請聽語音示範...';
+        
+        stage.appendChild(micBtn);
+        stage.appendChild(resultBox);
+        optionsWrap.appendChild(stage);
+        
+        // 🌟 定義專屬的語音連動動畫魔法
+        q.playVoice = () => {
+            const p1El = document.getElementById('echo-p1');
+            const p2El = document.getElementById('echo-p2');
+            const comboEl = document.getElementById('echo-combo');
+            
+            // 重置所有動畫狀態
+            if(p1El) { p1El.style.color = '#ffd76a'; p1El.style.transform = 'scale(1)'; }
+            if(p2El) { p2El.style.color = '#ffd76a'; p2El.style.transform = 'scale(1)'; }
+            if(comboEl) { comboEl.classList.remove('show'); }
+            if(resultBox) { resultBox.textContent = '請聽語音示範...'; }
+
+            // 啟動精準語音序列
+            speakSequence([
+                { text: "請按下麥克風，大聲唸出", delay: 200 },
+                { 
+                    text: p1, 
+                    delay: 200,
+                    action: () => {
+                        if(p1El) {
+                            p1El.style.color = '#ff6b81';
+                            p1El.style.transform = 'scale(1.4)';
+                            setTimeout(() => { if(p1El) p1El.style.transform = 'scale(1)'; }, 400);
+                        }
+                    }
+                },
+                { 
+                    text: p2, 
+                    delay: 200,
+                    action: () => {
+                        if(p1El) p1El.style.color = '#ffd76a'; // 恢復上一個字
+                        if(p2El) {
+                            p2El.style.color = '#ff6b81';
+                            p2El.style.transform = 'scale(1.4)';
+                            setTimeout(() => { if(p2El) p2El.style.transform = 'scale(1)'; }, 400);
+                        }
+                    }
+                },
+                { 
+                    text: q.soundWord, 
+                    action: () => {
+                        if(p2El) p2El.style.color = '#ffd76a';
+                        if(comboEl) comboEl.classList.add('show'); // 🌟 魔術揭曉直立拼音
+                        if(resultBox) resultBox.textContent = '換你囉！按麥克風說話';
+                    }
+                }
+            ]);
+        };
+        
+        let failCount = 0;
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            resultBox.innerHTML = '⚠️ 你的瀏覽器不支援語音辨識喔！<br><small>請使用 Android Chrome 或 iOS Safari</small>';
+            micBtn.style.opacity = '0.5';
+            micBtn.style.pointerEvents = 'none';
+            q.playVoice(); // 即使不支援語音輸入，也要播放超炫的動畫教學
+        } else {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'zh-TW';
+            recognition.interimResults = true; 
+            recognition.continuous = false; 
+            recognition.maxAlternatives = 1;
+            
+            let isRecognizing = false;
+            
+            // 🌟 改用 onclick 觸發
+            micBtn.onclick = () => {
+                if (state.awaitingNext || speakingNow) return;
+                
+                if (isRecognizing) {
+                    recognition.stop();
+                    return;
+                }
+                
+                try {
+                    recognition.start();
+                } catch(e) {
+                    recognition.stop();
+                } 
+            };
+            
+            recognition.onstart = () => {
+                isRecognizing = true;
+                micBtn.classList.add('listening');
+                resultBox.textContent = '正在聽... (請大聲說)';
+            };
+            
+            recognition.onresult = (event) => {
+                if (state.awaitingNext) return;
+                
+                let currentTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    currentTranscript += event.results[i][0].transcript;
+                }
+                
+                resultBox.textContent = `聽到：「${currentTranscript}」...`;
+                
+                let isCorrect = false;
+                if (currentTranscript.includes(q.soundWord)) {
+                    isCorrect = true;
+                } else if (HOMOPHONES[q.soundWord]) {
+                    for (let word of HOMOPHONES[q.soundWord]) {
+                        if (currentTranscript.toLowerCase().includes(word.toLowerCase())) {
+                            isCorrect = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if (isCorrect) {
+                    recognition.stop(); 
+                    playSnapSound();
+                    state.awaitingNext = true;
+                    micBtn.classList.remove('listening');
+                    micBtn.style.background = '#2ed573';
+                    micBtn.style.borderColor = '#fff';
+                    // 🌟 答對時避免顯示奇怪的同音中文字，改顯示注音
+                    resultBox.textContent = `太棒了！是：「${q.targetCombo}」`;
+                    
+                    if(document.getElementById('nextQuestionBtn')) {
+                        const nextBtn = document.getElementById('nextQuestionBtn');
+                        nextBtn.classList.remove('hidden-btn');
+                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                    }
+                    const replyUI = `太棒了！你唸出了：「${q.targetCombo}」！`;
+                    const replySpeak = `太棒了！你唸得非常標準！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
+                } 
+                else if (event.results[0].isFinal) {
+                    failCount++;
+                    state.excluded += 1;
+                    state.roundMistakes += 1;
+                    playSplashSound();
+                    
+                    // 🌟 答錯時避免顯示中文字讓孩子困惑
+                    resultBox.textContent = `沒有聽清楚喔...`;
+                    let replyUI = `聽起來不太像喔，再試一次吧！`;
+                    let replySpeak = replyUI;
+                    
+                    if (failCount >= 2) {
+                        replyUI = `語音精靈有點聽不懂，沒關係，我們可以直接過關喔！`;
+                        replySpeak = replyUI;
+                        if(!document.getElementById('skipVoiceBtn')) {
+                            const skipBtn = document.createElement('button');
+                            skipBtn.id = 'skipVoiceBtn';
+                            skipBtn.className = 'primary-btn pulse-anim';
+                            skipBtn.style.marginTop = '15px';
+                            skipBtn.style.width = '100%';
+                            skipBtn.textContent = '💡 點我直接過關';
+                            skipBtn.onclick = () => {
+                                recognition.stop();
+                                playSnapSound();
+                                state.awaitingNext = true;
+                                micBtn.classList.remove('listening');
+                                micBtn.style.background = '#2ed573';
+                                micBtn.style.borderColor = '#fff';
+                                resultBox.textContent = `手動過關！太棒了！`;
+                                if(document.getElementById('nextQuestionBtn')) {
+                                    const nextBtn = document.getElementById('nextQuestionBtn');
+                                    nextBtn.classList.remove('hidden-btn');
+                                    setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                                }
+                                speak('太棒了！');
+                                skipBtn.remove();
+                            };
+                            stage.appendChild(skipBtn);
+                        }
+                    }
+                    
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
+                }
+            };
+            
+            recognition.onerror = (event) => {
+                isRecognizing = false;
+                micBtn.classList.remove('listening');
+                if (event.error === 'not-allowed') {
+                    resultBox.innerHTML = '⚠️ 請允許麥克風權限喔！<br><small>請在網站安全設定中開啟</small>';
+                } else if (event.error === 'no-speech') {
+                    resultBox.textContent = '沒聽到聲音，請再按一次麥克風！';
+                } else {
+                    resultBox.textContent = '收音發生錯誤，請重試！';
+                }
+            };
+            
+            recognition.onend = () => {
+                isRecognizing = false;
+                micBtn.classList.remove('listening');
+                if (resultBox.textContent.includes('正在聽')) {
+                    resultBox.textContent = '請點擊麥克風再試一次！';
+                }
+            };
+            
+            // 🌟 進入題目時，自動播放一次精彩的教學動畫
+            q.playVoice();
+        }
+      }
+
+      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.options && q.options.length > 0 && optionsWrap) {
+        q.options.forEach(opt => {
+          const row = document.createElement('div'); row.className = 'option-row';
+          const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
+          btn.onclick = () => handleAnswer(btn, opt);
+          const speakBtn = document.createElement('button'); speakBtn.className = 'option-speak-btn'; speakBtn.textContent = '🔊';
+          speakBtn.onclick = (e) => { e.stopPropagation(); speak(opt.speak); };
+          row.appendChild(btn); row.appendChild(speakBtn); optionsWrap.appendChild(row);
+        });
+      }
+
+      // 🌟 觸發其他房間的語音
+      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch') {
+          speak(q.speakText); 
+      } else if (q.uiType === 'bubble') {
+          setTimeout(() => speak(q.speakText), 500); 
+      }
+    }
+
+    function handleAnswer(btn, opt) {
+      const q = state.currentQuestion;
+      if (state.awaitingNext || btn.classList.contains('excluded') || btn.classList.contains('correct')) return;
+      
+      if (opt.text === q.answer) {
+        btn.classList.add('correct'); state.awaitingNext = true;
+        if(document.getElementById('nextQuestionBtn')) {
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            nextBtn.classList.remove('hidden-btn');
+            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+        }
+        
+        let de = '';
+        if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+           const ansNum = q.tableBase * q.tableTarget;
+           if(ansNum <= 10) de = '得';
+        }
+        let reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+      } else {
+        btn.classList.add('excluded'); state.excluded += 1;
+        state.roundMistakes += 1; 
+        const reply = `你選了 ${opt.speak}。沒關係，我們再想想看。`;
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+      }
+    }
+
+    if(document.getElementById('nextQuestionBtn')) {
+      document.getElementById('nextQuestionBtn').onclick = () => {
+        state.qIndex += 1;
+        if (state.qIndex >= state.questionList.length) {
+            
+          let earnedStars = 3;
+          if (state.roundMistakes >= 4) earnedStars = 1;
+          else if (state.roundMistakes >= 1) earnedStars = 2;
+          
+          let oldStars = state.totalStars;
+          state.totalStars += earnedStars;
+          state.shards += 3; 
+          state.brightness = Math.min(100, state.brightness + 2); 
+          state.normalSeeds += 1;
+          
+          let unlockMsg = '';
+          let oldUnlockedLevels = Math.floor(oldStars / 5) + 1;
+          let newUnlockedLevels = Math.floor(state.totalStars / 5) + 1;
+          
+          if (newUnlockedLevels > oldUnlockedLevels && newUnlockedLevels <= ZHUYIN_LEVELS.length) {
+              unlockMsg = ' 🌟 恭喜解鎖新島嶼！';
+          }
+          
+          saveState(); updateHome();
+          
+          if(document.getElementById('resultEarnedStars')) document.getElementById('resultEarnedStars').textContent = '⭐'.repeat(earnedStars);
+          if(document.getElementById('resultBrightness')) document.getElementById('resultBrightness').textContent = `${state.brightness}%`;
+          if(document.getElementById('resultShards')) document.getElementById('resultShards').textContent = String(state.shards);
+          showScreen('result'); 
+          speak(`過關！獲得 ${earnedStars} 顆星！${unlockMsg}`);
+        } else { renderQuestion(); }
+      };
+    }
+
+    /* 事件綁定 */
+    document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
+    if(document.getElementById('backHomeBtn')) document.getElementById('backHomeBtn').onclick = () => { stopSpeech(); showScreen(state.mode === 'home' ? 'home' : 'roomSelect'); };
+    if(document.getElementById('roomSelectBackBtn')) document.getElementById('roomSelectBackBtn').onclick = () => { showScreen('home'); updateHome(); };
+    if(document.getElementById('resultHomeBtn')) document.getElementById('resultHomeBtn').onclick = () => { if(state.mode === 'today') { showScreen('home'); } else { showScreen('roomSelect'); } updateHome(); };
+    
+    // 🌟 綁定再來一局按鈕
+    if(document.getElementById('resultReplayBtn')) {
+        document.getElementById('resultReplayBtn').onclick = () => { 
+            if(state.subMode) {
+                startSubMode(state.subMode); // 重新開始同一個模式
+            } else {
+                showScreen('roomSelect');
+            }
+        }; 
+    }
+    
+    // 🌟 完美綁定統一的音效按鈕：如果該房間有專屬的語音連動魔法，就觸發它！
+    if(document.getElementById('topSpeakBtn')) {
+        document.getElementById('topSpeakBtn').onclick = () => { 
+            if(speakingNow) {
+                stopSpeech(); 
+            } else {
+                if (state.currentQuestion && state.currentQuestion.playVoice) {
+                    state.currentQuestion.playVoice();
+                } else {
+                    speak(state.currentQuestion.speakText); 
+                }
+            }
+        };
+    }
+
+    // 起始流程
+    if(document.getElementById('introAcceptBtn')) document.getElementById('introAcceptBtn').onclick = () => { showScreen('name'); renderNameGrid(document.getElementById('nameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('nameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmNameBtn').disabled=false;}); };
+    if(document.getElementById('confirmNameBtn')) document.getElementById('confirmNameBtn').onclick = () => { state.spiritName = state.selectedName; showScreen('title'); renderNameGrid(document.getElementById('titleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('titleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmTitleBtn').disabled=false;}); };
+    if(document.getElementById('confirmTitleBtn')) document.getElementById('confirmTitleBtn').onclick = () => { state.playerTitle = state.selectedTitle; showScreen('bond'); };
+    if(document.getElementById('bondContinueBtn')) document.getElementById('bondContinueBtn').onclick = () => { saveState(); updateHome(); showScreen('home'); };
+
+    function renderNameGrid(target, selectedName, options, onSelect) {
+      target.innerHTML = '';
+      options.forEach(name => {
+        const btn = document.createElement('button'); btn.type = 'button'; btn.className = `name-btn${selectedName === name ? ' selected' : ''}`; btn.textContent = name; btn.onclick = () => onSelect(name, btn); target.appendChild(btn);
+      });
+    }
+
+    if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
+
+// ==========================================
+    // 🌟 設定頁面與「強制清除快取」事件綁定 🌟
+    // ==========================================
+    
+    // 綁定首頁的「設定」按鈕打開設定畫面
+    if(document.getElementById('homeSettingBtn')) {
+        document.getElementById('homeSettingBtn').onclick = () => {
+            showScreen('settings');
+            state.selectedName = state.spiritName;
+            state.selectedTitle = state.playerTitle;
+            renderNameGrid(document.getElementById('settingsNameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('settingsNameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');});
+            renderNameGrid(document.getElementById('settingsTitleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('settingsTitleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');});
+        };
+    }
+    
+    // 設定畫面的三個基本按鈕
+    if(document.getElementById('settingsCancelBtn')) document.getElementById('settingsCancelBtn').onclick = () => showScreen('home');
+    if(document.getElementById('settingsSaveBtn')) document.getElementById('settingsSaveBtn').onclick = () => { state.spiritName = state.selectedName; state.playerTitle = state.selectedTitle; saveState(); updateHome(); showScreen('home'); showToast('設定已儲存！'); };
+    if(document.getElementById('settingsResetBtn')) document.getElementById('settingsResetBtn').onclick = () => { if(confirm('確定要清除所有進度嗎？這無法復原喔！')) { safeStorage.clear(); window.location.href = window.location.pathname; } };
+
+    // 🚀 絕招：強制清除快取！
+    if(document.getElementById('forceClearCacheBtn')) {
+        document.getElementById('forceClearCacheBtn').onclick = () => {
+            if(confirm('確定要強制清除快取並重新載入嗎？\n(放心，這不會刪除您的星星和遊戲進度喔！)\n\n※ 適合用在圖片沒更新、畫面卡住的時候 ※')) {
+                
+                // 1. 拔除離線服務工作者 (Service Worker)
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for(let registration of registrations) { 
+                            registration.unregister(); 
+                        }
+                    });
+                }
+                
+                // 2. 清除瀏覽器底層的 Cache Storage 圖片暫存
+                try {
+                    if (window.caches) {
+                        caches.keys().then(function(names) {
+                            for (let name of names) caches.delete(name);
+                        });
+                    }
+                } catch(e) {}
+                
+                // 3. 強制刷新網頁，並加上專屬時間戳記，打破手機最後的倔強！
+                showToast('正在清除快取，即將重新載入...');
+                setTimeout(() => {
+                    window.location.href = window.location.pathname + '?clear=' + new Date().getTime();
+                }, 800);
+            }
+        };
+    }
+  </script>
+</body>
+</html>
