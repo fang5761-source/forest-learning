@@ -2154,7 +2154,7 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-    /* 🌟 數學：精靈餵食大挑戰版 (極速流暢版：移除亂碼，讓瀏覽器自然快取不閃爍) */
+    /* 🌟 數學：精靈餵食大挑戰版 (無敵光球完美啟動版) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
@@ -2163,7 +2163,6 @@
         
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
-        // 🌟 移除亂碼，讓手機快取背景，切換題目時背景就會乖乖不動了！
         feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
         stage.appendChild(feedBg);
 
@@ -2298,7 +2297,9 @@
                         food.style.opacity = '0'; 
                         
                         elfImg.style.transform = `scale(${baseScale + 0.2})`;
-                        elfImg.style.filter = 'drop-shadow(0 0 30px #ffd76a)';
+                        
+                        // 🌟 大樂修正：啟動外層的 CSS 光球魔法！
+                        elfWrap.classList.add('feed-elf-success');
                         
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
@@ -2311,12 +2312,13 @@
                                 };
                                 elfImg.src = fullPaths[0]; 
                                 elfImg.style.transform = `scale(${baseScale + 0.1})`;
-                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
+                                // 🌟 為了慶祝吃飽，最後一題光球就不關了，讓他一直發光！
                             }, 400); 
                         } else {
                             setTimeout(() => {
                                 elfImg.style.transform = `scale(${baseScale})`;
-                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
+                                // 🌟 平常的題目吃完後，關閉光球
+                                elfWrap.classList.remove('feed-elf-success');
                             }, 800);
                         }
 
