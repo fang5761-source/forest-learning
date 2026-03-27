@@ -540,6 +540,11 @@
           <button id="settingsResetBtn" class="secondary-btn" type="button">清除所有進度</button>
           <button id="settingsCancelBtn" class="secondary-btn" type="button">回到森林</button>
         </div>
+        
+        <!-- 🌟 新增：防汛簽證APP傳承下來的「強制清除快取」按鈕 -->
+        <button id="forceClearCacheBtn" style="margin-top:24px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
+          ⚠️ 畫面卡住？點此強制清除快取
+        </button>
       </div>
     </section>
 
@@ -2719,6 +2724,58 @@
     }
 
     if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
+
+// ==========================================
+    // 🌟 設定頁面與「強制清除快取」事件綁定 🌟
+    // ==========================================
+    
+    // 綁定首頁的「設定」按鈕打開設定畫面
+    if(document.getElementById('homeSettingBtn')) {
+        document.getElementById('homeSettingBtn').onclick = () => {
+            showScreen('settings');
+            state.selectedName = state.spiritName;
+            state.selectedTitle = state.playerTitle;
+            renderNameGrid(document.getElementById('settingsNameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('settingsNameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');});
+            renderNameGrid(document.getElementById('settingsTitleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('settingsTitleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');});
+        };
+    }
+    
+    // 設定畫面的三個基本按鈕
+    if(document.getElementById('settingsCancelBtn')) document.getElementById('settingsCancelBtn').onclick = () => showScreen('home');
+    if(document.getElementById('settingsSaveBtn')) document.getElementById('settingsSaveBtn').onclick = () => { state.spiritName = state.selectedName; state.playerTitle = state.selectedTitle; saveState(); updateHome(); showScreen('home'); showToast('設定已儲存！'); };
+    if(document.getElementById('settingsResetBtn')) document.getElementById('settingsResetBtn').onclick = () => { if(confirm('確定要清除所有進度嗎？這無法復原喔！')) { safeStorage.clear(); window.location.href = window.location.pathname; } };
+
+    // 🚀 絕招：強制清除快取！
+    if(document.getElementById('forceClearCacheBtn')) {
+        document.getElementById('forceClearCacheBtn').onclick = () => {
+            if(confirm('確定要強制清除快取並重新載入嗎？\n(放心，這不會刪除您的星星和遊戲進度喔！)\n\n※ 適合用在圖片沒更新、畫面卡住的時候 ※')) {
+                
+                // 1. 拔除離線服務工作者 (Service Worker)
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for(let registration of registrations) { 
+                            registration.unregister(); 
+                        }
+                    });
+                }
+                
+                // 2. 清除瀏覽器底層的 Cache Storage 圖片暫存
+                try {
+                    if (window.caches) {
+                        caches.keys().then(function(names) {
+                            for (let name of names) caches.delete(name);
+                        });
+                    }
+                } catch(e) {}
+                
+                // 3. 強制刷新網頁，並加上專屬時間戳記，打破手機最後的倔強！
+                showToast('正在清除快取，即將重新載入...');
+                setTimeout(() => {
+                    window.location.href = window.location.pathname + '?clear=' + new Date().getTime();
+                }, 800);
+            }
+        };
+    }
   </script>
 </body>
 </html>
