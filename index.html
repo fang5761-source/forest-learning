@@ -219,32 +219,27 @@
     
     .feed-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
     
-    /* 🌟 修復 1：把這裡的 .jpg 改成 .png，讓瀏覽器秒速載入不再閃爍！ */
     .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.png'), url('feed_bg.png'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
     
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
     
-    /* 🌟 大樂的無敵光球：在小精靈背後放一顆漸層圓球，取代會破圖的濾鏡 */
-    .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; }
+    /* 🌟 大樂的無敵光球：在小精靈背後畫一顆漸層圓球 */
+    .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; pointer-events: none; }
     
     /* 🌟 精靈專屬漂浮動畫 */
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
     
-    /* 🌟 終極大絕招：用 filter: none !important 強制封印蘋果的方塊 Bug！ */
+    /* 🌟 終極大絕招：強制沒收圖片濾鏡，蘋果手機絕對畫不出方塊！ */
     .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; filter: none !important; }
     
     .feed-elf-success { transform: scale(1.15); }
-    /* 🌟 吃飽時：直接點亮背後的光球，保證 100% 圓潤無方塊！ */
+    /* 🌟 吃飽時：點亮背後的光球，保證 100% 圓滑無死角！ */
     .feed-elf-success::before { width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,215,106,0.95) 0%, rgba(255,226,143,0.6) 40%, rgba(255,215,106,0) 70%); opacity: 1; }
     
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
     .feed-food { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); cursor: grab; user-select: none; border-radius: 50%; z-index: 10; touch-action: none; will-change: transform; }
     .feed-food:active { cursor: grabbing; z-index: 11; }
     .feed-food img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
-    
-    /* 🌟 偵探大樂的終極修復：把發光濾鏡從「透明方塊」轉移到「圖片本身」，徹底消滅 iPhone 的方塊殘影！ */
-    .feed-elf-success { transform: scale(1.15); }
-    .feed-elf-success .feed-elf-img { filter: drop-shadow(0 0 35px #ffd76a) !important; }
 
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
     .pulse-anim { animation: pulse 1.5s infinite; }
