@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.47.0 精靈餵食大挑戰版</title>
+  <title>慢慢變強｜螢光森林 v1.49.0 精靈動態餵食進度版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -217,11 +217,11 @@
     .vertical-pinyin-echo span { display: block; line-height: 1; }
     .vertical-pinyin-echo.show { opacity: 1; transform: scale(1); }
     
-    /* 🌟 精靈餵食專屬樣式 */
-    .feed-stage { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
-    .feed-elf-wrap { position: relative; width: 180px; height: 180px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .feed-elf-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); pointer-events: none; }
-    .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 140px; z-index: 10; }
+    .feed-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
+    .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.jpg'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
+    .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
+    .feed-elf-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); pointer-events: none; transition: transform 0.4s ease-out; }
+    .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
     .feed-food { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); cursor: grab; user-select: none; border-radius: 50%; z-index: 10; touch-action: none; will-change: transform; }
     .feed-food:active { cursor: grabbing; z-index: 11; }
     .feed-food img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
@@ -312,11 +312,10 @@
       .echo-combo-wrap { width: 40px; }
       .vertical-pinyin-echo { font-size: 36px; }
 
-      /* 🌟 餵食精靈手機版微調 */
-      .feed-stage { height: 440px; }
-      .feed-elf-wrap { width: 220px; height: 220px; top: 2%; }
-      .feed-food-container { height: 160px; }
-      .feed-food { width: 75px; height: 75px; font-size: 32px; }
+      .feed-stage { height: 380px; padding-bottom: 15px; justify-content: flex-end; }
+      .feed-elf-wrap { width: 160px; height: 160px; margin-top: 5px; margin-bottom: auto;}
+      .feed-food-container { height: 150px; }
+      .feed-food { width: 65px; height: 65px; font-size: 28px; }
     }
   </style>
 </head>
@@ -330,7 +329,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.47.0 精靈餵食大挑戰版</div>
+        <div class="version-tag">v1.49.0 精靈動態餵食進度版</div>
       </div>
     </header>
 
@@ -445,7 +444,7 @@
           <div class="growth-head" style="margin-bottom:12px;"><h3>我的種子袋</h3></div>
           <div class="growth-grid">
             <div class="growth-pill"><span>普通種子</span><strong id="gardenSeedNormalText">0 顆</strong></div>
-            <div class="growth-pill"><span>稀有種子</span><strong id="gardenSeedRareText">0 顆</strong></div>
+            <div class="growth-pill"><span>稀重種子</span><strong id="gardenSeedRareText">0 顆</strong></div>
             <div class="growth-pill"><span>星光種子</span><strong id="gardenSeedStarText">0 顆</strong></div>
             <div class="growth-pill"><span>已種下</span><strong id="gardenPlantedText">0 顆</strong></div>
           </div>
@@ -908,7 +907,6 @@
         { key:'math-bubble', emoji:'🫧', title:'泡泡森林', desc:'戳破藏著正確答案的泡泡。', locked: false },
         { key:'math-scratch', emoji:'🪙', title:'魔法刮刮樂', desc:'刮開迷霧，看看是哪個答案！', locked: false },
         { key:'math-path', emoji:'🦌', title:'小鹿過河', desc:'讓小鹿跳向正確的石頭過河！', locked: false }, 
-        /* 🌟 解鎖 精靈餵食 */
         { key:'math-feed', emoji:'🍓', title:'精靈餵食', desc:'【拖曳類】把寫著答案的食物餵給小精靈。', locked: false }
       ],
       forest: [
@@ -1034,9 +1032,25 @@
       return list;
     }
     
-    /* 🌟 新增：精靈餵食資料結構 */
+    /* 🌟 新增：精靈動態餵食敘事資料結構 */
     function buildMathFeedSet(table) {
       const list = [];
+      const feedDialogues = [
+        '肚子好餓喔...可以餵我吃正確的數字果實嗎？',
+        '好好吃喔！我還要吃！',
+        '有感覺一點點飽了，再給我一點！',
+        '哇！肚子快要裝不下了！',
+        '最後一口了！吃完這口就飽了！'
+      ];
+      
+      const feedVoiceScenes = [
+        '肚子好餓喔，可以餵我嗎？',
+        '好好吃喔！我還要吃！',
+        '有一點點飽了，再給我一點！',
+        '哇！肚子快裝不下了！',
+        '最後一口了！'
+      ];
+
       for (let i = 0; i < 5; i += 1) {
         const step = randomInt(1, 9);
         const answer = table * step;
@@ -1047,7 +1061,19 @@
           if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
         }
         const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
-        list.push({ area: '九九口訣房', kind: 'math-feed', promptText: `${table} × ${step} = ?`, speakText: `${numberToZh(table)}${numberToZh(step)}？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'feed', scene: '🍓 把正確答案的果實餵給小精靈！', options });
+        list.push({ 
+            area: '九九口訣房', 
+            kind: 'math-feed', 
+            promptText: `${table} × ${step} = ?`, 
+            speakText: `${feedVoiceScenes[i]} ${numberToZh(table)}${numberToZh(step)}是多少？`, 
+            answer: String(answer), 
+            tableBase: table, 
+            tableTarget: step, 
+            uiType: 'feed', 
+            scene: '🍓 把正確答案的果實餵給小精靈！', 
+            feedPrompt: feedDialogues[i], /* 視覺顯示台詞 */
+            options 
+        });
       }
       return list;
     }
@@ -2103,37 +2129,54 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 數學：精靈餵食大挑戰版 */
+      /* 🌟 數學：精靈餵食大挑戰版 (動態餵食進度版) */
       else if (q.uiType === 'feed') {
-        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '肚子好餓喔！請餵我正確的答案！';
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
         const stage = document.createElement('div');
         stage.className = 'feed-stage';
         
-        // 上方：張大嘴的小精靈 (Drop Target)
+        const feedBg = document.createElement('div');
+        feedBg.className = 'feed-bg';
+        stage.appendChild(feedBg);
+
+        // 🌟 支援 5 階段動態圖片 (elf_feed_1.png ~ elf_feed_5.png)
         const elfWrap = document.createElement('div');
         elfWrap.className = 'feed-elf-wrap';
         const elfImg = document.createElement('img');
-        elfImg.src = 'images/elf_hungry.png';
+        
+        // 根據進度載入圖片
+        const currentStageIndex = state.qIndex + 1;
+        elfImg.src = `images/elf_feed_${currentStageIndex}.png`;
         elfImg.className = 'feed-elf-img';
-        elfImg.onerror = () => { elfImg.src = 'images/icon.png'; }; 
+        
+        // 如果沒有準備 1~5 階段的圖，自動降級使用 elf_hungry.png
+        elfImg.onerror = () => { 
+            if (elfImg.src.includes('elf_feed_')) {
+                elfImg.src = 'images/elf_hungry.png'; 
+            } else {
+                elfImg.src = 'images/icon.png'; 
+            }
+        }; 
+        
+        // 微調 CSS 動畫：如果是第一階段肚子扁，可以稍微小一點 (若使用共用圖時的視覺補償)
+        elfWrap.style.transform = `scale(${1 + (state.qIndex * 0.02)})`;
+        
         elfWrap.appendChild(elfImg);
         stage.appendChild(elfWrap);
         
-        // 下方：食物區域 (Draggable Options)
         const foodContainer = document.createElement('div');
         foodContainer.className = 'feed-food-container';
         
-        // 食物放在畫面下方的左、中、右
         const xOffsets = [15, 50, 85];
-        const yOffsets = [20, 40, 20]; // 中間的稍微低一點，呈現弧形排列
+        const yOffsets = [20, 45, 20];
         
         q.options.forEach((opt, idx) => {
             const food = document.createElement('div');
             food.className = 'feed-food';
             food.dataset.val = opt.text;
             
-            food.style.left = `calc(${xOffsets[idx]}% - 40px)`; 
+            food.style.left = `calc(${xOffsets[idx]}% - 35px)`; 
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
@@ -2167,7 +2210,7 @@
 
             food.onpointermove = (e) => {
                 if (!isDragging) return;
-                e.preventDefault(); // 防止滾動
+                e.preventDefault(); 
                 let clientX = e.clientX; let clientY = e.clientY;
                 if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
                 
@@ -2175,7 +2218,6 @@
                 origY = clientY - startY;
                 food.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
                 
-                // 計算食物與精靈的距離
                 const foodRect = food.getBoundingClientRect();
                 const elfRect = elfWrap.getBoundingClientRect();
                 const dist = Math.hypot(
@@ -2183,9 +2225,10 @@
                     (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
                 );
                 
-                // 距離靠近時，精靈微微放大準備吃
-                if (dist < 90) elfWrap.style.transform = 'translateX(-50%) scale(1.1)';
-                else elfWrap.style.transform = 'translateX(-50%) scale(1)';
+                // 基礎 scale 加上互動 scale
+                const baseScale = 1 + (state.qIndex * 0.02);
+                if (dist < 90) elfWrap.style.transform = `scale(${baseScale + 0.15})`;
+                else elfWrap.style.transform = `scale(${baseScale})`;
             };
 
             food.onpointerup = (e) => {
@@ -2200,9 +2243,10 @@
                     (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
                 );
 
+                const baseScale = 1 + (state.qIndex * 0.02);
+
                 if (dist < 90) {
                     if (food.dataset.val === q.answer) {
-                        // 答對了：食物被吃掉！
                         playSnapSound();
                         state.awaitingNext = true;
                         
@@ -2213,11 +2257,10 @@
                         food.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`;
                         food.style.opacity = '0'; 
                         
-                        // 精靈開心發光！
                         elfWrap.classList.add('feed-elf-success');
                         setTimeout(() => {
                             elfWrap.classList.remove('feed-elf-success');
-                            elfWrap.style.transform = 'translateX(-50%) scale(1)';
+                            elfWrap.style.transform = `scale(${baseScale})`;
                         }, 800);
 
                         if(document.getElementById('nextQuestionBtn')) {
@@ -2226,19 +2269,29 @@
                             setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                         }
                         
-                        // 語音播報答案
+                        // 🌟 動態台詞與客製化稱呼
                         let de = '';
                         if (q.tableBase && q.tableTarget) {
                            const ansNum = q.tableBase * q.tableTarget;
                            if(ansNum <= 10) de = '得';
                         }
-                        const replyUI = `${q.tableBase} × ${q.tableTarget} = ${q.answer}！好飽好飽！`;
-                        const replySpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！`;
+                        
+                        let replyUI = `${q.tableBase} × ${q.tableTarget} = ${q.answer}！`;
+                        let replySpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。`;
+                        
+                        if (state.qIndex === state.questionList.length - 1) {
+                            const title = state.playerTitle || '小探險家';
+                            replyUI += `謝謝${title}，我吃得好飽喔！`;
+                            replySpeak += `謝謝${title}，我吃得好飽喔！`;
+                        } else {
+                            replyUI += `好吃好吃！`;
+                            replySpeak += `太好了！`;
+                        }
+
                         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
                         speak(replySpeak);
 
                     } else {
-                        // 答錯了：食物彈回
                         state.excluded += 1;
                         state.roundMistakes += 1; 
                         food.classList.add('excluded');
@@ -2246,7 +2299,7 @@
                         origX = 0; origY = 0;
                         food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                         food.style.transform = `translate(0px, 0px)`;
-                        elfWrap.style.transform = 'translateX(-50%) scale(1)';
+                        elfWrap.style.transform = `scale(${baseScale})`;
                         
                         playSplashSound();
                         const replyUI = `這個不是我要的答案喔！`;
@@ -2255,11 +2308,10 @@
                         speak(replySpeak);
                     }
                 } else {
-                    // 沒放到嘴巴裡，食物回原位
                     origX = 0; origY = 0;
                     food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     food.style.transform = `translate(0px, 0px)`;
-                    elfWrap.style.transform = 'translateX(-50%) scale(1)';
+                    elfWrap.style.transform = `scale(${baseScale})`;
                 }
             };
         });
@@ -2590,7 +2642,6 @@
     /* 事件綁定 */
     document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
     if(document.getElementById('backHomeBtn')) document.getElementById('backHomeBtn').onclick = () => { stopSpeech(); showScreen(state.mode === 'home' ? 'home' : 'roomSelect'); };
-    if(document.getElementById('mouthBackBtn')) document.getElementById('mouthBackBtn').onclick = () => { stopSpeech(); showScreen('home'); };
     if(document.getElementById('roomSelectBackBtn')) document.getElementById('roomSelectBackBtn').onclick = () => { showScreen('home'); updateHome(); };
     if(document.getElementById('resultHomeBtn')) document.getElementById('resultHomeBtn').onclick = () => { if(state.mode === 'today') { showScreen('home'); } else { showScreen('roomSelect'); } updateHome(); };
     
@@ -2618,13 +2669,6 @@
                 }
             }
         };
-    }
-    
-    // 嘴型魔法鏡的喇叭按鈕
-    if(document.getElementById('mouthSpeakBigBtn')) {
-        document.getElementById('mouthSpeakBigBtn').onclick = () => {
-            selectMouthSymbol(state.currentMouthSymbol);
-        }
     }
 
     // 起始流程
