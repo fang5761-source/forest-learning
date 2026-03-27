@@ -218,9 +218,16 @@
     .vertical-pinyin-echo.show { opacity: 1; transform: scale(1); }
     
     .feed-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
-    .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.jpg'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
+    
+    /* 🌟 修復 1：把這裡的 .jpg 改成 .png，讓瀏覽器秒速載入不再閃爍！ */
+    .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.png'), url('feed_bg.png'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
+    
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
-    .feed-elf-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); pointer-events: none; transition: transform 0.4s ease-out; }
+    
+    /* 🌟 修復 2：加入魔法漂浮動畫！讓空中的精靈看起來超合理、超可愛！ */
+    @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
+    .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.4)); pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; }
+    
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
     .feed-food { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); cursor: grab; user-select: none; border-radius: 50%; z-index: 10; touch-action: none; will-change: transform; }
     .feed-food:active { cursor: grabbing; z-index: 11; }
@@ -521,8 +528,9 @@
           </div>
         </div>
 
-        <div style="margin-top:16px;">
-          <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%" type="button">下一題</button>
+        <!-- 🌟 修復 iPhone 底部小白條卡住按鈕的問題 -->
+        <div style="margin-top:16px; padding-bottom: env(safe-area-inset-bottom); margin-bottom: 15px;">
+          <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" type="button">下一題</button>
         </div>
       </div>
     </section>
@@ -2134,20 +2142,17 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-    /* 🌟 數學：精靈餵食大挑戰版 (終極防禦：大小寫通吃 + 智慧快取破解) */
+    /* 🌟 數學：精靈餵食大挑戰版 (極速流暢版：移除亂碼，讓瀏覽器自然快取不閃爍) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
         const stage = document.createElement('div');
         stage.className = 'feed-stage';
         
-        // 🌟 智慧判斷：如果是本機 (file:) 不加亂碼，如果是網路 (http/https) 就加亂碼逼手機更新！
-        const isLocal = window.location.protocol === 'file:';
-        const cb = isLocal ? '' : `?v=${new Date().getTime()}`;
-        
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
-        feedBg.style.backgroundImage = `url('images/feed_bg.png${cb}'), url('images/feed_bg.PNG${cb}'), url('feed_bg.png${cb}')`;
+        // 🌟 移除亂碼，讓手機快取背景，切換題目時背景就會乖乖不動了！
+        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
         stage.appendChild(feedBg);
 
         const elfWrap = document.createElement('div');
@@ -2158,14 +2163,11 @@
         const elfImg = document.createElement('img');
         elfImg.className = 'feed-elf-img';
         
-        // 🌟 終極路徑大軍：不管是小寫 png 還是大寫 PNG，全部找一遍！
         const tryPaths = [
-            `images/elf_feed_${currentStageIndex}.png${cb}`,
-            `images/elf_feed_${currentStageIndex}.PNG${cb}`,
-            `elf_feed_${currentStageIndex}.png${cb}`,
-            `elf_feed_${currentStageIndex}.PNG${cb}`,
-            `images/icon.png${cb}`, 
-            `icon.png${cb}`
+            `images/elf_feed_${currentStageIndex}.png`,
+            `elf_feed_${currentStageIndex}.png`,
+            `images/icon.png`, 
+            `icon.png`
         ];
         let pathIdx = 0;
         
@@ -2200,7 +2202,7 @@
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
-            const foodPaths = [`images/food_berry.png${cb}`, `images/food_berry.PNG${cb}`, `food_berry.png${cb}`];
+            const foodPaths = [`images/food_berry.png`, `food_berry.png`];
             let fPathIdx = 0;
             foodImg.onerror = function() { 
                 fPathIdx++;
@@ -2288,8 +2290,7 @@
                         
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
-                                // 🌟 滿腹變身同樣全包大小寫
-                                const fullPaths = [`images/elf_full.png${cb}`, `images/elf_full.PNG${cb}`, `elf_full.png${cb}`, `images/icon.png${cb}`];
+                                const fullPaths = [`images/elf_full.png`, `elf_full.png`, `images/icon.png`, `icon.png`];
                                 let fullIdx = 0;
                                 elfImg.onerror = function() {
                                     fullIdx++;
