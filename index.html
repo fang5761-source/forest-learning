@@ -2134,17 +2134,20 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-    /* 🌟 數學：精靈餵食大挑戰版 (純淨路徑版：修復本地端讀取破圖問題) */
+    /* 🌟 數學：精靈餵食大挑戰版 (終極防禦：大小寫通吃 + 智慧快取破解) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
         const stage = document.createElement('div');
         stage.className = 'feed-stage';
         
+        // 🌟 智慧判斷：如果是本機 (file:) 不加亂碼，如果是網路 (http/https) 就加亂碼逼手機更新！
+        const isLocal = window.location.protocol === 'file:';
+        const cb = isLocal ? '' : `?v=${new Date().getTime()}`;
+        
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
-        // 🌟 拔除 ?v=，還原乾淨的背景路徑
-        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
+        feedBg.style.backgroundImage = `url('images/feed_bg.png${cb}'), url('images/feed_bg.PNG${cb}'), url('feed_bg.png${cb}')`;
         stage.appendChild(feedBg);
 
         const elfWrap = document.createElement('div');
@@ -2155,12 +2158,14 @@
         const elfImg = document.createElement('img');
         elfImg.className = 'feed-elf-img';
         
-        // 🌟 拔除 ?v=，只用最乾淨的檔名去尋找
+        // 🌟 終極路徑大軍：不管是小寫 png 還是大寫 PNG，全部找一遍！
         const tryPaths = [
-            `images/elf_feed_${currentStageIndex}.png`,
-            `elf_feed_${currentStageIndex}.png`,
-            `images/icon.png`, 
-            `icon.png`
+            `images/elf_feed_${currentStageIndex}.png${cb}`,
+            `images/elf_feed_${currentStageIndex}.PNG${cb}`,
+            `elf_feed_${currentStageIndex}.png${cb}`,
+            `elf_feed_${currentStageIndex}.PNG${cb}`,
+            `images/icon.png${cb}`, 
+            `icon.png${cb}`
         ];
         let pathIdx = 0;
         
@@ -2195,7 +2200,7 @@
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
-            const foodPaths = ['images/food_berry.png', 'food_berry.png'];
+            const foodPaths = [`images/food_berry.png${cb}`, `images/food_berry.PNG${cb}`, `food_berry.png${cb}`];
             let fPathIdx = 0;
             foodImg.onerror = function() { 
                 fPathIdx++;
@@ -2283,8 +2288,8 @@
                         
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
-                                // 🌟 滿腹變身同樣拔除 ?v=
-                                const fullPaths = ['images/elf_full.png', 'elf_full.png', 'images/icon.png', 'icon.png'];
+                                // 🌟 滿腹變身同樣全包大小寫
+                                const fullPaths = [`images/elf_full.png${cb}`, `images/elf_full.PNG${cb}`, `elf_full.png${cb}`, `images/icon.png${cb}`];
                                 let fullIdx = 0;
                                 elfImg.onerror = function() {
                                     fullIdx++;
