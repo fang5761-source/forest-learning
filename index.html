@@ -2129,7 +2129,7 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 數學：精靈餵食大挑戰版 (動態餵食進度版) */
+     /* 🌟 數學：精靈餵食大挑戰版 (動態餵食進度版 + 自動找圖魔法 + PNG背景修復版) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
@@ -2138,29 +2138,32 @@
         
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
+        // 🌟 修正這裡：把 .jpg 改成 .png 了！
+        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
         stage.appendChild(feedBg);
 
-        // 🌟 支援 5 階段動態圖片 (elf_feed_1.png ~ elf_feed_5.png)
         const elfWrap = document.createElement('div');
         elfWrap.className = 'feed-elf-wrap';
+        elfWrap.style.transform = 'none'; 
+        
         const elfImg = document.createElement('img');
-        
-        // 根據進度載入圖片
         const currentStageIndex = state.qIndex + 1;
-        elfImg.src = `images/elf_feed_${currentStageIndex}.png`;
-        elfImg.className = 'feed-elf-img';
         
-        // 如果沒有準備 1~5 階段的圖，自動降級使用 elf_hungry.png
-        elfImg.onerror = () => { 
-            if (elfImg.src.includes('elf_feed_')) {
-                elfImg.src = 'images/elf_hungry.png'; 
+        elfImg.onerror = function() { 
+            if (this.src.includes('images/')) {
+                const fileName = this.src.split('/').pop();
+                this.src = fileName; 
             } else {
-                elfImg.src = 'images/icon.png'; 
+                this.onerror = null; 
+                this.src = 'images/icon.png'; 
             }
         }; 
         
-        // 微調 CSS 動畫：如果是第一階段肚子扁，可以稍微小一點 (若使用共用圖時的視覺補償)
-        elfWrap.style.transform = `scale(${1 + (state.qIndex * 0.02)})`;
+        elfImg.src = `images/elf_feed_${currentStageIndex}.png`;
+        elfImg.className = 'feed-elf-img';
+        
+        const baseScale = 1 + (state.qIndex * 0.02);
+        elfImg.style.transform = `scale(${baseScale})`;
         
         elfWrap.appendChild(elfImg);
         stage.appendChild(elfWrap);
@@ -2180,8 +2183,11 @@
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
+            foodImg.onerror = function() { 
+                if(this.src.includes('images/')) this.src = 'food_berry.png';
+                else { this.style.display = 'none'; food.style.background = '#ff4757'; }
+            }; 
             foodImg.src = 'images/food_berry.png';
-            foodImg.onerror = () => { foodImg.style.display = 'none'; food.style.background = '#ff4757'; }; 
             
             const foodText = document.createElement('span');
             foodText.textContent = opt.text; 
@@ -2225,10 +2231,8 @@
                     (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
                 );
                 
-                // 基礎 scale 加上互動 scale
-                const baseScale = 1 + (state.qIndex * 0.02);
-                if (dist < 90) elfWrap.style.transform = `scale(${baseScale + 0.15})`;
-                else elfWrap.style.transform = `scale(${baseScale})`;
+                if (dist < 90) elfImg.style.transform = `scale(${baseScale + 0.15})`;
+                else elfImg.style.transform = `scale(${baseScale})`;
             };
 
             food.onpointerup = (e) => {
@@ -2243,8 +2247,6 @@
                     (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
                 );
 
-                const baseScale = 1 + (state.qIndex * 0.02);
-
                 if (dist < 90) {
                     if (food.dataset.val === q.answer) {
                         playSnapSound();
@@ -2257,11 +2259,26 @@
                         food.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`;
                         food.style.opacity = '0'; 
                         
-                        elfWrap.classList.add('feed-elf-success');
-                        setTimeout(() => {
-                            elfWrap.classList.remove('feed-elf-success');
-                            elfWrap.style.transform = `scale(${baseScale})`;
-                        }, 800);
+                        elfImg.style.transform = `scale(${baseScale + 0.2})`;
+                        elfImg.style.filter = 'drop-shadow(0 0 30px #ffd76a)';
+                        
+                        // 🌟 滿腹變身判定
+                        if (state.qIndex === state.questionList.length - 1) {
+                            setTimeout(() => {
+                                elfImg.onerror = function() {
+                                    if(this.src.includes('images/')) this.src = 'elf_full.png';
+                                    else { this.onerror = null; this.src = 'images/icon.png'; }
+                                };
+                                elfImg.src = 'images/elf_full.png'; 
+                                elfImg.style.transform = `scale(${baseScale + 0.1})`;
+                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
+                            }, 400); 
+                        } else {
+                            setTimeout(() => {
+                                elfImg.style.transform = `scale(${baseScale})`;
+                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
+                            }, 800);
+                        }
 
                         if(document.getElementById('nextQuestionBtn')) {
                             const nextBtn = document.getElementById('nextQuestionBtn');
@@ -2269,7 +2286,6 @@
                             setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                         }
                         
-                        // 🌟 動態台詞與客製化稱呼
                         let de = '';
                         if (q.tableBase && q.tableTarget) {
                            const ansNum = q.tableBase * q.tableTarget;
@@ -2299,7 +2315,7 @@
                         origX = 0; origY = 0;
                         food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                         food.style.transform = `translate(0px, 0px)`;
-                        elfWrap.style.transform = `scale(${baseScale})`;
+                        elfImg.style.transform = `scale(${baseScale})`;
                         
                         playSplashSound();
                         const replyUI = `這個不是我要的答案喔！`;
@@ -2311,7 +2327,7 @@
                     origX = 0; origY = 0;
                     food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     food.style.transform = `translate(0px, 0px)`;
-                    elfWrap.style.transform = `scale(${baseScale})`;
+                    elfImg.style.transform = `scale(${baseScale})`;
                 }
             };
         });
