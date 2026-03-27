@@ -2129,17 +2129,19 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-     /* 🌟 數學：精靈餵食大挑戰版 (終極找圖防呆版：PNG/JPG 大小寫、裡外通吃) */
+    /* 🌟 數學：精靈餵食大挑戰版 (終極找圖防呆 + 破解手機偷懶快取版) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
         const stage = document.createElement('div');
         stage.className = 'feed-stage';
         
+        // 🪄 破解快取魔法：產生當下時間的亂碼，強迫手機重新下載新圖！
+        const cb = new Date().getTime(); 
+        
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
-        // 🌟 背景終極疊加：利用 CSS 多層背景，找不到的會變透明，直到找到對的圖片顯示！
-        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png'), url('images/feed_bg.jpg'), url('feed_bg.jpg')";
+        feedBg.style.backgroundImage = `url('images/feed_bg.png?v=${cb}'), url('feed_bg.png?v=${cb}')`;
         stage.appendChild(feedBg);
 
         const elfWrap = document.createElement('div');
@@ -2150,14 +2152,12 @@
         const elfImg = document.createElement('img');
         elfImg.className = 'feed-elf-img';
         
-        // 🌟 終極找圖魔法：把所有可能的檔名和路徑都列出來，讓程式自己去闖關嘗試！
+        // 🪄 所有的圖片路徑都加上 ?v= 時間戳記
         const tryPaths = [
-            `images/elf_feed_${currentStageIndex}.png`,
-            `elf_feed_${currentStageIndex}.png`,
-            `images/elf_feed_${currentStageIndex}.jpg`,
-            `elf_feed_${currentStageIndex}.jpg`,
-            `images/icon.png`, 
-            `icon.png`
+            `images/elf_feed_${currentStageIndex}.png?v=${cb}`,
+            `elf_feed_${currentStageIndex}.png?v=${cb}`,
+            `images/icon.png?v=${cb}`, 
+            `icon.png?v=${cb}`
         ];
         let pathIdx = 0;
         
@@ -2169,7 +2169,7 @@
                 this.onerror = null; 
             }
         }; 
-        elfImg.src = tryPaths[0]; // 開始第一輪尋找
+        elfImg.src = tryPaths[0]; 
         
         const baseScale = 1 + (state.qIndex * 0.02);
         elfImg.style.transform = `scale(${baseScale})`;
@@ -2192,7 +2192,7 @@
             food.style.top = `${yOffsets[idx]}%`;
             
             const foodImg = document.createElement('img');
-            const foodPaths = ['images/food_berry.png', 'food_berry.png', 'images/food_berry.jpg', 'food_berry.jpg'];
+            const foodPaths = [`images/food_berry.png?v=${cb}`, `food_berry.png?v=${cb}`];
             let fPathIdx = 0;
             foodImg.onerror = function() { 
                 fPathIdx++;
@@ -2278,10 +2278,9 @@
                         elfImg.style.transform = `scale(${baseScale + 0.2})`;
                         elfImg.style.filter = 'drop-shadow(0 0 30px #ffd76a)';
                         
-                        // 🌟 吃飽變身判定 (同樣套用終極找圖魔法)
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
-                                const fullPaths = ['images/elf_full.png', 'elf_full.png', 'images/elf_full.jpg', 'elf_full.jpg', 'images/icon.png', 'icon.png'];
+                                const fullPaths = [`images/elf_full.png?v=${cb}`, `elf_full.png?v=${cb}`, `images/icon.png?v=${cb}`, `icon.png?v=${cb}`];
                                 let fullIdx = 0;
                                 elfImg.onerror = function() {
                                     fullIdx++;
