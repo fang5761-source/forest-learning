@@ -255,7 +255,7 @@
     .combo-text { font-size: 56px; font-weight: 900; color: #fff; text-shadow: 0 4px 15px rgba(255,107,129,0.8), 0 0 30px #ff4757; font-style: italic; -webkit-text-stroke: 2px #ff4757; }
     @keyframes comboPop { 0% { transform: translate(-50%, -30%) scale(0.5) rotate(-10deg); opacity: 0; } 20% { transform: translate(-50%, -50%) scale(1.2) rotate(5deg); opacity: 1; } 30% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; filter: brightness(1.2); } 80% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1.1); opacity: 0; } }
     
-    .music-btn { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
+    .music-btn { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #fff; font-size: 20px;}
     .music-btn img { width: 28px; height: 28px; object-fit: contain; }
     .music-btn.off img { filter: grayscale(1) opacity(0.5); }
     
@@ -355,7 +355,7 @@
 
     <section id="introScreen" class="screen active">
       <div class="card story-card intro-hero">
-        <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='icon.png'"></div>
+        <div class="hero-illustration"><img src="images/icon.png" alt="螢火蟲小精靈" class="hero-spirit" onerror="this.src='images/icon.png'"></div>
         <div class="story-text">
           <h2>森林正在等一位小探險家</h2>
           <p id="introStoryText" class="story-lines">很久以前，森林裡的樹會發光。<br>每一棵樹，都藏著一種能力。<br>可是有一天，森林的光被封印了。<br>小精靈找了很久，終於找到你。<br>你願意陪我一起，把森林慢慢點亮嗎？</p>
@@ -392,7 +392,7 @@
     <section id="bondScreen" class="screen">
       <div class="card story-card bond-card">
         <div class="bond-top">
-          <img src="images/icon.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.src='icon.png'">
+          <img src="images/icon.png" alt="螢火蟲小精靈" class="bond-spirit" onerror="this.src='images/icon.png'">
           <div><div class="small-title">準備出發</div><h2 id="bondTitle">小探險家，你好呀。</h2></div>
         </div>
         <p id="bondStoryText" class="story-lines"></p>
@@ -407,9 +407,9 @@
         <div class="world-topbar">
           <div class="world-badge" id="worldTimeBadge">星夜森林</div>
           <div class="title-actions" style="display:flex; gap:8px;">
-            <!-- 🌟 新增：首頁音樂按鈕 -->
+            <!-- 🌟 首頁音樂按鈕：加上防呆文字替換魔法 -->
             <button id="homeMusicBtn" class="music-btn bgm-toggle-btn" type="button">
-                <img src="images/icon_music.png" onerror="this.src='icon.png'">
+                <img src="images/icon_music.png" onerror="this.replaceWith(document.createTextNode('🎵'))">
             </button>
             <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
             <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
@@ -417,7 +417,7 @@
         </div>
 
         <div class="companion-row">
-          <img src="images/icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.src='icon.png'">
+          <img src="images/icon.png" alt="螢火蟲小精靈" class="companion-icon world-spirit" onerror="this.src='images/icon.png'">
           <div>
             <div class="small-title">你的陪伴精靈</div>
             <h2 id="homeSpiritTitle">希望</h2>
@@ -523,9 +523,9 @@
           <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <!-- 🌟 新增：闖關畫面音樂按鈕 -->
+          <!-- 🌟 闖關畫面音樂按鈕：加上防呆文字替換魔法 -->
           <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" style="background: rgba(22, 56, 38, 0.8); border-color: rgba(255,215,106,0.3);" type="button">
-             <img src="images/icon_music.png" onerror="this.src='icon.png'">
+             <img src="images/icon_music.png" onerror="this.replaceWith(document.createTextNode('🎵'))">
           </button>
           <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px; font-weight: bold;">1 / 5</span>
           <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
@@ -549,7 +549,6 @@
           </div>
         </div>
 
-        <!-- 🌟 修復 iPhone 底部小白條卡住按鈕的問題 -->
         <div style="margin-top:16px; padding-bottom: env(safe-area-inset-bottom); margin-bottom: 15px;">
           <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" type="button">下一題</button>
         </div>
@@ -570,8 +569,12 @@
           <button id="settingsCancelBtn" class="secondary-btn" type="button">回到森林</button>
         </div>
         
-        <!-- 🌟 新增：防汛簽證APP傳承下來的「強制清除快取」按鈕 -->
-        <button id="forceClearCacheBtn" style="margin-top:24px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
+        <!-- 🌟 新增：全域音效靜音開關 -->
+        <button id="toggleSfxBtn" style="margin-top:24px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:18px; font-weight:bold; cursor:pointer; transition: all 0.3s;" type="button">
+          🔔 音效：開啟
+        </button>
+
+        <button id="forceClearCacheBtn" style="margin-top:12px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
           ⚠️ 畫面卡住？點此強制清除快取
         </button>
       </div>
@@ -723,8 +726,12 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
+    // 🌟 音效總開關設定
+    let isSfxEnabled = safeStorage.get('mm_sfx') !== 'false';
+
     let audioCtx = null;
     function playDrumSound() {
+      if (!isSfxEnabled) return;
       if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
@@ -734,6 +741,7 @@
       osc.start(); osc.stop(audioCtx.currentTime + 0.2);
     }
     function playPopSound() {
+      if (!isSfxEnabled) return;
       if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
@@ -746,6 +754,7 @@
       osc.start(); osc.stop(audioCtx.currentTime + 0.1);
     }
     function playSnapSound() {
+        if (!isSfxEnabled) return;
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
@@ -758,6 +767,7 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.05);
     }
     function playChimeSound() {
+        if (!isSfxEnabled) return;
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
@@ -771,6 +781,7 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.5);
     }
     function playJumpSound() {
+        if (!isSfxEnabled) return;
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
@@ -783,6 +794,7 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.2);
     }
     function playSplashSound() {
+        if (!isSfxEnabled) return;
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
@@ -2436,7 +2448,7 @@
             if(comboEl) { comboEl.classList.remove('show'); }
             if(resultBox) { resultBox.textContent = '請聽語音示範...'; }
 
-            // 啟動精準語音序列
+            // 啟 ছাড়動精準語音序列
             speakSequence([
                 { text: "請按下麥克風，大聲唸出", delay: 200 },
                 { 
@@ -2706,6 +2718,14 @@
 
     /* 事件綁定 */
     document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
+    
+    // 🌟 首頁朗讀按鈕綁定
+    if(document.getElementById('homeReplayBtn')) {
+        document.getElementById('homeReplayBtn').onclick = () => {
+            speak(`歡迎回來，${state.playerTitle} ${state.spiritName}。你目前收集了 ${state.totalStars} 顆星星，森林亮度是百分之 ${state.brightness}。`);
+        };
+    }
+    
     if(document.getElementById('backHomeBtn')) document.getElementById('backHomeBtn').onclick = () => { stopSpeech(); showScreen(state.mode === 'home' ? 'home' : 'roomSelect'); };
     if(document.getElementById('roomSelectBackBtn')) document.getElementById('roomSelectBackBtn').onclick = () => { showScreen('home'); updateHome(); };
     if(document.getElementById('resultHomeBtn')) document.getElementById('resultHomeBtn').onclick = () => { if(state.mode === 'today') { showScreen('home'); } else { showScreen('roomSelect'); } updateHome(); };
@@ -2752,7 +2772,7 @@
     if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
 
 // ==========================================
-    // 🌟 設定頁面與「強制清除快取」事件綁定 🌟
+    // 🌟 設定頁面與「強制清除快取 / 音效開關」事件綁定 🌟
     // ==========================================
     
     // 綁定首頁的「設定」按鈕打開設定畫面
@@ -2770,6 +2790,26 @@
     if(document.getElementById('settingsCancelBtn')) document.getElementById('settingsCancelBtn').onclick = () => showScreen('home');
     if(document.getElementById('settingsSaveBtn')) document.getElementById('settingsSaveBtn').onclick = () => { state.spiritName = state.selectedName; state.playerTitle = state.selectedTitle; saveState(); updateHome(); showScreen('home'); showToast('設定已儲存！'); };
     if(document.getElementById('settingsResetBtn')) document.getElementById('settingsResetBtn').onclick = () => { if(confirm('確定要清除所有進度嗎？這無法復原喔！')) { safeStorage.clear(); window.location.href = window.location.pathname; } };
+
+    // 🌟 綁定全域音效開關
+    if(document.getElementById('toggleSfxBtn')) {
+        const sfxBtn = document.getElementById('toggleSfxBtn');
+        const updateSfxBtnState = () => {
+            sfxBtn.innerHTML = isSfxEnabled ? '🔔 音效：開啟' : '🔕 音效：關閉';
+            sfxBtn.style.background = isSfxEnabled ? 'rgba(255,255,255,0.09)' : 'rgba(255,71,87,0.15)';
+            sfxBtn.style.color = isSfxEnabled ? '#fff' : '#ff6b81';
+            sfxBtn.style.borderColor = isSfxEnabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,71,87,0.4)';
+        };
+        updateSfxBtnState();
+        
+        sfxBtn.onclick = () => {
+            isSfxEnabled = !isSfxEnabled;
+            safeStorage.set('mm_sfx', isSfxEnabled ? 'true' : 'false');
+            updateSfxBtnState();
+            showToast(isSfxEnabled ? '已開啟遊戲音效' : '已關閉遊戲音效');
+            if (isSfxEnabled) playSnapSound(); // 點擊開啟時發出清脆提示音
+        };
+    }
 
     // 🚀 絕招：強制清除快取！
     if(document.getElementById('forceClearCacheBtn')) {
@@ -2847,7 +2887,7 @@
         }
     }, { once: true });
 
-    // 2. Combo 連擊全域攔截魔法 (不需要修改原本的遊戲邏輯！)
+    // 2. Combo 連擊全域攔截魔法
     let _roundMistakes = 0;
     let _awaitingNext = false;
     state.combo = 0;
@@ -2900,35 +2940,13 @@
         container.appendChild(text);
         document.body.appendChild(container);
         
-        // 額外獎勵：連續答對 3 題以上，加送光之碎片！
+        // 額外獎勵：連續答對 3 題以上，加送光之碎片 (靜默存入，結算畫面才看得到！)
         if (count >= 3) {
             state.shards += 1;
             updateHome();
-            showToast(`🔥 連擊獎勵！光之碎片 +1`);
         }
-        
-        // 播放特殊的 Combo 音效 (音調隨連擊數升高)
-        playComboSound(count);
 
         setTimeout(() => container.remove(), 1500);
-    }
-
-    function playComboSound(count) {
-        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-        osc.type = 'triangle';
-        
-        const baseFreq = 400 + (count * 80); // 每次連擊音調變高
-        osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, audioCtx.currentTime + 0.3);
-        
-        gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-        
-        osc.start(); osc.stop(audioCtx.currentTime + 0.4);
     }
   </script>
 </body>
