@@ -249,12 +249,7 @@
     .room-card-btn.is-locked { opacity: 0.65; filter: grayscale(0.6); border-style: dashed; }
     .room-card-btn.is-locked:hover { transform: none; opacity: 0.8; filter: grayscale(0.4); }
     
-    /* 🌟 新增：連擊特效與音樂按鈕 CSS */
-    .combo-container { position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; pointer-events: none; display: flex; align-items: center; justify-content: center; gap: 10px; animation: comboPop 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    .combo-flame { width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(255,215,106,0.8)); }
-    .combo-text { font-size: 56px; font-weight: 900; color: #fff; text-shadow: 0 4px 15px rgba(255,107,129,0.8), 0 0 30px #ff4757; font-style: italic; -webkit-text-stroke: 2px #ff4757; }
-    @keyframes comboPop { 0% { transform: translate(-50%, -30%) scale(0.5) rotate(-10deg); opacity: 0; } 20% { transform: translate(-50%, -50%) scale(1.2) rotate(5deg); opacity: 1; } 30% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; filter: brightness(1.2); } 80% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1.1); opacity: 0; } }
-    
+    /* 音樂按鈕 CSS */
     .music-btn { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #fff; font-size: 20px;}
     .music-btn img { width: 28px; height: 28px; object-fit: contain; }
     .music-btn.off img { filter: grayscale(1) opacity(0.5); }
@@ -407,7 +402,6 @@
         <div class="world-topbar">
           <div class="world-badge" id="worldTimeBadge">星夜森林</div>
           <div class="title-actions" style="display:flex; gap:8px;">
-            <!-- 🌟 首頁音樂按鈕：加上防呆文字替換魔法 -->
             <button id="homeMusicBtn" class="music-btn bgm-toggle-btn" type="button">
                 <img src="images/icon_music.png" onerror="this.replaceWith(document.createTextNode('🎵'))">
             </button>
@@ -523,7 +517,6 @@
           <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <!-- 🌟 闖關畫面音樂按鈕：加上防呆文字替換魔法 -->
           <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" style="background: rgba(22, 56, 38, 0.8); border-color: rgba(255,215,106,0.3);" type="button">
              <img src="images/icon_music.png" onerror="this.replaceWith(document.createTextNode('🎵'))">
           </button>
@@ -569,9 +562,9 @@
           <button id="settingsCancelBtn" class="secondary-btn" type="button">回到森林</button>
         </div>
         
-        <!-- 🌟 新增：全域音效靜音開關 -->
+        <!-- 🌟 更新：真正的全域總開關 (音效+語音+音樂) -->
         <button id="toggleSfxBtn" style="margin-top:24px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:18px; font-weight:bold; cursor:pointer; transition: all 0.3s;" type="button">
-          🔔 音效：開啟
+          🔔 遊戲聲音：開啟
         </button>
 
         <button id="forceClearCacheBtn" style="margin-top:12px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
@@ -836,8 +829,10 @@
         syncSpeakButton(); 
     }
     
+    // 🌟 TTS 語音也綁定在「總開關」裡
     function speak(text) {
-      state.currentSpeechText = text; if (!('speechSynthesis' in window)) return;
+      state.currentSpeechText = text; 
+      if (!isSfxEnabled || !('speechSynthesis' in window)) return;
       try { window.speechSynthesis.cancel(); } catch (e) {}
       const utter = new SpeechSynthesisUtterance(String(text).replace(/\n/g, ' '));
       utter.lang = 'zh-TW'; utter.rate = 0.9;
@@ -849,7 +844,19 @@
     }
 
     function speakSequence(items, onComplete) {
-        if (!('speechSynthesis' in window)) return;
+        // 🌟 若總聲音關閉，就無聲快速執行動作，確保遊戲不會卡住
+        if (!isSfxEnabled || !('speechSynthesis' in window)) {
+            let delay = 0;
+            items.forEach(item => {
+                if(item.action) {
+                    setTimeout(item.action, delay);
+                    delay += 300; 
+                }
+            });
+            if(onComplete) setTimeout(onComplete, delay);
+            return;
+        }
+
         window.speechSynthesis.cancel();
         speakingNow = true;
         syncSpeakButton();
@@ -1078,7 +1085,6 @@
       return list;
     }
     
-    /* 🌟 新增：精靈動態餵食敘事資料結構 */
     function buildMathFeedSet(table) {
       const list = [];
       const feedDialogues = [
@@ -1117,7 +1123,7 @@
             tableTarget: step, 
             uiType: 'feed', 
             scene: '🍓 把正確答案的果實餵給小精靈！', 
-            feedPrompt: feedDialogues[i], /* 視覺顯示台詞 */
+            feedPrompt: feedDialogues[i], 
             options 
         });
       }
@@ -1333,7 +1339,6 @@
         state.questionList = buildComboEchoSet();
         if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '回聲谷';
       } else if (subMode === 'math-feed') {
-        /* 🌟 啟動精靈餵食 */
         state.questionList = buildMathFeedSet(state.selectedTable);
         if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `精靈餵食｜${state.selectedTable}的表`;
       }
@@ -2791,11 +2796,11 @@
     if(document.getElementById('settingsSaveBtn')) document.getElementById('settingsSaveBtn').onclick = () => { state.spiritName = state.selectedName; state.playerTitle = state.selectedTitle; saveState(); updateHome(); showScreen('home'); showToast('設定已儲存！'); };
     if(document.getElementById('settingsResetBtn')) document.getElementById('settingsResetBtn').onclick = () => { if(confirm('確定要清除所有進度嗎？這無法復原喔！')) { safeStorage.clear(); window.location.href = window.location.pathname; } };
 
-    // 🌟 綁定全域音效開關
+    // 🌟 綁定全域音效總開關 (控制 遊戲音效+語音+音樂)
     if(document.getElementById('toggleSfxBtn')) {
         const sfxBtn = document.getElementById('toggleSfxBtn');
         const updateSfxBtnState = () => {
-            sfxBtn.innerHTML = isSfxEnabled ? '🔔 音效：開啟' : '🔕 音效：關閉';
+            sfxBtn.innerHTML = isSfxEnabled ? '🔔 遊戲聲音：開啟' : '🔕 遊戲聲音：關閉';
             sfxBtn.style.background = isSfxEnabled ? 'rgba(255,255,255,0.09)' : 'rgba(255,71,87,0.15)';
             sfxBtn.style.color = isSfxEnabled ? '#fff' : '#ff6b81';
             sfxBtn.style.borderColor = isSfxEnabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,71,87,0.4)';
@@ -2805,9 +2810,23 @@
         sfxBtn.onclick = () => {
             isSfxEnabled = !isSfxEnabled;
             safeStorage.set('mm_sfx', isSfxEnabled ? 'true' : 'false');
+            
+            // 同步關閉/開啟背景音樂
+            isBgmEnabled = isSfxEnabled;
+            safeStorage.set('mm_bgm', isBgmEnabled ? 'true' : 'false');
+            updateBgmBtnUI();
+            
+            if (isBgmEnabled) {
+                bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {});
+            } else {
+                bgmAudio.pause();
+                isBgmPlaying = false;
+                stopSpeech(); // 立即中斷正在講話的語音
+            }
+
             updateSfxBtnState();
-            showToast(isSfxEnabled ? '已開啟遊戲音效' : '已關閉遊戲音效');
-            if (isSfxEnabled) playSnapSound(); // 點擊開啟時發出清脆提示音
+            showToast(isSfxEnabled ? '已開啟所有聲音' : '已靜音 (包含音樂與語音)');
+            if (isSfxEnabled) playSnapSound(); 
         };
     }
 
@@ -2844,7 +2863,7 @@
     }
 
     // ==========================================
-    // 🌟 提案 C：沉浸式 BGM 與 Combo 連擊魔法系統 🌟
+    // 🌟 沉浸式 BGM 音樂系統 🌟
     // ==========================================
     
     // 1. BGM 背景音樂系統
@@ -2875,19 +2894,19 @@
         }
     }
     
-    // 綁定音樂按鈕
+    // 綁定右上角獨立的音樂按鈕
     if (document.getElementById('homeMusicBtn')) document.getElementById('homeMusicBtn').onclick = toggleBgm;
     if (document.getElementById('quizMusicBtn')) document.getElementById('quizMusicBtn').onclick = toggleBgm;
     updateBgmBtnUI();
     
     // 為了突破瀏覽器的自動播放限制，在使用者第一次點擊畫面時自動播放音樂
     document.body.addEventListener('pointerdown', () => {
-        if (isBgmEnabled && !isBgmPlaying) {
+        if (isBgmEnabled && !isBgmPlaying && isSfxEnabled) {
             bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {});
         }
     }, { once: true });
 
-    // 2. Combo 連擊全域攔截魔法
+    // 2. 光之碎片靜默連擊收集魔法 (無彈出視窗)
     let _roundMistakes = 0;
     let _awaitingNext = false;
     state.combo = 0;
@@ -2913,7 +2932,10 @@
                 // 成功過關的瞬間！
                 if (!state.mistakeInCurrentQ) {
                     state.combo += 1;
-                    if (state.combo >= 2) setTimeout(() => showComboEffect(state.combo), 200);
+                    // 額外獎勵：連續答對 3 題以上，加送光之碎片 (靜默存入，結算時給驚喜)
+                    if (state.combo >= 3) {
+                        state.shards += 1;
+                    }
                 }
             } else if (val === false) {
                 // 換下一題時，重置當題錯誤狀態
@@ -2923,31 +2945,6 @@
         }
     });
 
-    function showComboEffect(count) {
-        const container = document.createElement('div');
-        container.className = 'combo-container';
-        
-        const flame = document.createElement('img');
-        flame.src = 'images/icon_flame.png';
-        flame.className = 'combo-flame';
-        flame.onerror = function() { this.style.display = 'none'; }; // 如果圖片還沒準備好，也不會壞掉
-        
-        const text = document.createElement('div');
-        text.className = 'combo-text';
-        text.textContent = `Combo x${count}!`;
-        
-        container.appendChild(flame);
-        container.appendChild(text);
-        document.body.appendChild(container);
-        
-        // 額外獎勵：連續答對 3 題以上，加送光之碎片 (靜默存入，結算畫面才看得到！)
-        if (count >= 3) {
-            state.shards += 1;
-            updateHome();
-        }
-
-        setTimeout(() => container.remove(), 1500);
-    }
   </script>
 </body>
 </html>
