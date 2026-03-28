@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.50.0 順口溜升級版</title>
+  <title>慢慢變強｜螢光森林 v1.50.2 完美防護版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -260,7 +260,7 @@
     .growth-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:10px !important; display:grid;}
     .growth-pill{position:relative; overflow:hidden; min-height:86px; padding:14px 16px; border-radius:22px; background: radial-gradient(circle at 80% 18%, rgba(255,223,128,.14), transparent 20%), linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); box-shadow:0 10px 24px rgba(0,0,0,.18);}
     .growth-pill strong{font-size:28px; display:block; margin-top:4px;}
-    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;}
+    .seed-actions-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0}
     .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
     .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08)}
     .hidden-btn{display:none !important;}
@@ -339,7 +339,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.50.0 順口溜升級版</div>
+        <div class="version-tag">v1.50.2 完美防護版</div>
       </div>
     </header>
 
@@ -628,6 +628,10 @@
       '哈': ['哈','蛤','ha']
     };
 
+    // 🌟 終極防護罩：安全讀取過關記憶，防止遊戲當機！
+    let initialMastery = {};
+    try { initialMastery = JSON.parse(safeStorage.get('mm_mastery') || '{}'); } catch(e) { initialMastery = {}; }
+
     const state = {
       spiritName: safeStorage.get('mm_strength_name') || '',
       playerTitle: safeStorage.get('mm_player_title') || '',
@@ -640,7 +644,7 @@
       gardenStage: Number(safeStorage.get('mm_strength_garden_stage') || 0),
       streak: Number(safeStorage.get('mm_strength_streak') || 1),
       mode: 'home', subMode: '', qIndex: 0, excluded: 0, questionList: [],
-      mastery: JSON.parse(safeStorage.get('mm_mastery') || '{}'), lastRank: safeStorage.get('mm_forest_rank') || '新手探險家',
+      mastery: initialMastery, lastRank: safeStorage.get('mm_forest_rank') || '新手探險家',
       selectedTable: 2, currentSpeechText: '', awaitingNext: false,
       totalStars: Number(safeStorage.get('mm_total_stars') || 0), 
       roundMistakes: 0, 
@@ -708,7 +712,6 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // 🌟 音效總開關設定
     let isSfxEnabled = safeStorage.get('mm_sfx') !== 'false';
     let audioCtx = null;
     
@@ -860,7 +863,6 @@
         return { area: levelData.title, kind: gameType, promptText, speakText, answer, options: opts, uiType, scene };
     }
 
-    // 🌟 沉浸式教學：全新順口溜模式
     function buildTablePractice(table) {
       const list = [];
       for (let step = 1; step <= 9; step += 1) {
@@ -868,16 +870,9 @@
         let de = answer <= 10 ? '得' : '';
         let instructionSpeak = `${numberToZh(table)}${numberToZh(step)}${de}${numberToZh(answer)}`;
         list.push({ 
-            area: '九九口訣房', 
-            kind: 'math-chant', 
-            promptText: `${table} × ${step} = ${answer}`, 
-            speakText: instructionSpeak, 
-            answer: String(answer), 
-            tableBase: table, 
-            tableTarget: step, 
-            uiType: 'math-chant', 
-            scene: '🎧 順口溜時間！請跟著小精靈一起大聲唸喔！', 
-            options: [] // 移除選項，改為純聆聽與跟讀
+            area: '九九口訣房', kind: 'math-chant', promptText: `${table} × ${step} = ${answer}`, speakText: instructionSpeak, 
+            answer: String(answer), tableBase: table, tableTarget: step, uiType: 'math-chant', 
+            scene: '🎧 順口溜時間！請跟著小精靈一起大聲唸喔！', options: [] 
         });
       }
       return list;
@@ -961,7 +956,7 @@
       for (let i = 0; i < 5; i++) {
         const targetCombo = randomItem(COMBO_SET); const soundWord = COMBO_SOUND[targetCombo]; const p1 = targetCombo.charAt(0); const p2 = targetCombo.charAt(1);
         let pool = [...COMBO_SET].filter(c => c !== targetCombo); let options = shuffle([targetCombo, ...shuffle(pool).slice(0, 2)]);
-        list.push({ area: '拼音練功房', kind: 'combo-drag', promptText: `尋找「${targetCombo}」`, speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, answer: targetCombo, soundWord: soundWord, basketText: `${p1} + ${p2}`, options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), uiType: 'drag', scene: '🧺 拖曳正確的果子放到籃子裡！' });
+        list.push({ area: '拼音練功房', kind: 'combo-drag', promptText: `尋找「${targetCombo}」`, speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, answer: targetCombo, targetCombo: targetCombo, soundWord: soundWord, basketText: `${p1} + ${p2}`, options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), uiType: 'drag', scene: '🧺 拖曳正確的果子放到籃子裡！' });
       }
       return list;
     }
@@ -1069,7 +1064,6 @@
       if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
       if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
       
-      // 🌟 全新沉浸式教學：順口溜模式
       if (q.uiType === 'math-chant') {
           if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '請跟著小精靈一起大聲唸出來喔！';
           if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
@@ -1443,7 +1437,6 @@
         });
         stage.appendChild(character); optionsWrap.appendChild(stage);
       }
-      /* 🌟 收果子遊戲還原版！ */
       else if (q.uiType === 'drag') {
           if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '把正確的果子收到籃子裡吧！';
           const stage = document.createElement('div'); stage.className = 'drag-stage';
@@ -1691,7 +1684,6 @@
         });
       }
 
-      // 🌟 觸發語音 (除了會自己跑動畫的房間外)
       if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch' && q.uiType !== 'math-chant') {
           speak(q.speakText); 
       } else if (q.uiType === 'bubble') {
@@ -1743,7 +1735,6 @@
 
     document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
     
-    // 🌟 首頁朗讀按鈕綁定 (支援開關暫停)
     if(document.getElementById('homeReplayBtn')) {
         document.getElementById('homeReplayBtn').onclick = () => {
             if (speakingNow) { stopSpeech(); } 
