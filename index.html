@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.50.5</title>
+  <title>慢慢變強｜螢光森林 v1.50.6</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -176,7 +176,6 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
-    /* 🌟 大樂進化：防彈級記憶卡片比例，徹底解決手機壓扁問題 */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; align-items: start; }
     .memory-card { position: relative; width: 100%; padding-bottom: 133.33%; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; display: block; }
@@ -191,9 +190,13 @@
     .drag-stage { position: relative; width: 100%; height: 360px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
+    
+    /* 🌟 大樂進化：為果子加入專屬被鎖定的 CSS 外觀 */
     .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
+    .drag-fruit.excluded { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+    
     .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 20px; gap: 12px; }
     .drag-basket { position: relative; width: 140px; height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
     .drag-basket img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; z-index: -1; pointer-events: none; }
@@ -343,7 +346,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.50.5 安全音效升級版</div>
+        <div class="version-tag">v1.50.6 安全音效升級版</div>
       </div>
     </header>
 
@@ -537,7 +540,6 @@
           </div>
         </div>
 
-        <!-- 🌟 修復 iPhone 底部小白條卡住按鈕的問題 -->
         <div style="margin-top:16px; padding-bottom: env(safe-area-inset-bottom); margin-bottom: 15px;">
           <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" type="button">下一題</button>
         </div>
@@ -562,7 +564,6 @@
           🔔 遊戲聲音：開啟
         </button>
 
-        <!-- 🌟 新增：防汛簽證APP傳承下來的「強制清除快取」按鈕 -->
         <button id="forceClearCacheBtn" style="margin-top:12px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
           ⚠️ 畫面卡住？點此強制清除快取
         </button>
@@ -865,7 +866,10 @@
             if(item.text) {
                 const utter = new SpeechSynthesisUtterance(item.text);
                 utter.lang = 'zh-TW';
-                utter.rate = 0.85; 
+                
+                // 🌟 大樂修正：加入自訂語速選項，預設稍微放慢到 0.85
+                utter.rate = item.rate || 0.85; 
+                
                 const voice = pickVoice(); 
                 if (voice) utter.voice = voice;
                 
@@ -1000,7 +1004,6 @@
         };
     }
 
-    /* 🌟 大樂進化版：自動語音順口溜，不需要選選項了！ */
     function buildTablePractice(table) {
       const list = [];
       for (let step = 1; step <= 9; step += 1) {
@@ -1336,7 +1339,11 @@
     }
 
     function renderQuestion() {
-      setTimeout(() => { window.scrollTo(0, 0); }, 50);
+      // 🌟 大樂進化：針對「單頁式互動遊戲」，徹底取消強制回到最上方的設計，防止畫面跳動暈船！
+      const immersiveTypes = ['drum', 'spotlight', 'bubble', 'puzzle', 'path', 'match', 'drag', 'echo', 'feed', 'math-chant', 'scratch'];
+      if (!immersiveTypes.includes(state.questionList[state.qIndex].uiType)) {
+          setTimeout(() => { window.scrollTo(0, 0); }, 50);
+      }
         
       const q = state.questionList[state.qIndex];  
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
@@ -1380,12 +1387,12 @@
           if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
 
           const stage = document.createElement('div');
-          stage.style.width = '100%'; stage.style.padding = '40px 20px'; stage.style.textAlign = 'center';
+          stage.style.width = '100%'; stage.style.padding = '30px 20px'; stage.style.textAlign = 'center';
           stage.style.background = 'radial-gradient(circle, rgba(255,215,106,0.15), transparent)';
           stage.style.borderRadius = '24px'; stage.style.border = '2px dashed rgba(255,215,106,0.3)';
           stage.style.display = 'flex'; stage.style.flexDirection = 'column'; stage.style.alignItems = 'center'; stage.style.justifyContent = 'center';
 
-          // 🌟 換成指定的精靈圖 elf.png 🌟
+          // 🌟 更新小精靈，並微調大小
           const elfIcon = document.createElement('img');
           elfIcon.src = 'images/elf.png'; 
           elfIcon.onerror = function() { this.onerror=null; this.src='images/icon.png'; };
@@ -1394,10 +1401,28 @@
           elfIcon.style.animation = 'magicalHover 3s infinite'; 
           elfIcon.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))';
 
+          // 🌟 將算式拆成上下兩行，避免手機螢幕太小被擠壓
           const bigEquation = document.createElement('div');
-          bigEquation.style.fontSize = '64px'; bigEquation.style.fontWeight = '900'; bigEquation.style.color = '#ffd76a';
-          bigEquation.style.textShadow = '0 4px 15px rgba(0,0,0,0.5)';
-          bigEquation.textContent = `${q.tableBase} × ${q.tableTarget} = ${q.answer}`;
+          bigEquation.style.display = 'flex';
+          bigEquation.style.flexDirection = 'column';
+          bigEquation.style.alignItems = 'center';
+          bigEquation.style.gap = '4px';
+
+          const eqTop = document.createElement('div');
+          eqTop.style.fontSize = '32px';
+          eqTop.style.fontWeight = 'bold';
+          eqTop.style.color = '#fff';
+          eqTop.textContent = `${q.tableBase} × ${q.tableTarget} =`;
+
+          const eqBottom = document.createElement('div');
+          eqBottom.style.fontSize = '72px';
+          eqBottom.style.fontWeight = '900';
+          eqBottom.style.color = '#ffd76a';
+          eqBottom.style.textShadow = '0 4px 15px rgba(0,0,0,0.5)';
+          eqBottom.textContent = q.answer;
+
+          bigEquation.appendChild(eqTop);
+          bigEquation.appendChild(eqBottom);
           
           stage.appendChild(elfIcon); stage.appendChild(bigEquation); optionsWrap.appendChild(stage);
 
@@ -1405,11 +1430,12 @@
               speakSequence([
                   {
                       text: q.speakText,
+                      rate: 0.65, // 🌟 放慢語音精靈的速度，讓小朋友更好跟讀
                       action: () => {
-                          bigEquation.style.transform = 'scale(1.2)'; bigEquation.style.color = '#fff'; bigEquation.style.transition = 'all 0.3s ease';
+                          eqBottom.style.transform = 'scale(1.3)'; eqBottom.style.color = '#fff'; eqBottom.style.transition = 'all 0.3s ease';
                           elfIcon.style.transform = 'scale(1.1)'; elfIcon.style.transition = 'all 0.3s ease';
                           setTimeout(() => {
-                              if(bigEquation) { bigEquation.style.transform = 'scale(1)'; bigEquation.style.color = '#ffd76a'; }
+                              if(eqBottom) { eqBottom.style.transform = 'scale(1)'; eqBottom.style.color = '#ffd76a'; }
                               if(elfIcon) elfIcon.style.transform = 'scale(1)';
                           }, 800);
                       }
@@ -1421,7 +1447,7 @@
                       nextBtn.classList.remove('hidden-btn'); 
                       nextBtn.textContent = (state.qIndex === state.questionList.length - 1) ? '完成口訣！' : '聽下一句';
                       nextBtn.classList.add('pulse-anim');
-                      setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); 
+                      // 🌟 拔除 scrollIntoView，避免畫面被往下扯
                   }
               });
           };
@@ -1483,7 +1509,6 @@
               if(document.getElementById('nextQuestionBtn')) {
                   const nextBtn = document.getElementById('nextQuestionBtn');
                   nextBtn.classList.remove('hidden-btn');
-                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
               }
 
               const reply = `答案是 ${opt.speak}。太好了，森林亮起來了！`;
@@ -1631,7 +1656,6 @@
             if(document.getElementById('nextQuestionBtn')) {
                 const nextBtn = document.getElementById('nextQuestionBtn');
                 nextBtn.classList.remove('hidden-btn');
-                setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
             }
 
             if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！答案就是 ${q.answer}！`;
@@ -1689,7 +1713,6 @@
               if(document.getElementById('nextQuestionBtn')) {
                   const nextBtn = document.getElementById('nextQuestionBtn');
                   nextBtn.classList.remove('hidden-btn');
-                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
               }
 
               let de = '';
@@ -1855,7 +1878,6 @@
                     if(document.getElementById('nextQuestionBtn')) {
                         const nextBtn = document.getElementById('nextQuestionBtn');
                         nextBtn.classList.remove('hidden-btn');
-                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                     }
                     
                     const replyUI = `${q.leftChar}... ${q.answer}... ${q.targetCombo}！太棒了！`;
@@ -1986,7 +2008,6 @@
         window.onpointerup = () => { isScratching = false; };
         window.ontouchend = () => { isScratching = false; };
       }
-      /* 🌟 翻牌配對 (硬體加速 3D 翻轉) */
       else if (q.uiType === 'match') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '點擊卡片翻開，找出相同的兩個字！';
         if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
@@ -2047,7 +2068,6 @@
                                     const nextBtn = document.getElementById('nextQuestionBtn');
                                     if (nextBtn) {
                                         nextBtn.classList.remove('hidden-btn');
-                                        nextBtn.scrollIntoView(false);
                                     }
                                 }, 1500);
                             }
@@ -2076,7 +2096,6 @@
         stage.appendChild(grid);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 復活：小鹿過河 (真實垂直過河版) */
       else if (q.uiType === 'path') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
         
@@ -2091,20 +2110,17 @@
         riverOverlay.className = 'path-river-overlay';
         stage.appendChild(riverOverlay);
 
-        // 小鹿過河的動態捲動座標邏輯 (5題)
-        // 起點永遠在下方 (84%)，新的目標在上方 (70%)
         const targetTop = 70 - (state.qIndex * 13); 
         const charStartTop = state.qIndex === 0 ? 84 : (70 - ((state.qIndex - 1) * 13)); 
 
-        // 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭！
         if (state.qIndex > 0) {
             const currentStone = document.createElement('div');
             currentStone.className = 'path-stone';
             currentStone.style.left = `calc(${state.lastPathX}% - 40px)`;
             currentStone.style.top = `${charStartTop}%`;
             currentStone.style.backgroundImage = "url('images/stone.png')";
-            currentStone.style.pointerEvents = 'none'; // 防止阻擋手指點擊新石頭
-            currentStone.style.zIndex = '4'; // 確保在水面上、小鹿下
+            currentStone.style.pointerEvents = 'none'; 
+            currentStone.style.zIndex = '4'; 
             stage.appendChild(currentStone);
         }
 
@@ -2112,10 +2128,8 @@
         character.src = 'images/deer.png';
         character.className = 'path-character';
         
-        // 繼承上次跳躍的 X 座標
         const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
         character.style.left = `calc(${currentX}% - 35px)`;
-        // 第一題站在最下方的岸上，其餘站在前一顆石頭上
         character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
         
         character.onerror = function() { 
@@ -2132,11 +2146,10 @@
             const leftPos = xOffsets[idx];
             let topPos = targetTop;
             
-            // 終極防遮擋斜角推進魔法：如果石頭跟小鹿在同一直線上，就把石頭大幅往上推！
             if (Math.abs(leftPos - currentX) < 10) {
-                topPos -= 10; // 大幅往上推，避開小鹿頭部
+                topPos -= 10; 
             } else {
-                topPos += (idx === 1 ? -4 : 6); // 自然的錯落排列
+                topPos += (idx === 1 ? -4 : 6); 
             }
             
             stone.style.left = `calc(${leftPos}% - 40px)`;
@@ -2156,11 +2169,8 @@
                     state.awaitingNext = true;
                     
                     playJumpSound();
-                    
-                    // 記錄這次落點的 X 座標，作為下一題的起點
                     state.lastPathX = leftPos; 
                     
-                    // 小鹿跳向新石頭
                     character.style.left = `calc(${leftPos}% - 35px)`;
                     character.style.top = `calc(${topPos}% - 35px)`; 
                     character.style.transform = 'scale(1.3) rotate(5deg)';
@@ -2175,27 +2185,23 @@
                     if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
                     speak(reply);
 
-                    // 終極一躍：最後一題加碼跳上對岸
                     if (state.qIndex === state.questionList.length - 1) {
                         setTimeout(() => {
                             playJumpSound();
                             character.style.left = `calc(50% - 35px)`; 
-                            character.style.top = `2%`; // 跳到畫面最頂端的草地上
+                            character.style.top = `2%`; 
                             character.style.transform = 'scale(1.2)';
                             setTimeout(() => character.style.transform = 'scale(1)', 400);
                             
-                            // 延遲顯示「過關按鈕」並加入語音，等待孩子手動點擊
                             setTimeout(() => {
                                 const nextBtn = document.getElementById('nextQuestionBtn');
                                 if (nextBtn) {
                                     nextBtn.classList.remove('hidden-btn');
-                                    setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                                     speak('太棒了，成功過河！請點擊下方按鈕領取獎勵！');
                                 }
                             }, 1000);
                         }, 1200);
                     } else {
-                        /* 延長等待時間至 2.5 秒，讓語音不會跟下一題打架 */
                         setTimeout(() => {
                             const nextBtn = document.getElementById('nextQuestionBtn');
                             if (nextBtn) nextBtn.click();
@@ -2221,7 +2227,6 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-    /* 🌟 數學：精靈餵食大挑戰版 (無敵光球完美啟動版) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
@@ -2364,8 +2369,6 @@
                         food.style.opacity = '0'; 
                         
                         elfImg.style.transform = `scale(${baseScale + 0.2})`;
-                        
-                        // 🌟 大樂修正：啟動外層的 CSS 光球魔法！
                         elfWrap.classList.add('feed-elf-success');
                         
                         if (state.qIndex === state.questionList.length - 1) {
@@ -2379,12 +2382,10 @@
                                 };
                                 elfImg.src = fullPaths[0]; 
                                 elfImg.style.transform = `scale(${baseScale + 0.1})`;
-                                // 🌟 為了慶祝吃飽，最後一題光球就不關了，讓他一直發光！
                             }, 400); 
                         } else {
                             setTimeout(() => {
                                 elfImg.style.transform = `scale(${baseScale})`;
-                                // 🌟 平常的題目吃完後，關閉光球
                                 elfWrap.classList.remove('feed-elf-success');
                             }, 800);
                         }
@@ -2392,7 +2393,6 @@
                         if(document.getElementById('nextQuestionBtn')) {
                             const nextBtn = document.getElementById('nextQuestionBtn');
                             nextBtn.classList.remove('hidden-btn');
-                            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                         }
                         
                         let de = '';
@@ -2422,7 +2422,7 @@
                         food.classList.add('excluded');
                         
                         origX = 0; origY = 0;
-                        food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        food.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                         food.style.transform = `translate(0px, 0px)`;
                         elfImg.style.transform = `scale(${baseScale})`;
                         
@@ -2434,7 +2434,7 @@
                     }
                 } else {
                     origX = 0; origY = 0;
-                    food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    food.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     food.style.transform = `translate(0px, 0px)`;
                     elfImg.style.transform = `scale(${baseScale})`;
                 }
@@ -2444,7 +2444,6 @@
         stage.appendChild(foodContainer);
         optionsWrap.appendChild(stage);
       }
-      /* 🌟 全新進化版：回聲谷即時聲控 (字隨音動、魔術揭曉拼音版) */
       else if (q.uiType === 'echo') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '聽完語音，按下麥克風大聲唸出來吧！';
         
@@ -2455,7 +2454,6 @@
         echoBg.className = 'echo-bg';
         stage.appendChild(echoBg);
         
-        // 🌟 分離注音符號，並準備最後揭曉的直立拼音
         const p1 = q.targetCombo.charAt(0);
         const p2 = q.targetCombo.charAt(1);
         
@@ -2484,19 +2482,16 @@
         stage.appendChild(resultBox);
         optionsWrap.appendChild(stage);
         
-        // 🌟 定義專屬的語音連動動畫魔法
         q.playVoice = () => {
             const p1El = document.getElementById('echo-p1');
             const p2El = document.getElementById('echo-p2');
             const comboEl = document.getElementById('echo-combo');
             
-            // 重置所有動畫狀態
             if(p1El) { p1El.style.color = '#ffd76a'; p1El.style.transform = 'scale(1)'; }
             if(p2El) { p2El.style.color = '#ffd76a'; p2El.style.transform = 'scale(1)'; }
             if(comboEl) { comboEl.classList.remove('show'); }
             if(resultBox) { resultBox.textContent = '請聽語音示範...'; }
 
-            // 啟動精準語音序列
             speakSequence([
                 { text: "請按下麥克風，大聲唸出", delay: 200 },
                 { 
@@ -2514,7 +2509,7 @@
                     text: p2, 
                     delay: 200,
                     action: () => {
-                        if(p1El) p1El.style.color = '#ffd76a'; // 恢復上一個字
+                        if(p1El) p1El.style.color = '#ffd76a'; 
                         if(p2El) {
                             p2El.style.color = '#ff6b81';
                             p2El.style.transform = 'scale(1.4)';
@@ -2526,7 +2521,7 @@
                     text: q.soundWord, 
                     action: () => {
                         if(p2El) p2El.style.color = '#ffd76a';
-                        if(comboEl) comboEl.classList.add('show'); // 🌟 魔術揭曉直立拼音
+                        if(comboEl) comboEl.classList.add('show'); 
                         if(resultBox) resultBox.textContent = '換你囉！按麥克風說話';
                     }
                 }
@@ -2539,7 +2534,7 @@
             resultBox.innerHTML = '⚠️ 你的瀏覽器不支援語音辨識喔！<br><small>請使用 Android Chrome 或 iOS Safari</small>';
             micBtn.style.opacity = '0.5';
             micBtn.style.pointerEvents = 'none';
-            q.playVoice(); // 即使不支援語音輸入，也要播放超炫的動畫教學
+            q.playVoice(); 
         } else {
             const recognition = new SpeechRecognition();
             recognition.lang = 'zh-TW';
@@ -2549,7 +2544,6 @@
             
             let isRecognizing = false;
             
-            // 🌟 改用 onclick 觸發
             micBtn.onclick = () => {
                 if (state.awaitingNext || speakingNow) return;
                 
@@ -2600,13 +2594,11 @@
                     micBtn.classList.remove('listening');
                     micBtn.style.background = '#2ed573';
                     micBtn.style.borderColor = '#fff';
-                    // 🌟 答對時避免顯示奇怪的同音中文字，改顯示注音
                     resultBox.textContent = `太棒了！是：「${q.targetCombo}」`;
                     
                     if(document.getElementById('nextQuestionBtn')) {
                         const nextBtn = document.getElementById('nextQuestionBtn');
                         nextBtn.classList.remove('hidden-btn');
-                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                     }
                     const replyUI = `太棒了！你唸出了：「${q.targetCombo}」！`;
                     const replySpeak = `太棒了！你唸得非常標準！`;
@@ -2619,7 +2611,6 @@
                     state.roundMistakes += 1;
                     playSplashSound();
                     
-                    // 🌟 答錯時避免顯示中文字讓孩子困惑
                     resultBox.textContent = `沒有聽清楚喔...`;
                     let replyUI = `聽起來不太像喔，再試一次吧！`;
                     let replySpeak = replyUI;
@@ -2645,7 +2636,6 @@
                                 if(document.getElementById('nextQuestionBtn')) {
                                     const nextBtn = document.getElementById('nextQuestionBtn');
                                     nextBtn.classList.remove('hidden-btn');
-                                    setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
                                 }
                                 speak('太棒了！');
                                 skipBtn.remove();
@@ -2679,7 +2669,6 @@
                 }
             };
             
-            // 🌟 進入題目時，自動播放一次精彩的教學動畫
             q.playVoice();
         }
       }
@@ -2695,7 +2684,6 @@
         });
       }
 
-      // 🌟 觸發其他房間的語音
       if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch' && q.uiType !== 'math-chant') {
           speak(q.speakText); 
       } else if (q.uiType === 'bubble') {
@@ -2712,7 +2700,6 @@
         if(document.getElementById('nextQuestionBtn')) {
             const nextBtn = document.getElementById('nextQuestionBtn');
             nextBtn.classList.remove('hidden-btn');
-            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
         }
         
         let de = '';
@@ -2764,24 +2751,21 @@
       };
     }
 
-    /* 事件綁定 */
     document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
     if(document.getElementById('backHomeBtn')) document.getElementById('backHomeBtn').onclick = () => { stopSpeech(); showScreen(state.mode === 'home' ? 'home' : 'roomSelect'); };
     if(document.getElementById('roomSelectBackBtn')) document.getElementById('roomSelectBackBtn').onclick = () => { showScreen('home'); updateHome(); };
     if(document.getElementById('resultHomeBtn')) document.getElementById('resultHomeBtn').onclick = () => { if(state.mode === 'today') { showScreen('home'); } else { showScreen('roomSelect'); } updateHome(); };
     
-    // 🌟 綁定再來一局按鈕
     if(document.getElementById('resultReplayBtn')) {
         document.getElementById('resultReplayBtn').onclick = () => { 
             if(state.subMode) {
-                startSubMode(state.subMode); // 重新開始同一個模式
+                startSubMode(state.subMode); 
             } else {
                 showScreen('roomSelect');
             }
         }; 
     }
     
-    // 🌟 完美綁定統一的音效按鈕：如果該房間有專屬的語音連動魔法，就觸發它！
     if(document.getElementById('topSpeakBtn')) {
         document.getElementById('topSpeakBtn').onclick = () => { 
             if(speakingNow) {
@@ -2796,7 +2780,6 @@
         };
     }
 
-    // 起始流程
     if(document.getElementById('introAcceptBtn')) document.getElementById('introAcceptBtn').onclick = () => { showScreen('name'); renderNameGrid(document.getElementById('nameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('nameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmNameBtn').disabled=false;}); };
     if(document.getElementById('confirmNameBtn')) document.getElementById('confirmNameBtn').onclick = () => { state.spiritName = state.selectedName; showScreen('title'); renderNameGrid(document.getElementById('titleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('titleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmTitleBtn').disabled=false;}); };
     if(document.getElementById('confirmTitleBtn')) document.getElementById('confirmTitleBtn').onclick = () => { state.playerTitle = state.selectedTitle; showScreen('bond'); };
@@ -2811,11 +2794,6 @@
 
     if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
 
-// ==========================================
-    // 🌟 設定頁面與「強制清除快取」事件綁定 🌟
-    // ==========================================
-    
-    // 綁定首頁的「設定」按鈕打開設定畫面
     if(document.getElementById('homeSettingBtn')) {
         document.getElementById('homeSettingBtn').onclick = () => {
             showScreen('settings');
@@ -2826,12 +2804,10 @@
         };
     }
     
-    // 設定畫面的三個基本按鈕
     if(document.getElementById('settingsCancelBtn')) document.getElementById('settingsCancelBtn').onclick = () => showScreen('home');
     if(document.getElementById('settingsSaveBtn')) document.getElementById('settingsSaveBtn').onclick = () => { state.spiritName = state.selectedName; state.playerTitle = state.selectedTitle; saveState(); updateHome(); showScreen('home'); showToast('設定已儲存！'); };
     if(document.getElementById('settingsResetBtn')) document.getElementById('settingsResetBtn').onclick = () => { if(confirm('確定要清除所有進度嗎？這無法復原喔！')) { safeStorage.clear(); window.location.href = window.location.pathname; } };
 
-    // 🌟 全域音效總開關 🌟
     if(document.getElementById('toggleSfxBtn')) {
         const sfxBtn = document.getElementById('toggleSfxBtn');
         const updateSfxBtnState = () => {
@@ -2859,7 +2835,6 @@
         };
     }
 
-    // 🌟 安全的沉浸式 BGM 音樂系統 (延遲啟動防當機版) 🌟
     let bgmAudio = null;
     let isBgmEnabled = safeStorage.get('mm_bgm') !== 'false'; 
     let isBgmPlaying = false;
@@ -2906,7 +2881,6 @@
     if (document.getElementById('quizMusicBtn')) document.getElementById('quizMusicBtn').onclick = toggleBgm;
     updateBgmBtnUI();
     
-    // 等待使用者第一次觸控畫面後，才安全建立並播放音樂，避開蘋果與安卓的自動播放防護
     document.body.addEventListener('pointerdown', () => { 
         if (isBgmEnabled && !isBgmPlaying && window.isSfxEnabled !== false) { 
             playBgmSafely(); 
@@ -2914,12 +2888,10 @@
     }, { once: true });
 
 
-    // 🚀 絕招：強制清除快取！
     if(document.getElementById('forceClearCacheBtn')) {
         document.getElementById('forceClearCacheBtn').onclick = () => {
             if(confirm('確定要強制清除快取並重新載入嗎？\n(放心，這不會刪除您的星星和遊戲進度喔！)\n\n※ 適合用在圖片沒更新、畫面卡住的時候 ※')) {
                 
-                // 1. 拔除離線服務工作者 (Service Worker)
                 if ('serviceWorker' in navigator) {
                     navigator.serviceWorker.getRegistrations().then(function(registrations) {
                         for(let registration of registrations) { 
@@ -2928,7 +2900,6 @@
                     });
                 }
                 
-                // 2. 清除瀏覽器底層的 Cache Storage 圖片暫存
                 try {
                     if (window.caches) {
                         caches.keys().then(function(names) {
@@ -2937,7 +2908,6 @@
                     }
                 } catch(e) {}
                 
-                // 3. 強制刷新網頁，並加上專屬時間戳記，打破手機最後的倔強！
                 showToast('正在清除快取，即將重新載入...');
                 setTimeout(() => {
                     window.location.href = window.location.pathname + '?clear=' + new Date().getTime();
