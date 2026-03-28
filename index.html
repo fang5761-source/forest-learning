@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.49.0 終極瘦身優化版</title>
+  <title>慢慢變強｜螢光森林 v1.50.0 順口溜升級版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -48,7 +48,6 @@
     .secondary-btn{min-height:54px; padding:14px 18px; background:rgba(255,255,255,.09); color:#fff;}
     .ghost-btn{min-height:48px; padding:0 14px; background:rgba(255,255,255,.08); color:#fff;}
     
-    /* 🌟 修復蘋果手機 Hover 雙擊 Bug：只在支援 hover 的滑鼠裝置上套用 hover 效果 */
     @media (hover: hover) {
       button:hover, .name-btn:hover, .world-spot:hover, .room-card-btn.is-locked:hover { transform: translateY(-1px); }
     }
@@ -221,17 +220,12 @@
     .vertical-pinyin-echo.show { opacity: 1; transform: scale(1); }
     
     .feed-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
-    
     .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.png'), url('feed_bg.png'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
-    
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
-    
     .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; pointer-events: none; }
     
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
-    
     .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; filter: none !important; }
-    
     .feed-elf-success { transform: scale(1.15); }
     .feed-elf-success::before { width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,215,106,0.95) 0%, rgba(255,226,143,0.6) 40%, rgba(255,215,106,0) 70%); opacity: 1; }
     
@@ -251,9 +245,9 @@
     .room-card-btn .room-emoji{font-size:28px} .room-card-btn strong{font-size:22px} .room-card-btn small{color:rgba(255,255,255,.78); line-height:1.5}
     .room-card-btn.is-locked { opacity: 0.65; filter: grayscale(0.6); border-style: dashed; }
     
-    /* 🎵 音樂按鈕 CSS (升級為明顯的 Emoji 按鈕) */
-    .music-btn { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #fff; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
-    .music-btn.off { filter: grayscale(1) opacity(0.5); }
+    /* 🎵 音樂按鈕 CSS (升級為超級明顯的黃色圓形按鈕) */
+    .music-btn { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #ffd76a, #f0b93f); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #163826; font-size: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);}
+    .music-btn.off { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.4); filter: grayscale(1); box-shadow: none;}
     
     .table-pick-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:16px;}
     .table-pick-btn{min-height:64px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.08); color:#fff; font-size:22px; cursor:pointer;}
@@ -345,7 +339,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.49.0 終極瘦身優化版</div>
+        <div class="version-tag">v1.50.0 順口溜升級版</div>
       </div>
     </header>
 
@@ -516,7 +510,7 @@
           <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" style="background: rgba(22, 56, 38, 0.8); border-color: rgba(255,215,106,0.3);" type="button">🎵</button>
+          <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" type="button">🎵</button>
           <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px; font-weight: bold;">1 / 5</span>
           <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
         </div>
@@ -693,12 +687,6 @@
       ]
     };
 
-    const screens = {
-      intro: document.getElementById('introScreen'), name: document.getElementById('nameScreen'), title: document.getElementById('titleScreen'), bond: document.getElementById('bondScreen'),
-      home: document.getElementById('homeScreen'), garden: document.getElementById('gardenScreen'), village: document.getElementById('villageScreen'), roomSelect: document.getElementById('roomSelectScreen'),
-      quiz: document.getElementById('quizScreen'), settings: document.getElementById('settingsScreen'), result: document.getElementById('resultScreen')
-    };
-
     function randomItem(list) { return list[Math.floor(Math.random() * list.length)]; }
     function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
     function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
@@ -872,17 +860,25 @@
         return { area: levelData.title, kind: gameType, promptText, speakText, answer, options: opts, uiType, scene };
     }
 
-    // 🌟 沉浸式教學：順序口訣現在會先主動唸出完整算式和答案！
+    // 🌟 沉浸式教學：全新順口溜模式
     function buildTablePractice(table) {
       const list = [];
       for (let step = 1; step <= 9; step += 1) {
-        const answer = table * step; const candidates = [];
-        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
-        while (candidates.length < 2) { const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1); if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate); }
-        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
+        const answer = table * step; 
         let de = answer <= 10 ? '得' : '';
-        let instructionSpeak = `${numberToZh(table)}${numberToZh(step)}${de}${numberToZh(answer)}。請選出，${answer}`;
-        list.push({ area: '九九口訣房', kind: 'math-basic', promptText: `${table} × ${step} = ?`, speakText: instructionSpeak, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'math-v1', scene: '🌟 仔細聽小精靈怎麼唸，再選出正確的數字！', options });
+        let instructionSpeak = `${numberToZh(table)}${numberToZh(step)}${de}${numberToZh(answer)}`;
+        list.push({ 
+            area: '九九口訣房', 
+            kind: 'math-chant', 
+            promptText: `${table} × ${step} = ${answer}`, 
+            speakText: instructionSpeak, 
+            answer: String(answer), 
+            tableBase: table, 
+            tableTarget: step, 
+            uiType: 'math-chant', 
+            scene: '🎧 順口溜時間！請跟著小精靈一起大聲唸喔！', 
+            options: [] // 移除選項，改為純聆聽與跟讀
+        });
       }
       return list;
     }
@@ -1064,16 +1060,64 @@
       if(document.getElementById('roundText')) { document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`; }
       
       const qHead = document.getElementById('questionHead');
-      if (qHead) { qHead.style.display = (q.uiType === 'drag' || q.uiType === 'echo') ? 'none' : 'flex'; }
+      if (qHead) { qHead.style.display = (q.uiType === 'drag' || q.uiType === 'echo' || q.uiType === 'math-chant') ? 'none' : 'flex'; }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
       const optionsWrap = document.getElementById('optionsWrap'); if(optionsWrap) optionsWrap.innerHTML = '';
       if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
       
       if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
-      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
+      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
       
-      if (q.uiType === 'spotlight') {
+      // 🌟 全新沉浸式教學：順口溜模式
+      if (q.uiType === 'math-chant') {
+          if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '請跟著小精靈一起大聲唸出來喔！';
+          if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
+
+          const stage = document.createElement('div');
+          stage.style.width = '100%'; stage.style.padding = '40px 20px'; stage.style.textAlign = 'center';
+          stage.style.background = 'radial-gradient(circle, rgba(255,215,106,0.15), transparent)';
+          stage.style.borderRadius = '24px'; stage.style.border = '2px dashed rgba(255,215,106,0.3)';
+          stage.style.display = 'flex'; stage.style.flexDirection = 'column'; stage.style.alignItems = 'center'; stage.style.justifyContent = 'center';
+
+          const elfIcon = document.createElement('img');
+          elfIcon.src = 'images/icon.png'; elfIcon.style.width = '120px'; elfIcon.style.marginBottom = '20px';
+          elfIcon.style.animation = 'magicalHover 3s infinite'; elfIcon.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))';
+
+          const bigEquation = document.createElement('div');
+          bigEquation.style.fontSize = '64px'; bigEquation.style.fontWeight = '900'; bigEquation.style.color = '#ffd76a';
+          bigEquation.style.textShadow = '0 4px 15px rgba(0,0,0,0.5)';
+          bigEquation.textContent = `${q.tableBase} × ${q.tableTarget} = ${q.answer}`;
+          
+          stage.appendChild(elfIcon); stage.appendChild(bigEquation); optionsWrap.appendChild(stage);
+
+          q.playVoice = () => {
+              speakSequence([
+                  {
+                      text: q.speakText,
+                      action: () => {
+                          bigEquation.style.transform = 'scale(1.2)'; bigEquation.style.color = '#fff'; bigEquation.style.transition = 'all 0.3s ease';
+                          elfIcon.style.transform = 'scale(1.1)'; elfIcon.style.transition = 'all 0.3s ease';
+                          setTimeout(() => {
+                              if(bigEquation) { bigEquation.style.transform = 'scale(1)'; bigEquation.style.color = '#ffd76a'; }
+                              if(elfIcon) elfIcon.style.transform = 'scale(1)';
+                          }, 800);
+                      }
+                  }
+              ], () => {
+                  state.awaitingNext = true;
+                  if(document.getElementById('nextQuestionBtn')) { 
+                      const nextBtn = document.getElementById('nextQuestionBtn'); 
+                      nextBtn.classList.remove('hidden-btn'); 
+                      nextBtn.textContent = (state.qIndex === state.questionList.length - 1) ? '完成口訣！' : '聽下一句';
+                      nextBtn.classList.add('pulse-anim');
+                      setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); 
+                  }
+              });
+          };
+          q.playVoice();
+      }
+      else if (q.uiType === 'spotlight') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '在黑黑的地方滑動手指，找找看目標在哪裡！';
         const stage = document.createElement('div'); stage.className = 'spotlight-stage';
         const bgList = ['dark_forest_1.png', 'dark_forest_2.png', 'dark_forest_3.png']; const randomBg = bgList[Math.floor(Math.random() * bgList.length)];
@@ -1636,7 +1680,7 @@
         }
       }
 
-      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.options && q.options.length > 0 && optionsWrap) {
+      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant' && q.options && q.options.length > 0 && optionsWrap) {
         q.options.forEach(opt => {
           const row = document.createElement('div'); row.className = 'option-row';
           const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
@@ -1648,7 +1692,7 @@
       }
 
       // 🌟 觸發語音 (除了會自己跑動畫的房間外)
-      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch') {
+      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch' && q.uiType !== 'math-chant') {
           speak(q.speakText); 
       } else if (q.uiType === 'bubble') {
           setTimeout(() => speak(q.speakText), 500); 
