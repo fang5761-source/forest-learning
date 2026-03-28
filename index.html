@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.49.0 終極瘦身優化版</title>
+  <title>慢慢變強｜螢光森林 v1.50.4 安全音效升級版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -47,12 +47,7 @@
     .primary-btn{min-height:54px; padding:14px 18px; background:linear-gradient(180deg,#ffd86d,#f0b93f); color:#243417; font-weight:700;}
     .secondary-btn{min-height:54px; padding:14px 18px; background:rgba(255,255,255,.09); color:#fff;}
     .ghost-btn{min-height:48px; padding:0 14px; background:rgba(255,255,255,.08); color:#fff;}
-    
-    /* 🌟 修復蘋果手機 Hover 雙擊 Bug：只在支援 hover 的滑鼠裝置上套用 hover 效果 */
-    @media (hover: hover) {
-      button:hover, .name-btn:hover, .world-spot:hover, .room-card-btn.is-locked:hover { transform: translateY(-1px); }
-    }
-    
+    button:hover,.name-btn:hover{transform:translateY(-1px)}
     .screen{display:none} .screen.active{display:block}
     .card{border-radius:28px; padding:22px} .story-card{padding:24px}
     .intro-hero{display:grid; grid-template-columns:220px 1fr; gap:24px; align-items:center;}
@@ -76,6 +71,7 @@
     .map-title-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px}
     .world-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .world-spot{min-height:112px;padding:16px;border-radius:24px;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at 80% 18%, rgba(255,223,128,.14), transparent 18%),linear-gradient(180deg, rgba(53,118,80,.62), rgba(18,57,35,.72));color:#fff;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;text-align:left;cursor:pointer;transition:.18s ease;}
+    .world-spot:hover{transform:translateY(-1px);}
     .world-spot .spot-emoji{font-size:26px;position:relative;top:-2px}
     .world-spot .spot-name{font-size:22px;font-weight:700}
     .world-spot small{color:rgba(255,255,255,.76)}
@@ -88,6 +84,7 @@
     .math-spot{background:linear-gradient(180deg, rgba(53,98,106,.62), rgba(20,54,69,.72))}
     .forest-spot{background:linear-gradient(180deg, rgba(39,115,82,.66), rgba(18,71,46,.75))}
     .world-spot.locked{opacity:.62;filter:grayscale(.15);cursor:default;}
+    .world-spot.locked:hover{transform:none;}
     
     .quiz-topbar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-radius:22px; margin-bottom:14px;}
     .meta-chip{padding:9px 12px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff; white-space: nowrap;}
@@ -179,14 +176,15 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
+    /* 🌟 大樂修正：解決 iOS 卡片文字被壓扁的問題，強制設定 min-height 護城河 */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; }
-    .memory-card { aspect-ratio: 3/4; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .memory-card { aspect-ratio: 3/4; min-height: 110px; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
     .memory-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
     .memory-card.flipped .memory-card-inner { transform: rotateY(180deg); }
     .memory-card.matched { pointer-events: none; }
     .memory-card.matched .memory-card-inner { opacity: 0; transform: rotateY(180deg) scale(0.5); transition: all 0.5s ease-in-out; }
-    .memory-card-front, .memory-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+    .memory-card-front, .memory-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; box-shadow: 0 6px 12px rgba(0,0,0,0.4); line-height: 1.2; letter-spacing: 1px; white-space: nowrap;}
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
@@ -226,13 +224,17 @@
     
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
     
+    /* 🌟 大樂的無敵光球：在小精靈背後畫一顆漸層圓球 */
     .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; pointer-events: none; }
     
+    /* 🌟 精靈專屬漂浮動畫 */
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
     
+    /* 🌟 終極大絕招：強制沒收圖片濾鏡，蘋果手機絕對畫不出方塊！ */
     .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; filter: none !important; }
     
     .feed-elf-success { transform: scale(1.15); }
+    /* 🌟 吃飽時：點亮背後的光球，保證 100% 圓滑無死角！ */
     .feed-elf-success::before { width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,215,106,0.95) 0%, rgba(255,226,143,0.6) 40%, rgba(255,215,106,0) 70%); opacity: 1; }
     
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
@@ -250,10 +252,11 @@
     .room-card-btn{min-height:120px; padding:16px; border-radius:22px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07)); color:#fff; text-align:left; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; cursor:pointer; transition: all 0.2s ease;}
     .room-card-btn .room-emoji{font-size:28px} .room-card-btn strong{font-size:22px} .room-card-btn small{color:rgba(255,255,255,.78); line-height:1.5}
     .room-card-btn.is-locked { opacity: 0.65; filter: grayscale(0.6); border-style: dashed; }
+    .room-card-btn.is-locked:hover { transform: none; opacity: 0.8; filter: grayscale(0.4); }
     
-    /* 🎵 音樂按鈕 CSS (升級為明顯的 Emoji 按鈕) */
-    .music-btn { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #fff; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
-    .music-btn.off { filter: grayscale(1) opacity(0.5); }
+    /* 🎵 音樂按鈕 CSS */
+    .music-btn { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #ffd76a, #f0b93f); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #163826; font-size: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);}
+    .music-btn.off { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.4); filter: grayscale(1); box-shadow: none;}
     
     .table-pick-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:16px;}
     .table-pick-btn{min-height:64px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.08); color:#fff; font-size:22px; cursor:pointer;}
@@ -345,7 +348,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.49.0 終極瘦身優化版</div>
+        <div class="version-tag">v1.50.4 安全音效升級版</div>
       </div>
     </header>
 
@@ -516,7 +519,7 @@
           <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" style="background: rgba(22, 56, 38, 0.8); border-color: rgba(255,215,106,0.3);" type="button">🎵</button>
+          <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" type="button">🎵</button>
           <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px; font-weight: bold;">1 / 5</span>
           <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
         </div>
@@ -526,7 +529,7 @@
         
         <div id="questionHead" class="question-head" style="display: flex; justify-content: center; margin-bottom: 12px;">
           <div class="question-main">
-            <h2 id="questionPrompt" style="margin: 0; font-size: 38px; font-weight: 900; color: #fff;">題目</h2>
+            <h2 id="questionPrompt" style="margin: 0; font-size: 36px; font-weight: 900; color: #fff;">題目</h2>
           </div>
         </div>
 
@@ -539,6 +542,7 @@
           </div>
         </div>
 
+        <!-- 🌟 修復 iPhone 底部小白條卡住按鈕的問題 -->
         <div style="margin-top:16px; padding-bottom: env(safe-area-inset-bottom); margin-bottom: 15px;">
           <button id="nextQuestionBtn" class="primary-btn hidden-btn" style="width:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" type="button">下一題</button>
         </div>
@@ -563,6 +567,7 @@
           🔔 遊戲聲音：開啟
         </button>
 
+        <!-- 🌟 新增：防汛簽證APP傳承下來的「強制清除快取」按鈕 -->
         <button id="forceClearCacheBtn" style="margin-top:12px; width:100%; min-height:54px; border-radius:18px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff6b81; font-size:18px; font-weight:bold; cursor:pointer;" type="button">
           ⚠️ 畫面卡住？點此強制清除快取
         </button>
@@ -591,6 +596,12 @@
         event.preventDefault();
     }, { passive: false });
 
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+
     try {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
@@ -604,6 +615,8 @@
       set: function(key, val) { try { localStorage.setItem(key, val); } catch(e) {} },
       clear: function() { try { localStorage.clear(); } catch(e) {} }
     };
+
+    window.isSfxEnabled = safeStorage.get('mm_sfx') !== 'false';
 
     const SPIRIT_NAMES = ['希望', '勇光', '星語', '小智', '暖暖', '亮亮'];
     const PLAYER_TITLES = ['小探險家', '森林朋友', '小勇士', '小旅人', '小學者', '小光點'];
@@ -619,7 +632,7 @@
       '趴': ['趴','怕','帕','爬','琶','pa'],
       '坡': ['坡','潑','婆','破','迫','魄','po'],
       '媽': ['媽','麻','馬','瑪','碼','罵','嗎','嘛','ma'],
-      '摸': ['摸','魔','摩','膜','抹','默','莫','墨','沒','mo'],
+      '摸': ['摸','魔','摩','膜','抹','默','莫','莫','沒','mo'],
       '咪': ['咪','迷','謎','米','密','秘','蜜','眯','mi'],
       '發': ['發','乏','伐','罰','法','髮','琺','fa'],
       '搭': ['搭','答','打','大','達','噠','da'],
@@ -634,6 +647,9 @@
       '哈': ['哈','蛤','ha']
     };
 
+    let initialMastery = {};
+    try { initialMastery = JSON.parse(safeStorage.get('mm_mastery') || '{}'); } catch(e) {}
+
     const state = {
       spiritName: safeStorage.get('mm_strength_name') || '',
       playerTitle: safeStorage.get('mm_player_title') || '',
@@ -646,7 +662,7 @@
       gardenStage: Number(safeStorage.get('mm_strength_garden_stage') || 0),
       streak: Number(safeStorage.get('mm_strength_streak') || 1),
       mode: 'home', subMode: '', qIndex: 0, excluded: 0, questionList: [],
-      mastery: JSON.parse(safeStorage.get('mm_mastery') || '{}'), lastRank: safeStorage.get('mm_forest_rank') || '新手探險家',
+      mastery: initialMastery, lastRank: safeStorage.get('mm_forest_rank') || '新手探險家',
       selectedTable: 2, currentSpeechText: '', awaitingNext: false,
       totalStars: Number(safeStorage.get('mm_total_stars') || 0), 
       roundMistakes: 0, 
@@ -668,31 +684,6 @@
         { id: 10, title: '第十關：彩虹之島', symbols: ['ㄦ','ㄧ','ㄨ','ㄩ'], games: ['symbol-spotlight', 'symbol-bubble', 'symbol-scratch'] }
     ];
 
-    const ROOM_GAME_LIBRARY = {
-      combo: [
-        { key:'combo-match', emoji:'🎴', title:'翻牌配對', desc:'【記憶類】翻開木牌，找出相同的拼音。', locked: false },
-        { key:'combo-puzzle', emoji:'🧩', title:'磁鐵拼圖', desc:'拖曳注音木牌，吸附拼出正確的音。', locked: false },
-        { key:'combo-drag', emoji:'🧺', title:'收果子', desc:'【拖曳類】把正確的拼音果子收到籃子裡。', locked: false },
-        { key:'combo-echo', emoji:'🗣️', title:'回聲谷', desc:'【節奏類】按下麥克風大聲唸出來。', locked: false }
-      ],
-      math: [
-        { key:'math-table', emoji:'📘', title:'順序口訣', desc:'從 1 到 9，依序把這一張表練熟。', locked: false },
-        { key:'math-drum', emoji:'🥁', title:'節奏鼓', desc:'跟著口訣節奏，敲擊大樹鼓！', locked: false },
-        { key:'math-bubble', emoji:'🫧', title:'泡泡森林', desc:'戳破藏著正確答案的泡泡。', locked: false },
-        { key:'math-scratch', emoji:'🪙', title:'魔法刮刮樂', desc:'刮開迷霧，看看是哪個答案！', locked: false },
-        { key:'math-path', emoji:'🦌', title:'小鹿過河', desc:'讓小鹿跳向正確的石頭過河！', locked: false }, 
-        { key:'math-feed', emoji:'🍓', title:'精靈餵食', desc:'【拖曳類】把寫著答案的食物餵給小精靈。', locked: false }
-      ],
-      forest: [
-        { key:'forest-catch', emoji:'🧚', title:'抓精靈', desc:'【捕捉類】綜合測驗！抓出正確的小精靈。', locked: true },
-        { key:'forest-meteor', emoji:'🌠', title:'流星捕捉', desc:'【捕捉類】接住天上掉下來的流星答案。', locked: true },
-        { key:'forest-maze', emoji:'🗺️', title:'森林迷宮', desc:'【路徑類】在迷宮路口選出正確的答案前進。', locked: true },
-        { key:'forest-parkour', emoji:'🏃', title:'森林跑酷', desc:'【動作類】極速挑戰！3秒內選出正確的路。', locked: true },
-        { key:'forest-lightning', emoji:'⚡', title:'閃電選擇', desc:'【動作類】限時內極速答題。', locked: true },
-        { key:'forest-fish', emoji:'🎣', title:'森林釣魚', desc:'【收集類】釣起身上寫著正確答案的魚。', locked: true }
-      ]
-    };
-
     const screens = {
       intro: document.getElementById('introScreen'), name: document.getElementById('nameScreen'), title: document.getElementById('titleScreen'), bond: document.getElementById('bondScreen'),
       home: document.getElementById('homeScreen'), garden: document.getElementById('gardenScreen'), village: document.getElementById('villageScreen'), roomSelect: document.getElementById('roomSelectScreen'),
@@ -706,45 +697,117 @@
     function showScreen(name) { 
         Object.values(screens).forEach(el => { if(el) el.classList.remove('active'); }); 
         if(screens[name]) screens[name].classList.add('active'); 
+        
         const header = document.getElementById('mainAppHeader');
-        if (header) { header.style.display = (name === 'quiz') ? 'none' : 'flex'; }
+        if (header) {
+            if (name === 'quiz') {
+                header.style.display = 'none'; 
+            } else {
+                header.style.display = 'flex';
+            }
+        }
         window.scrollTo(0, 0); 
     }
 
     function showToast(msg) {
         let toast = document.getElementById('appToast');
         if (!toast) {
-            toast = document.createElement('div'); toast.id = 'appToast'; toast.className = 'toast-msg'; document.body.appendChild(toast);
+            toast = document.createElement('div');
+            toast.id = 'appToast';
+            toast.className = 'toast-msg';
+            document.body.appendChild(toast);
         }
-        toast.textContent = msg; toast.classList.add('show');
+        toast.textContent = msg;
+        toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // 🌟 音效總開關設定
-    let isSfxEnabled = safeStorage.get('mm_sfx') !== 'false';
     let audioCtx = null;
-    
-    function playAudioTone(type, freqStart, freqEnd, dur1, dur2) {
-      if (!isSfxEnabled) return;
+    function playDrumSound() {
+      if (window.isSfxEnabled === false) return;
       if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
       osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-      osc.type = type; osc.frequency.setValueAtTime(freqStart, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(freqEnd, audioCtx.currentTime + dur1); 
-      gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur2); 
-      osc.start(); osc.stop(audioCtx.currentTime + dur2);
+      osc.type = 'sine'; osc.frequency.setValueAtTime(250, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.15); 
+      gainNode.gain.setValueAtTime(0.8, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); 
+      osc.start(); osc.stop(audioCtx.currentTime + 0.2);
     }
-    
-    function playDrumSound() { playAudioTone('sine', 250, 50, 0.15, 0.2); }
-    function playPopSound() { playAudioTone('sine', 400, 800, 0.05, 0.1); }
-    function playSnapSound() { playAudioTone('square', 800, 100, 0.05, 0.05); }
-    function playChimeSound() { playAudioTone('sine', 600, 1200, 0.3, 0.5); }
-    function playJumpSound() { playAudioTone('sine', 300, 600, 0.15, 0.2); }
-    function playSplashSound() { playAudioTone('square', 100, 30, 0.3, 0.3); }
+    function playPopSound() {
+      if (window.isSfxEnabled === false) return;
+      if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+      osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
+      gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); 
+      osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    }
+    function playSnapSound() {
+        if (window.isSfxEnabled === false) return;
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+        gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+    }
+    function playChimeSound() {
+        if (window.isSfxEnabled === false) return;
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+    }
+    function playJumpSound() {
+        if (window.isSfxEnabled === false) return;
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+    }
+    function playSplashSound() {
+        if (window.isSfxEnabled === false) return;
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    }
 
     let availableVoices = []; let speakingNow = false;
-    function loadVoices() { availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
-    if (window.speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) { speechSynthesis.onvoiceschanged = loadVoices; }
+    
+    function loadVoices() { 
+        availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; 
+    }
+    if (window.speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = loadVoices;
+    }
 
     function pickVoice() { 
         if (!availableVoices.length) loadVoices(); 
@@ -758,18 +821,17 @@
     function syncSpeakButton() { 
         const btn = document.getElementById('topSpeakBtn'); 
         if (btn) btn.innerHTML = speakingNow ? '⏹' : '🔊'; 
-        const homeBtn = document.getElementById('homeReplayBtn');
-        if (homeBtn) homeBtn.innerHTML = speakingNow ? '⏹ 暫停' : '🔊 朗讀';
     }
     
     function stopSpeech() { 
         if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} } 
-        speakingNow = false; syncSpeakButton(); 
+        speakingNow = false; 
+        syncSpeakButton(); 
     }
     
     function speak(text) {
-      state.currentSpeechText = text; 
-      if (!isSfxEnabled || !('speechSynthesis' in window)) return;
+      if (window.isSfxEnabled === false) return;
+      state.currentSpeechText = text; if (!('speechSynthesis' in window)) return;
       try { window.speechSynthesis.cancel(); } catch (e) {}
       const utter = new SpeechSynthesisUtterance(String(text).replace(/\n/g, ' '));
       utter.lang = 'zh-TW'; utter.rate = 0.9;
@@ -781,29 +843,52 @@
     }
 
     function speakSequence(items, onComplete) {
-        if (!isSfxEnabled || !('speechSynthesis' in window)) {
+        if (window.isSfxEnabled === false) {
             let delay = 0;
             items.forEach(item => { if(item.action) { setTimeout(item.action, delay); delay += 300; } });
             if(onComplete) setTimeout(onComplete, delay);
             return;
         }
-
-        window.speechSynthesis.cancel(); speakingNow = true; syncSpeakButton();
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        speakingNow = true;
+        syncSpeakButton();
+        
         let i = 0;
         function next() {
             if (!speakingNow) return; 
-            if (i >= items.length) { speakingNow = false; syncSpeakButton(); if(onComplete) onComplete(); return; }
+            if (i >= items.length) {
+                speakingNow = false;
+                syncSpeakButton();
+                if(onComplete) onComplete();
+                return;
+            }
+            
             let item = items[i];
             if(item.action) item.action();
+            
             if(item.text) {
                 const utter = new SpeechSynthesisUtterance(item.text);
-                utter.lang = 'zh-TW'; utter.rate = 0.85; 
-                const voice = pickVoice(); if (voice) utter.voice = voice;
-                utter.onend = () => { i++; if(speakingNow) setTimeout(next, item.delay || 100); };
-                utter.onerror = () => { i++; if(speakingNow) setTimeout(next, item.delay || 100); };
-                setTimeout(() => { if(speakingNow) window.speechSynthesis.speak(utter); }, 0);
+                utter.lang = 'zh-TW';
+                utter.rate = 0.85; 
+                const voice = pickVoice(); 
+                if (voice) utter.voice = voice;
+                
+                utter.onend = () => {
+                    i++;
+                    if(speakingNow) setTimeout(next, item.delay || 100);
+                };
+                utter.onerror = () => {
+                    i++; 
+                    if(speakingNow) setTimeout(next, item.delay || 100);
+                };
+                
+                setTimeout(() => { 
+                    if(speakingNow) window.speechSynthesis.speak(utter); 
+                }, 0);
             } else {
-                i++; if(speakingNow) setTimeout(next, item.delay || 100);
+                i++;
+                if(speakingNow) setTimeout(next, item.delay || 100);
             }
         }
         next();
@@ -822,7 +907,8 @@
       safeStorage.set('mm_strength_seed_normal', String(state.normalSeeds)); safeStorage.set('mm_strength_seed_rare', String(state.rareSeeds));
       safeStorage.set('mm_strength_seed_star', String(state.starSeeds)); safeStorage.set('mm_strength_planted_seeds', String(state.plantedSeeds));
       safeStorage.set('mm_strength_garden_stage', String(state.gardenStage)); safeStorage.set('mm_forest_rank', state.lastRank || '新手探險家');
-      safeStorage.set('mm_total_stars', String(state.totalStars)); safeStorage.set('mm_mastery', JSON.stringify(state.mastery));
+      safeStorage.set('mm_total_stars', String(state.totalStars)); 
+      safeStorage.set('mm_mastery', JSON.stringify(state.mastery));
     }
 
     function updateHome() {
@@ -854,35 +940,83 @@
       }
     }
 
+    const ROOM_GAME_LIBRARY = {
+      combo: [
+        { key:'combo-match', emoji:'🎴', title:'翻牌配對', desc:'【記憶類】翻開木牌，找出相同的拼音。', locked: false },
+        { key:'combo-puzzle', emoji:'🧩', title:'磁鐵拼圖', desc:'拖曳注音木牌，吸附拼出正確的音。', locked: false },
+        { key:'combo-drag', emoji:'🧺', title:'收果子', desc:'【拖曳類】把正確的拼音果子收到籃子裡。', locked: false },
+        { key:'combo-echo', emoji:'🗣️', title:'回聲谷', desc:'【節奏類】按下麥克風大聲唸出來。', locked: false }
+      ],
+      math: [
+        { key:'math-table', emoji:'📘', title:'順序口訣', desc:'從 1 到 9，依序把這一張表練熟。', locked: false },
+        { key:'math-drum', emoji:'🥁', title:'節奏鼓', desc:'跟著口訣節奏，敲擊大樹鼓！', locked: false },
+        { key:'math-bubble', emoji:'🫧', title:'泡泡森林', desc:'戳破藏著正確答案的泡泡。', locked: false },
+        { key:'math-scratch', emoji:'🪙', title:'魔法刮刮樂', desc:'刮開迷霧，看看是哪個答案！', locked: false },
+        { key:'math-path', emoji:'🦌', title:'小鹿過河', desc:'讓小鹿跳向正確的石頭過河！', locked: false }, 
+        { key:'math-feed', emoji:'🍓', title:'精靈餵食', desc:'【拖曳類】把寫著答案的食物餵給小精靈。', locked: false }
+      ],
+      forest: [
+        { key:'forest-catch', emoji:'🧚', title:'抓精靈', desc:'【捕捉類】綜合測驗！抓出正確的小精靈。', locked: true },
+        { key:'forest-meteor', emoji:'🌠', title:'流星捕捉', desc:'【捕捉類】接住天上掉下來的流星答案。', locked: true },
+        { key:'forest-maze', emoji:'🗺️', title:'森林迷宮', desc:'【路徑類】在迷宮路口選出正確的答案前進。', locked: true },
+        { key:'forest-parkour', emoji:'🏃', title:'森林跑酷', desc:'【動作類】極速挑戰！3秒內選出正確的路。', locked: true },
+        { key:'forest-lightning', emoji:'⚡', title:'閃電選擇', desc:'【動作類】限時內極速答題。', locked: true },
+        { key:'forest-fish', emoji:'🎣', title:'森林釣魚', desc:'【收集類】釣起身上寫著正確答案的魚。', locked: true }
+      ]
+    };
+
     function generateSymbolLevelQuestion(levelData) {
         const answer = randomItem(levelData.symbols);
         const gameType = randomItem(levelData.games);
-        let pool = [...levelData.symbols].filter(x => x !== answer); pool = shuffle(pool); let fakes = pool.slice(0, 3);
+        
+        let pool = [...levelData.symbols].filter(x => x !== answer);
+        pool = shuffle(pool);
+        let fakes = pool.slice(0, 3);
+        
         if (fakes.length < 3) {
-           let allUnlocked = []; ZHUYIN_LEVELS.forEach(l => { if (state.totalStars >= (l.id - 1) * 5) allUnlocked.push(...l.symbols); });
+           let allUnlocked = [];
+           ZHUYIN_LEVELS.forEach(l => {
+              if (state.totalStars >= (l.id - 1) * 5) allUnlocked.push(...l.symbols);
+           });
            let extraPool = shuffle(allUnlocked.filter(x => x !== answer && !fakes.includes(x)));
            fakes = [...fakes, ...extraPool].slice(0, 3 - fakes.length);
         }
+        
         const opts = shuffle([{ text: answer, speak: answer }, ...fakes.map(x => ({ text: x, speak: x }))]);
+        
         let promptText, speakText, uiType, scene;
-        if (gameType === 'symbol-bubble') { promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`; uiType = 'bubble'; scene = '🫧 戳破往上飄的正確泡泡！'; } 
-        else if (gameType === 'symbol-spotlight') { promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`; uiType = 'spotlight'; scene = '🔦 在黑黑的地方找找看目標在哪裡！'; } 
-        else if (gameType === 'symbol-scratch') { promptText = `刮開表面，看看底下藏著什麼？`; speakText = `請刮開青苔`; uiType = 'scratch'; scene = '🪙 用手狂搓！刮開青苔看看是什麼！'; } 
-        else { promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`; uiType = 'tiles'; scene = '🎧 仔細聽，選出正確的符號！'; }
-        return { area: levelData.title, kind: gameType, promptText, speakText, answer, options: opts, uiType, scene };
+
+        if (gameType === 'symbol-bubble') {
+            promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`;
+            uiType = 'bubble'; scene = '🫧 戳破往上飄的正確泡泡！';
+        } else if (gameType === 'symbol-spotlight') {
+            promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`;
+            uiType = 'spotlight'; scene = '🔦 在黑黑的地方找找看目標在哪裡！';
+        } else if (gameType === 'symbol-scratch') {
+            promptText = `刮開表面，看看底下藏著什麼？`; speakText = `請刮開青苔`;
+            uiType = 'scratch'; scene = '🪙 用手狂搓！刮開青苔看看是什麼！';
+        } else {
+            promptText = `請找出 ${answer}`; speakText = `請找出 ${answer}`;
+            uiType = 'tiles'; scene = '🎧 仔細聽，選出正確的符號！';
+        }
+
+        return {
+            area: levelData.title, kind: gameType, promptText, speakText, answer, options: opts, uiType, scene
+        };
     }
 
-    // 🌟 沉浸式教學：順序口訣現在會先主動唸出完整算式和答案！
+    /* 🌟 大樂進化版：自動語音順口溜，不需要選選項了！ */
     function buildTablePractice(table) {
       const list = [];
       for (let step = 1; step <= 9; step += 1) {
-        const answer = table * step; const candidates = [];
-        [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
-        while (candidates.length < 2) { const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1); if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate); }
-        const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
+        const answer = table * step;
         let de = answer <= 10 ? '得' : '';
-        let instructionSpeak = `${numberToZh(table)}${numberToZh(step)}${de}${numberToZh(answer)}。請選出，${answer}`;
-        list.push({ area: '九九口訣房', kind: 'math-basic', promptText: `${table} × ${step} = ?`, speakText: instructionSpeak, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'math-v1', scene: '🌟 仔細聽小精靈怎麼唸，再選出正確的數字！', options });
+        let instructionSpeak = `${numberToZh(table)}${numberToZh(step)}${de}${numberToZh(answer)}`;
+        list.push({ 
+            area: '九九口訣房', kind: 'math-chant', promptText: `${table} × ${step} = ${answer}`, speakText: instructionSpeak, 
+            answer: String(answer), tableBase: table, tableTarget: step, uiType: 'math-chant', 
+            scene: '🎧 順口溜時間！請跟著小精靈一起大聲唸喔！', options: [] 
+        });
       }
       return list;
     }
@@ -898,9 +1032,14 @@
     function buildMathBubbleSet(table) {
       const list = [];
       for (let i = 0; i < 5; i += 1) {
-        const step = randomInt(1, 9); const answer = table * step; const candidates = [];
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
         [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
-        while (candidates.length < 3) { const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1); if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate); }
+        while (candidates.length < 3) {
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
         const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }, { text: String(candidates[2]), speak: numberToZh(candidates[2]) }]);
         list.push({ area: '九九口訣房', kind: 'math-bubble', promptText: `${table} × ${step} = ?`, speakText: `${numberToZh(table)}${numberToZh(step)}？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'bubble', scene: '🫧 戳破藏著正確答案的泡泡！', options });
       }
@@ -909,71 +1048,170 @@
     function buildMathScratchSet(table) {
       const list = [];
       for (let i = 0; i < 5; i += 1) {
-        const step = randomInt(1, 9); const answer = table * step; const candidates = [];
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
         [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
-        while (candidates.length < 3) { const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1); if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate); }
+        while (candidates.length < 3) {
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
         const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }, { text: String(candidates[2]), speak: numberToZh(candidates[2]) }]);
         list.push({ area: '九九口訣房', kind: 'math-scratch', promptText: `請問答案是多少？`, speakText: `刮開青苔看看題目是什麼`, answer: String(answer), scratchText: `${table} × ${step}`, tableBase: table, tableTarget: step, uiType: 'scratch', scene: '🪙 刮刮看，底下藏著什麼題目！', options });
       }
       return list;
     }
+
     function buildMathPathSet(table) {
       const list = [];
       for (let i = 0; i < 5; i += 1) {
-        const step = randomInt(1, 9); const answer = table * step; const candidates = [];
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
         [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
-        while (candidates.length < 2) { const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1); if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate); }
+        while (candidates.length < 2) { 
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
         const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
         list.push({ area: '九九口訣房', kind: 'math-path', promptText: `${table} × ${step} = ?`, speakText: `${numberToZh(table)}${numberToZh(step)}？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'path', scene: '🦌 點擊正確的石頭讓小鹿過河！', options });
       }
       return list;
     }
+    
     function buildMathFeedSet(table) {
       const list = [];
-      const feedDialogues = ['肚子好餓喔...可以餵我吃正確的數字果實嗎？', '好好吃喔！我還要吃！', '有感覺一點點飽了，再給我一點！', '哇！肚子快要裝不下了！', '最後一口了！吃完這口就飽了！'];
-      const feedVoiceScenes = ['肚子好餓喔，可以餵我嗎？', '好好吃喔！我還要吃！', '有一點點飽了，再給我一點！', '哇！肚子快裝不下了！', '最後一口了！'];
+      const feedDialogues = [
+        '肚子好餓喔...可以餵我吃正確的數字果實嗎？',
+        '好好吃喔！我還要吃！',
+        '有感覺一點點飽了，再給我一點！',
+        '哇！肚子快要裝不下了！',
+        '最後一口了！吃完這口就飽了！'
+      ];
+      
+      const feedVoiceScenes = [
+        '肚子好餓喔，可以餵我嗎？',
+        '好好吃喔！我還要吃！',
+        '有一點點飽了，再給我一點！',
+        '哇！肚子快裝不下了！',
+        '最後一口了！'
+      ];
+
       for (let i = 0; i < 5; i += 1) {
-        const step = randomInt(1, 9); const answer = table * step; const candidates = [];
+        const step = randomInt(1, 9);
+        const answer = table * step;
+        const candidates = [];
         [answer - table, answer + table, answer - 2, answer + 2].forEach(n => { if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n); });
-        while (candidates.length < 2) { const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1); if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate); }
+        while (candidates.length < 2) { 
+          const candidate = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+          if (candidate > 0 && candidate <= 81 && candidate !== answer && !candidates.includes(candidate)) candidates.push(candidate);
+        }
         const options = shuffle([{ text: String(answer), speak: numberToZh(answer) }, { text: String(candidates[0]), speak: numberToZh(candidates[0]) }, { text: String(candidates[1]), speak: numberToZh(candidates[1]) }]);
-        list.push({ area: '九九口訣房', kind: 'math-feed', promptText: `${table} × ${step} = ?`, speakText: `${feedVoiceScenes[i]} ${numberToZh(table)}${numberToZh(step)}是多少？`, answer: String(answer), tableBase: table, tableTarget: step, uiType: 'feed', scene: '🍓 把正確答案的果實餵給小精靈！', feedPrompt: feedDialogues[i], options });
+        list.push({ 
+            area: '九九口訣房', 
+            kind: 'math-feed', 
+            promptText: `${table} × ${step} = ?`, 
+            speakText: `${feedVoiceScenes[i]} ${numberToZh(table)}${numberToZh(step)}是多少？`, 
+            answer: String(answer), 
+            tableBase: table, 
+            tableTarget: step, 
+            uiType: 'feed', 
+            scene: '🍓 把正確答案的果實餵給小精靈！', 
+            feedPrompt: feedDialogues[i], 
+            options 
+        });
       }
       return list;
     }
+
     function buildComboPuzzleSet() {
       const list = [];
       for (let i = 0; i < 5; i++) {
-        const targetCombo = randomItem(COMBO_SET); const leftChar = targetCombo.charAt(0); const rightChar = targetCombo.charAt(1); const soundWord = COMBO_SOUND[targetCombo]; 
-        let allVowels = [...new Set(COMBO_SET.map(c => c.charAt(1)))]; let otherVowels = shuffle(allVowels.filter(v => v !== rightChar)).slice(0, 2); let options = shuffle([rightChar, ...otherVowels]);
+        const targetCombo = randomItem(COMBO_SET); 
+        const leftChar = targetCombo.charAt(0); 
+        const rightChar = targetCombo.charAt(1); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        let allVowels = [...new Set(COMBO_SET.map(c => c.charAt(1)))];
+        let otherVowels = shuffle(allVowels.filter(v => v !== rightChar)).slice(0, 2);
+        let options = shuffle([rightChar, ...otherVowels]);
+        
         list.push({ area: '拼音練功房', kind: 'combo-puzzle', promptText: `請拼出「${targetCombo}」`, speakText: `請拼出，${soundWord}`, answer: rightChar, leftChar: leftChar, targetCombo: targetCombo, soundWord: soundWord, options: options.map(o => ({text: o, speak: o})), uiType: 'puzzle', scene: '🧩 把左邊的木牌，拖過去和正確的韻母拼在一起！' });
       }
       return list;
     }
+    
     function buildComboMatchSet() {
       const list = [];
       for (let i = 0; i < 3; i++) {
-        let chosenCombos = shuffle(COMBO_SET).slice(0, 3); let pairs = [];
-        chosenCombos.forEach(combo => { pairs.push({ id: combo + '_1', val: combo, speak: COMBO_SOUND[combo] }); pairs.push({ id: combo + '_2', val: combo, speak: COMBO_SOUND[combo] }); });
+        let chosenCombos = shuffle(COMBO_SET).slice(0, 3);
+        let pairs = [];
+        chosenCombos.forEach(combo => {
+            pairs.push({ id: combo + '_1', val: combo, speak: COMBO_SOUND[combo] });
+            pairs.push({ id: combo + '_2', val: combo, speak: COMBO_SOUND[combo] });
+        });
         let shuffledCards = shuffle(pairs);
-        list.push({ area: '拼音練功房', kind: 'combo-match', promptText: `翻牌配對`, speakText: `請翻出兩張一樣的牌`, answer: '配對完成', cardsData: shuffledCards, uiType: 'match', scene: '🎴 記住牌的位置，找出相同的配對！' });
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-match', 
+            promptText: `翻牌配對`, 
+            speakText: `請翻出兩張一樣的牌`, 
+            answer: '配對完成', 
+            cardsData: shuffledCards, 
+            uiType: 'match', 
+            scene: '🎴 記住牌的位置，找出相同的配對！' 
+        });
       }
       return list;
     }
+
     function buildComboDragSet() {
       const list = [];
       for (let i = 0; i < 5; i++) {
-        const targetCombo = randomItem(COMBO_SET); const soundWord = COMBO_SOUND[targetCombo]; const p1 = targetCombo.charAt(0); const p2 = targetCombo.charAt(1);
-        let pool = [...COMBO_SET].filter(c => c !== targetCombo); let options = shuffle([targetCombo, ...shuffle(pool).slice(0, 2)]);
-        list.push({ area: '拼音練功房', kind: 'combo-drag', promptText: `尋找「${targetCombo}」`, speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, answer: targetCombo, soundWord: soundWord, basketText: `${p1} + ${p2}`, options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), uiType: 'drag', scene: '🧺 拖曳正確的果子放到籃子裡！' });
+        const targetCombo = randomItem(COMBO_SET); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        const p1 = targetCombo.charAt(0);
+        const p2 = targetCombo.charAt(1);
+        
+        let pool = [...COMBO_SET].filter(c => c !== targetCombo);
+        let options = shuffle([targetCombo, ...shuffle(pool).slice(0, 2)]);
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-drag', 
+            promptText: `尋找「${targetCombo}」`, 
+            speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, 
+            answer: targetCombo, 
+            soundWord: soundWord, 
+            basketText: `${p1} + ${p2}`, 
+            options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), 
+            uiType: 'drag', 
+            scene: '🧺 拖曳正確的果子放到籃子裡！' 
+        });
       }
       return list;
     }
+
     function buildComboEchoSet() {
       const list = [];
       for (let i = 0; i < 5; i++) {
-        const targetCombo = randomItem(COMBO_SET); const soundWord = COMBO_SOUND[targetCombo]; const p1 = targetCombo.charAt(0); const p2 = targetCombo.charAt(1);
-        list.push({ area: '拼音練功房', kind: 'combo-echo', promptText: `大聲唸出來`, speakText: `請按下麥克風，大聲唸出，${p1}，${p2}，${soundWord}`, answer: soundWord, soundWord: soundWord, targetCombo: targetCombo, targetPinyin: `${p1} ${p2}`, uiType: 'echo', scene: '🗣️ 按下麥克風，大聲說出答案！' });
+        const targetCombo = randomItem(COMBO_SET); 
+        const soundWord = COMBO_SOUND[targetCombo]; 
+        const p1 = targetCombo.charAt(0);
+        const p2 = targetCombo.charAt(1);
+        
+        list.push({ 
+            area: '拼音練功房', 
+            kind: 'combo-echo', 
+            promptText: `大聲唸出來`, 
+            speakText: `請按下麥克風，大聲唸出，${p1}，${p2}，${soundWord}`, 
+            answer: soundWord, 
+            soundWord: soundWord, 
+            targetCombo: targetCombo,
+            targetPinyin: `${p1} ${p2}`,
+            uiType: 'echo', 
+            scene: '🗣️ 按下麥克風，大聲說出答案！' 
+        });
       }
       return list;
     }
@@ -984,35 +1222,60 @@
       const tablePickArea = document.getElementById('roomTablePickArea');
       if(!grid || !tablePickArea) return; 
       
-      grid.innerHTML = ''; tablePickArea.innerHTML = ''; tablePickArea.className = 'hidden-btn';
+      grid.innerHTML = '';
+      tablePickArea.innerHTML = '';
+      tablePickArea.className = 'hidden-btn';
       
       if (mode === 'symbol') {
         document.getElementById('roomSelectTitle').textContent = '注音符號島嶼 (闖關模式)';
         document.getElementById('roomSelectDesc').textContent = `目前收集：${state.totalStars} 顆熟練星 🌟`;
+        
         ZHUYIN_LEVELS.forEach(lvl => {
-          const reqStars = (lvl.id - 1) * 5; const isLocked = state.totalStars < reqStars;
-          const btn = document.createElement('button'); btn.className = `room-card-btn ${isLocked ? 'is-locked' : ''}`;
-          let statusHtml = isLocked ? `<small style="color:#ff9f43">🔒 需要 ${reqStars} 顆星解鎖</small>` : `<small style="color:#ffd76a">${lvl.symbols.join(' ')}</small>`;
+          const reqStars = (lvl.id - 1) * 5;
+          const isLocked = state.totalStars < reqStars;
+          
+          const btn = document.createElement('button'); 
+          btn.className = `room-card-btn ${isLocked ? 'is-locked' : ''}`;
+          
+          let statusHtml = isLocked 
+              ? `<small style="color:#ff9f43">🔒 需要 ${reqStars} 顆星解鎖</small>` 
+              : `<small style="color:#ffd76a">${lvl.symbols.join(' ')}</small>`;
+              
           btn.innerHTML = `<span class="room-emoji">${isLocked ? '🔒' : '🏝️'}</span><strong>${lvl.title}</strong>${statusHtml}`;
-          btn.onclick = () => { if (isLocked) showToast(`🚧 需要累積 ${reqStars} 顆熟練星才能解鎖喔！(目前 ${state.totalStars} 顆)`); else startZhuyinLevel(lvl); };
+          
+          btn.onclick = () => {
+              if (isLocked) {
+                  showToast(`🚧 需要累積 ${reqStars} 顆熟練星才能解鎖喔！(目前 ${state.totalStars} 顆)`);
+              } else {
+                  startZhuyinLevel(lvl); 
+              }
+          };
           grid.appendChild(btn);
         });
-      } else {
+      } 
+      else {
           if (mode === 'combo') document.getElementById('roomSelectTitle').textContent = '拼音練功房';
           else if (mode === 'forest') document.getElementById('roomSelectTitle').textContent = '森林冒險 (綜合)';
           else if (mode === 'math') {
-            document.getElementById('roomSelectTitle').textContent = '九九口訣房'; tablePickArea.className = 'table-pick-grid';
+            document.getElementById('roomSelectTitle').textContent = '九九口訣房';
+            tablePickArea.className = 'table-pick-grid';
             for (let t = 2; t <= 9; t += 1) {
-              const btn = document.createElement('button'); btn.className = `table-pick-btn${state.selectedTable === t ? ' selected' : ''}`; btn.textContent = `${t} 的表`;
+              const btn = document.createElement('button'); btn.className = `table-pick-btn${state.selectedTable === t ? ' selected' : ''}`;
+              btn.textContent = `${t} 的表`;
               btn.onclick = () => { state.selectedTable = t; [...tablePickArea.children].forEach(n => n.classList.remove('selected')); btn.classList.add('selected'); };
               tablePickArea.appendChild(btn);
             }
           }
+          
           const lib = ROOM_GAME_LIBRARY[mode] || [];
           lib.forEach(item => {
-            const btn = document.createElement('button'); btn.className = `room-card-btn ${item.locked ? 'is-locked' : ''}`;
+            const btn = document.createElement('button'); 
+            btn.className = `room-card-btn ${item.locked ? 'is-locked' : ''}`;
             btn.innerHTML = `<span class="room-emoji">${item.emoji}</span><strong>${item.title}</strong><small>${item.desc}</small>`;
-            btn.onclick = () => { if (item.locked) showToast(`🚧 ${item.title} 正在努力建造中，敬請期待！`); else startSubMode(item.key); };
+            btn.onclick = () => {
+                if (item.locked) showToast(`🚧 ${item.title} 正在努力建造中，敬請期待！`);
+                else startSubMode(item.key); 
+            };
             grid.appendChild(btn);
           });
       }
@@ -1020,27 +1283,59 @@
     }
 
     function startZhuyinLevel(lvl) {
-        state.subMode = 'zhuyin-level'; state.currentLevelId = lvl.id; state.qIndex = 0; state.excluded = 0; state.awaitingNext = false; state.roundMistakes = 0; state.lastPathX = 50; state.pathHistory = []; 
-        stopSpeech(); window.onpointerup = null; window.ontouchend = null;
+        state.subMode = 'zhuyin-level';
+        state.currentLevelId = lvl.id;
+        state.qIndex = 0; state.excluded = 0; state.awaitingNext = false;
+        state.roundMistakes = 0; 
+        state.lastPathX = 50; 
+        state.pathHistory = []; 
+        stopSpeech();
+        window.onpointerup = null; window.ontouchend = null;
+
         state.questionList = Array.from({ length: 5 }, () => generateSymbolLevelQuestion(lvl));
         if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = lvl.title;
+
         showScreen('quiz'); renderQuestion();
     }
 
     function startSubMode(subMode) {
-      state.subMode = subMode; state.currentLevelId = null; state.qIndex = 0; state.excluded = 0; state.awaitingNext = false; state.roundMistakes = 0; state.lastPathX = 50; state.pathHistory = []; 
+      state.subMode = subMode; state.currentLevelId = null; state.qIndex = 0; state.excluded = 0; state.awaitingNext = false;
+      state.roundMistakes = 0; 
+      state.lastPathX = 50; 
+      state.pathHistory = []; 
       stopSpeech(); window.onpointerup = null; window.ontouchend = null;
       
-      if(subMode === 'math-table') { state.questionList = buildTablePractice(state.selectedTable); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `${state.selectedTable} 的表`; }
-      else if (subMode === 'math-drum') { state.questionList = buildDrumGameSet(state.selectedTable); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `節奏鼓｜${state.selectedTable}的表`; }
-      else if (subMode === 'math-bubble') { state.questionList = buildMathBubbleSet(state.selectedTable); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `泡泡森林｜${state.selectedTable}的表`; }
-      else if (subMode === 'combo-puzzle') { state.questionList = buildComboPuzzleSet(); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '磁鐵拼圖'; }
-      else if (subMode === 'math-scratch') { state.questionList = buildMathScratchSet(state.selectedTable); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `魔法刮刮樂｜${state.selectedTable}的表`; }
-      else if (subMode === 'math-path') { state.questionList = buildMathPathSet(state.selectedTable); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `小鹿過河｜${state.selectedTable}的表`; }
-      else if (subMode === 'combo-match') { state.questionList = buildComboMatchSet(); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '翻牌配對'; }
-      else if (subMode === 'combo-drag') { state.questionList = buildComboDragSet(); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '收果子'; }
-      else if (subMode === 'combo-echo') { state.questionList = buildComboEchoSet(); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '回聲谷'; }
-      else if (subMode === 'math-feed') { state.questionList = buildMathFeedSet(state.selectedTable); if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `精靈餵食｜${state.selectedTable}的表`; }
+      if(subMode === 'math-table') {
+        state.questionList = buildTablePractice(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `${state.selectedTable} 的表`;
+      } else if (subMode === 'math-drum') {
+        state.questionList = buildDrumGameSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `節奏鼓｜${state.selectedTable}的表`;
+      } else if (subMode === 'math-bubble') {
+        state.questionList = buildMathBubbleSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `泡泡森林｜${state.selectedTable}的表`;
+      } else if (subMode === 'combo-puzzle') {
+        state.questionList = buildComboPuzzleSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '磁鐵拼圖';
+      } else if (subMode === 'math-scratch') {
+        state.questionList = buildMathScratchSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `魔法刮刮樂｜${state.selectedTable}的表`;
+      } else if (subMode === 'math-path') {
+        state.questionList = buildMathPathSet(state.selectedTable); 
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `小鹿過河｜${state.selectedTable}的表`;
+      } else if (subMode === 'combo-match') {
+        state.questionList = buildComboMatchSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '翻牌配對';
+      } else if (subMode === 'combo-drag') {
+        state.questionList = buildComboDragSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '收果子';
+      } else if (subMode === 'combo-echo') {
+        state.questionList = buildComboEchoSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '回聲谷';
+      } else if (subMode === 'math-feed') {
+        state.questionList = buildMathFeedSet(state.selectedTable);
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `精靈餵食｜${state.selectedTable}的表`;
+      }
 
       showScreen('quiz'); renderQuestion();
     }
@@ -1049,58 +1344,159 @@
       setTimeout(() => { window.scrollTo(0, 0); }, 50);
         
       const q = state.questionList[state.qIndex];  
-      state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false; q.playVoice = null;
+      state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
+      q.playVoice = null;
       
       if(document.getElementById('nextQuestionBtn')) { 
-          const nBtn = document.getElementById('nextQuestionBtn'); nBtn.classList.add('hidden-btn'); nBtn.textContent = '下一題'; nBtn.classList.remove('pulse-anim');
+          const nBtn = document.getElementById('nextQuestionBtn');
+          nBtn.classList.add('hidden-btn'); 
+          nBtn.textContent = '下一題'; 
+          nBtn.classList.remove('pulse-anim');
       }
       
       if(document.getElementById('questionPrompt')) {
           document.getElementById('questionPrompt').textContent = q.promptText;
-          if ((q.uiType === 'path' || q.uiType === 'feed' || q.uiType === 'math-v1') && q.kind && q.kind.startsWith('math')) {
+          if ((q.uiType === 'path' || q.uiType === 'feed') && q.kind && q.kind.startsWith('math')) {
               document.getElementById('questionPrompt').textContent = `${q.tableBase} × ${q.tableTarget} = ?`;
           }
       }
-      if(document.getElementById('roundText')) { document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`; }
+      if(document.getElementById('roundText')) {
+          document.getElementById('roundText').textContent = `${state.qIndex + 1} / ${state.questionList.length}`;
+      }
       
       const qHead = document.getElementById('questionHead');
-      if (qHead) { qHead.style.display = (q.uiType === 'drag' || q.uiType === 'echo') ? 'none' : 'flex'; }
+      if (qHead) {
+          if (q.uiType === 'drag' || q.uiType === 'echo' || q.uiType === 'math-chant') {
+              qHead.style.display = 'none'; 
+          } else {
+              qHead.style.display = 'flex'; 
+          }
+      }
       
       const visualArea = document.getElementById('visualArea'); if(visualArea) visualArea.innerHTML = '';
       const optionsWrap = document.getElementById('optionsWrap'); if(optionsWrap) optionsWrap.innerHTML = '';
       if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
       
       if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
-      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
+      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
       
-      if (q.uiType === 'spotlight') {
-        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '在黑黑的地方滑動手指，找找看目標在哪裡！';
-        const stage = document.createElement('div'); stage.className = 'spotlight-stage';
-        const bgList = ['dark_forest_1.png', 'dark_forest_2.png', 'dark_forest_3.png']; const randomBg = bgList[Math.floor(Math.random() * bgList.length)];
-        const bgImg = document.createElement('img'); bgImg.src = 'images/' + randomBg; bgImg.className = 'spotlight-bg'; bgImg.setAttribute('draggable', 'false');
-        bgImg.onerror = function() { this.onerror = function() { this.style.display='none'; this.parentElement.style.background='#1a2f23'; }; this.src = 'images/dark_forest.png'; };
-        stage.appendChild(bgImg); stage.ondragstart = () => false;
+      /* 🌟 重新掛回：數學自動語音順口溜，不需要選選項版 🌟 */
+      if (q.uiType === 'math-chant') {
+          if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '請跟著小精靈一起大聲唸出來喔！';
+          if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
 
-        const itemsContainer = document.createElement('div'); itemsContainer.className = 'spotlight-items-container';
-        const overlay = document.createElement('div'); overlay.className = 'spotlight-overlay'; overlay.style.background = `radial-gradient(circle 100px at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`;
-        const flashlightImg = document.createElement('img'); flashlightImg.src = 'images/flashlight.png'; flashlightImg.className = 'flashlight-img';
-        flashlightImg.onerror = function() { this.onerror = null; this.src = 'images/icon.png'; }; flashlightImg.style.left = '50%'; flashlightImg.style.top = '50%';
+          const stage = document.createElement('div');
+          stage.style.width = '100%'; stage.style.padding = '40px 20px'; stage.style.textAlign = 'center';
+          stage.style.background = 'radial-gradient(circle, rgba(255,215,106,0.15), transparent)';
+          stage.style.borderRadius = '24px'; stage.style.border = '2px dashed rgba(255,215,106,0.3)';
+          stage.style.display = 'flex'; stage.style.flexDirection = 'column'; stage.style.alignItems = 'center'; stage.style.justifyContent = 'center';
+
+          const elfIcon = document.createElement('img');
+          elfIcon.src = 'images/icon.png'; elfIcon.style.width = '120px'; elfIcon.style.marginBottom = '20px';
+          elfIcon.style.animation = 'magicalHover 3s infinite'; elfIcon.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))';
+
+          const bigEquation = document.createElement('div');
+          bigEquation.style.fontSize = '64px'; bigEquation.style.fontWeight = '900'; bigEquation.style.color = '#ffd76a';
+          bigEquation.style.textShadow = '0 4px 15px rgba(0,0,0,0.5)';
+          bigEquation.textContent = `${q.tableBase} × ${q.tableTarget} = ${q.answer}`;
+          
+          stage.appendChild(elfIcon); stage.appendChild(bigEquation); optionsWrap.appendChild(stage);
+
+          q.playVoice = () => {
+              speakSequence([
+                  {
+                      text: q.speakText,
+                      action: () => {
+                          bigEquation.style.transform = 'scale(1.2)'; bigEquation.style.color = '#fff'; bigEquation.style.transition = 'all 0.3s ease';
+                          elfIcon.style.transform = 'scale(1.1)'; elfIcon.style.transition = 'all 0.3s ease';
+                          setTimeout(() => {
+                              if(bigEquation) { bigEquation.style.transform = 'scale(1)'; bigEquation.style.color = '#ffd76a'; }
+                              if(elfIcon) elfIcon.style.transform = 'scale(1)';
+                          }, 800);
+                      }
+                  }
+              ], () => {
+                  state.awaitingNext = true;
+                  if(document.getElementById('nextQuestionBtn')) { 
+                      const nextBtn = document.getElementById('nextQuestionBtn'); 
+                      nextBtn.classList.remove('hidden-btn'); 
+                      nextBtn.textContent = (state.qIndex === state.questionList.length - 1) ? '完成口訣！' : '聽下一句';
+                      nextBtn.classList.add('pulse-anim');
+                      setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); 
+                  }
+              });
+          };
+          q.playVoice();
+      }
+      else if (q.uiType === 'spotlight') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '在黑黑的地方滑動手指，找找看目標在哪裡！';
+
+        const stage = document.createElement('div'); 
+        stage.className = 'spotlight-stage';
+        
+        const bgList = ['dark_forest_1.png', 'dark_forest_2.png', 'dark_forest_3.png'];
+        const randomBg = bgList[Math.floor(Math.random() * bgList.length)];
+
+        const bgImg = document.createElement('img');
+        bgImg.src = 'images/' + randomBg;
+        bgImg.className = 'spotlight-bg';
+        bgImg.setAttribute('draggable', 'false');
+        bgImg.onerror = function() { 
+          this.onerror = function() { this.style.display='none'; this.parentElement.style.background='#1a2f23'; };
+          this.src = 'images/dark_forest.png'; 
+        };
+        stage.appendChild(bgImg);
+        stage.ondragstart = () => false;
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.className = 'spotlight-items-container';
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'spotlight-overlay';
+        overlay.style.background = `radial-gradient(circle 100px at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`;
+
+        const flashlightImg = document.createElement('img');
+        flashlightImg.src = 'images/flashlight.png';
+        flashlightImg.className = 'flashlight-img';
+        flashlightImg.onerror = function() { this.onerror = null; this.src = 'images/icon.png'; };
+        flashlightImg.style.left = '50%';
+        flashlightImg.style.top = '50%';
 
         q.options.forEach((opt) => {
-          const btn = document.createElement('button'); btn.className = 'spotlight-item'; btn.textContent = opt.text;
-          const posX = 15 + Math.random() * 70; const posY = 15 + Math.random() * 70;
-          btn.style.left = `calc(${posX}% - 32px)`; btn.style.top = `calc(${posY}% - 32px)`;
+          const btn = document.createElement('button');
+          btn.className = 'spotlight-item';
+          btn.textContent = opt.text;
+          
+          const posX = 15 + Math.random() * 70;
+          const posY = 15 + Math.random() * 70;
+          btn.style.left = `calc(${posX}% - 32px)`;
+          btn.style.top = `calc(${posY}% - 32px)`;
+          
           btn.onclick = () => {
             if (state.awaitingNext || btn.classList.contains('excluded')) return;
+            
             if (opt.text === q.answer) {
-              btn.classList.add('correct'); state.awaitingNext = true; overlay.style.background = 'transparent'; flashlightImg.style.opacity = '0'; 
-              if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
+              btn.classList.add('correct'); 
+              state.awaitingNext = true;
+              overlay.style.background = 'transparent';
+              flashlightImg.style.opacity = '0'; 
+              
+              if(document.getElementById('nextQuestionBtn')) {
+                  const nextBtn = document.getElementById('nextQuestionBtn');
+                  nextBtn.classList.remove('hidden-btn');
+                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+              }
+
               const reply = `答案是 ${opt.speak}。太好了，森林亮起來了！`;
-              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+              speak(reply);
             } else {
-              btn.classList.add('excluded'); state.excluded += 1; state.roundMistakes += 1; 
+              btn.classList.add('excluded'); 
+              state.excluded += 1;
+              state.roundMistakes += 1; 
               const reply = `你找到了 ${opt.speak}。沒關係，我們繼續用手電筒找找看。`;
-              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+              speak(reply);
             }
           };
           itemsContainer.appendChild(btn);
@@ -1113,47 +1509,115 @@
             { id: 'ghost', src: 'ghost.png', icon: '💨', msg: '噗！是調皮的搗蛋幽靈！', color: '#a29bfe', float: '😜 噗~' }
           ];
           const surprise = surprises[Math.floor(Math.random() * surprises.length)];
-          const surpriseBtn = document.createElement('button'); surpriseBtn.className = 'spotlight-surprise-btn';
-          const surpriseImg = document.createElement('img'); surpriseImg.src = 'images/' + surprise.src; surpriseImg.className = 'surprise-img';
-          surpriseImg.onerror = function() { this.style.display = 'none'; this.parentElement.innerHTML = `<span style="font-size:50px; filter:drop-shadow(0 0 10px rgba(255,255,255,0.8));">${surprise.icon}</span>`; };
+          
+          const surpriseBtn = document.createElement('button');
+          surpriseBtn.className = 'spotlight-surprise-btn';
+          
+          const surpriseImg = document.createElement('img');
+          surpriseImg.src = 'images/' + surprise.src;
+          surpriseImg.className = 'surprise-img';
+          
+          surpriseImg.onerror = function() {
+            this.style.display = 'none';
+            this.parentElement.innerHTML = `<span style="font-size:50px; filter:drop-shadow(0 0 10px rgba(255,255,255,0.8));">${surprise.icon}</span>`;
+          };
+          
           surpriseBtn.appendChild(surpriseImg);
-          const posX = 15 + Math.random() * 70; const posY = 15 + Math.random() * 70;
-          surpriseBtn.style.left = `calc(${posX}% - 40px)`; surpriseBtn.style.top = `calc(${posY}% - 40px)`;
+          
+          const posX = 15 + Math.random() * 70;
+          const posY = 15 + Math.random() * 70;
+          surpriseBtn.style.left = `calc(${posX}% - 40px)`;
+          surpriseBtn.style.top = `calc(${posY}% - 40px)`;
+          
           let clicked = false;
           surpriseBtn.onpointerdown = (e) => {
-            if (state.awaitingNext || clicked) return; clicked = true;
-            if (surprise.id === 'gem') { state.shards += 1; updateHome(); playDrumSound(); }
-            const floatEl = document.createElement('div'); floatEl.textContent = surprise.float; floatEl.style.position = 'fixed'; const rect = surpriseBtn.getBoundingClientRect();
-            floatEl.style.left = (rect.left + rect.width/2) + 'px'; floatEl.style.top = (rect.top) + 'px'; floatEl.style.color = surprise.color; floatEl.style.fontSize = '32px'; floatEl.style.fontWeight = '900'; floatEl.style.pointerEvents = 'none'; floatEl.style.zIndex = '9999'; floatEl.style.textShadow = '0 2px 10px rgba(0,0,0,0.5)'; floatEl.style.animation = 'floatUpFade 1s forwards'; document.body.appendChild(floatEl); setTimeout(() => floatEl.remove(), 1000);
-            if (document.getElementById('feedbackLine')) { document.getElementById('feedbackLine').textContent = surprise.msg; speak(surprise.msg); }
-            if (surprise.id === 'ghost') { surpriseBtn.classList.add('ghost-flee'); setTimeout(() => surpriseBtn.remove(), 600); } else { surpriseBtn.style.transform = 'scale(0)'; setTimeout(() => surpriseBtn.remove(), 300); }
+            if (state.awaitingNext || clicked) return;
+            clicked = true;
+            
+            if (surprise.id === 'gem') {
+              state.shards += 1;
+              updateHome();
+              playDrumSound(); 
+            }
+            
+            const floatEl = document.createElement('div');
+            floatEl.textContent = surprise.float;
+            floatEl.style.position = 'fixed';
+            const rect = surpriseBtn.getBoundingClientRect();
+            floatEl.style.left = (rect.left + rect.width/2) + 'px';
+            floatEl.style.top = (rect.top) + 'px';
+            floatEl.style.color = surprise.color;
+            floatEl.style.fontSize = '32px';
+            floatEl.style.fontWeight = '900';
+            floatEl.style.pointerEvents = 'none';
+            floatEl.style.zIndex = '9999';
+            floatEl.style.textShadow = '0 2px 10px rgba(0,0,0,0.5)';
+            floatEl.style.animation = 'floatUpFade 1s forwards';
+            document.body.appendChild(floatEl);
+            setTimeout(() => floatEl.remove(), 1000);
+            
+            if (document.getElementById('feedbackLine')) {
+              document.getElementById('feedbackLine').textContent = surprise.msg;
+              speak(surprise.msg);
+            }
+            
+            if (surprise.id === 'ghost') {
+              surpriseBtn.classList.add('ghost-flee');
+              setTimeout(() => surpriseBtn.remove(), 600);
+            } else {
+              surpriseBtn.style.transform = 'scale(0)';
+              setTimeout(() => surpriseBtn.remove(), 300);
+            }
           };
           itemsContainer.appendChild(surpriseBtn);
         }
 
-        stage.appendChild(itemsContainer); stage.appendChild(overlay); stage.appendChild(flashlightImg);
+        stage.appendChild(itemsContainer);
+        stage.appendChild(overlay);
+        stage.appendChild(flashlightImg);
+
         function moveLight(e) {
-          if(state.awaitingNext) return; e.preventDefault(); const rect = stage.getBoundingClientRect();
-          let clientX = e.clientX || 0; let clientY = e.clientY || 0;
+          if(state.awaitingNext) return; 
+          e.preventDefault(); 
+          const rect = stage.getBoundingClientRect();
+          let clientX = e.clientX || 0;
+          let clientY = e.clientY || 0;
           if (e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } 
           else if (clientX === 0 && clientY === 0 && e.changedTouches && e.changedTouches.length > 0) { clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY; }
-          const x = clientX - rect.left; const y = clientY - rect.top;
-          overlay.style.background = `radial-gradient(circle 100px at ${x}px ${y}px, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`; flashlightImg.style.left = `${x}px`; flashlightImg.style.top = `${y}px`;
+
+          const x = clientX - rect.left;
+          const y = clientY - rect.top;
+          
+          overlay.style.background = `radial-gradient(circle 100px at ${x}px ${y}px, transparent 0%, rgba(0,0,0,0.8) 80px, rgba(0,0,0,0.98) 120px)`;
+          flashlightImg.style.left = `${x}px`; flashlightImg.style.top = `${y}px`;
         }
-        stage.addEventListener('mousemove', moveLight); stage.addEventListener('touchmove', moveLight, {passive: false}); stage.addEventListener('touchstart', moveLight, {passive: false}); stage.addEventListener('mousedown', moveLight);
+
+        stage.addEventListener('mousemove', moveLight);
+        stage.addEventListener('touchmove', moveLight, {passive: false});
+        stage.addEventListener('touchstart', moveLight, {passive: false});
+        stage.addEventListener('mousedown', moveLight);
+
         optionsWrap.appendChild(stage);
       }
       else if (q.uiType === 'drum') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '打開耳朵聽小精靈怎麼說，再敲出答案！';
+
         const stage = document.createElement('div'); stage.className = 'drum-stage';
         const instruction = document.createElement('div'); instruction.className = 'drum-instruction'; instruction.textContent = '👇 請跟著節奏敲擊 2 下 👇';
         const glowBox = document.createElement('div'); glowBox.className = 'drum-glow-box';
-        const drumImg = document.createElement('img'); drumImg.src = 'images/drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='images/icon.png'; }; 
-        let taps = 0; const requiredTaps = 2; const answerReveal = document.createElement('div'); answerReveal.className = 'drum-answer-reveal'; answerReveal.textContent = q.answer;
+        
+        const drumImg = document.createElement('img');
+        drumImg.src = 'images/drum.png'; drumImg.className = 'magic-drum'; drumImg.alt = '魔法大鼓'; drumImg.onerror = function() { this.src='images/icon.png'; }; 
+        
+        let taps = 0; const requiredTaps = 2; 
+        const answerReveal = document.createElement('div'); answerReveal.className = 'drum-answer-reveal'; answerReveal.textContent = q.answer;
 
         drumImg.onpointerdown = (e) => {
-          if (state.awaitingNext) return; taps++; playDrumSound();
-          const note = document.createElement('img'); note.src = 'images/note.png'; note.className = 'flying-note'; note.onerror = function() { this.style.display='none'; };
+          if (state.awaitingNext) return;
+          taps++; playDrumSound();
+          
+          const note = document.createElement('img');
+          note.src = 'images/note.png'; note.className = 'flying-note'; note.onerror = function() { this.style.display='none'; };
           const rect = drumImg.getBoundingClientRect(); const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
           note.style.left = (e.clientX || cx) + 'px'; note.style.top = (e.clientY || cy) + 'px';
           note.style.setProperty('--dx', (Math.random()*160 - 80) + 'px'); note.style.setProperty('--dy', (Math.random()*-150 - 50) + 'px'); note.style.setProperty('--rot', (Math.random()*60 - 30) + 'deg');
@@ -1162,481 +1626,1066 @@
           if (taps >= requiredTaps) {
             state.awaitingNext = true; answerReveal.classList.add('show');
             let de = ''; const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得';
-            const fullSpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${numberToZh(ansNum)}`; speak(fullSpeak);
-            if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
+            const fullSpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${numberToZh(ansNum)}`;
+            speak(fullSpeak);
+            
+            if(document.getElementById('nextQuestionBtn')) {
+                const nextBtn = document.getElementById('nextQuestionBtn');
+                nextBtn.classList.remove('hidden-btn');
+                setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+            }
+
             if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！答案就是 ${q.answer}！`;
           }
         };
+
         glowBox.appendChild(drumImg); stage.appendChild(instruction); stage.appendChild(glowBox); stage.appendChild(answerReveal); optionsWrap.appendChild(stage);
       } 
       else if (q.uiType === 'bubble') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '戳破寫著正確答案的泡泡！';
         if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
 
-        const stage = document.createElement('div'); stage.className = 'bubble-stage';
+        const stage = document.createElement('div'); 
+        stage.className = 'bubble-stage';
+        
         q.options.forEach((opt, idx) => {
-          const btn = document.createElement('div'); btn.className = 'bubble-item';
-          const leftPos = 10 + Math.random() * 65; const delay = Math.random() * 3; const duration = 6 + Math.random() * 5; 
-          btn.style.left = `${leftPos}%`; btn.style.setProperty('--delay', `${delay}s`); btn.style.setProperty('--duration', `${duration}s`);
-          const img = document.createElement('img'); img.src = 'images/bubble.png'; img.className = 'bubble-img';
-          img.onerror = function() { this.onerror = null; this.src = 'images/icon.png'; this.style.opacity = '0.4'; this.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.8))'; };
-          const txt = document.createElement('span'); txt.textContent = opt.text; txt.style.zIndex = '1';
-          btn.appendChild(img); btn.appendChild(txt);
+          const btn = document.createElement('div');
+          btn.className = 'bubble-item';
+          
+          const leftPos = 10 + Math.random() * 65; 
+          const delay = Math.random() * 3; 
+          const duration = 6 + Math.random() * 5; 
+          
+          btn.style.left = `${leftPos}%`;
+          btn.style.setProperty('--delay', `${delay}s`);
+          btn.style.setProperty('--duration', `${duration}s`);
+          
+          const img = document.createElement('img');
+          img.src = 'images/bubble.png';
+          img.className = 'bubble-img';
+          img.onerror = function() { 
+            this.onerror = null; 
+            this.src = 'images/icon.png'; 
+            this.style.opacity = '0.4'; 
+            this.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.8))';
+          };
+          
+          const txt = document.createElement('span');
+          txt.textContent = opt.text;
+          txt.style.zIndex = '1';
+          
+          btn.appendChild(img);
+          btn.appendChild(txt);
           
           btn.onpointerdown = (e) => {
-            e.preventDefault(); if (state.awaitingNext || btn.classList.contains('excluded')) return; playPopSound();
+            e.preventDefault();
+            if (state.awaitingNext || btn.classList.contains('excluded')) return;
+            
+            playPopSound();
+            
             if (opt.text === q.answer) {
-              btn.classList.add('bubble-pop'); state.awaitingNext = true;
-              if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
-              let de = ''; if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) { const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得'; }
+              btn.classList.add('bubble-pop');
+              state.awaitingNext = true;
+              
+              if(document.getElementById('nextQuestionBtn')) {
+                  const nextBtn = document.getElementById('nextQuestionBtn');
+                  nextBtn.classList.remove('hidden-btn');
+                  setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+              }
+
+              let de = '';
+              if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+                 const ansNum = q.tableBase * q.tableTarget;
+                 if(ansNum <= 10) de = '得';
+              }
               const reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
               if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
-              Array.from(stage.children).forEach(child => { if (child !== btn) { child.style.animationPlayState = 'paused'; child.style.opacity = '0.3'; } });
+              
+              Array.from(stage.children).forEach(child => {
+                  if (child !== btn) {
+                      child.style.animationPlayState = 'paused';
+                      child.style.opacity = '0.3';
+                  }
+              });
             } else {
-              btn.classList.add('bubble-pop'); btn.classList.add('excluded'); state.excluded += 1; state.roundMistakes += 1; 
+              btn.classList.add('bubble-pop');
+              btn.classList.add('excluded');
+              state.excluded += 1;
+              state.roundMistakes += 1; 
               const reply = `你戳破了 ${opt.speak}。沒關係，等下一顆泡泡。`;
               if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
             }
           };
           stage.appendChild(btn);
         });
+
         optionsWrap.appendChild(stage);
       }
       else if (q.uiType === 'puzzle') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '將左邊的木牌拖到右邊拼在一起吧！';
         if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
 
-        const stage = document.createElement('div'); stage.className = 'puzzle-stage';
-        const leftArea = document.createElement('div'); const rightArea = document.createElement('div'); rightArea.className = 'puzzle-drop-zone';
+        const stage = document.createElement('div'); 
+        stage.className = 'puzzle-stage';
+        
+        const leftArea = document.createElement('div');
+        const rightArea = document.createElement('div');
+        rightArea.className = 'puzzle-drop-zone';
 
         q.options.forEach(opt => {
-            const slot = document.createElement('div'); slot.className = 'puzzle-slot'; slot.dataset.val = opt.text;
-            const slotBg = document.createElement('img'); slotBg.src = 'images/tile.png'; slotBg.className = 'puzzle-tile-bg';
+            const slot = document.createElement('div');
+            slot.className = 'puzzle-slot';
+            slot.dataset.val = opt.text;
+            
+            const slotBg = document.createElement('img');
+            slotBg.src = 'images/tile.png';
+            slotBg.className = 'puzzle-tile-bg';
             slotBg.onerror = function() { this.style.display = 'none'; slot.classList.add('puzzle-fallback'); };
-            const slotText = document.createElement('span'); slotText.textContent = opt.text; slotText.style.zIndex = '1';
-            slot.appendChild(slotBg); slot.appendChild(slotText); rightArea.appendChild(slot);
+            
+            const slotText = document.createElement('span');
+            slotText.textContent = opt.text;
+            slotText.style.zIndex = '1';
+            
+            slot.appendChild(slotBg);
+            slot.appendChild(slotText);
+            rightArea.appendChild(slot);
         });
 
-        const piece = document.createElement('div'); piece.className = 'puzzle-piece';
-        const pieceBg = document.createElement('img'); pieceBg.src = 'images/tile.png'; pieceBg.className = 'puzzle-tile-bg';
+        const piece = document.createElement('div');
+        piece.className = 'puzzle-piece';
+        
+        const pieceBg = document.createElement('img');
+        pieceBg.src = 'images/tile.png';
+        pieceBg.className = 'puzzle-tile-bg';
         pieceBg.onerror = function() { this.style.display = 'none'; piece.classList.add('puzzle-fallback'); };
-        const pieceText = document.createElement('span'); pieceText.textContent = q.leftChar; pieceText.style.zIndex = '1';
-        piece.appendChild(pieceBg); piece.appendChild(pieceText); leftArea.appendChild(piece);
-        stage.appendChild(leftArea); stage.appendChild(rightArea); optionsWrap.appendChild(stage);
+        
+        const pieceText = document.createElement('span');
+        pieceText.textContent = q.leftChar;
+        pieceText.style.zIndex = '1';
 
-        let isDragging = false; let startX, startY;
-        piece.onpointerdown = (e) => { if (state.awaitingNext) return; e.preventDefault(); isDragging = true; piece.setPointerCapture(e.pointerId); startX = e.clientX; startY = e.clientY; piece.style.transition = 'none'; };
+        piece.appendChild(pieceBg);
+        piece.appendChild(pieceText);
+        leftArea.appendChild(piece);
+
+        stage.appendChild(leftArea);
+        stage.appendChild(rightArea);
+        optionsWrap.appendChild(stage);
+
+        let isDragging = false;
+        let startX, startY;
+
+        piece.onpointerdown = (e) => {
+            if (state.awaitingNext) return;
+            e.preventDefault();
+            isDragging = true;
+            piece.setPointerCapture(e.pointerId);
+            startX = e.clientX;
+            startY = e.clientY;
+            piece.style.transition = 'none';
+        };
+
         piece.onpointermove = (e) => {
-            if (!isDragging) return; e.preventDefault(); const dx = e.clientX - startX; const dy = e.clientY - startY; piece.style.transform = `translate(${dx}px, ${dy}px) scale(1.1) rotate(5deg)`;
+            if (!isDragging) return;
+            e.preventDefault();
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            piece.style.transform = `translate(${dx}px, ${dy}px) scale(1.1) rotate(5deg)`;
+            
             const pieceRect = piece.getBoundingClientRect();
             Array.from(rightArea.children).forEach(slot => {
-                const slotRect = slot.getBoundingClientRect(); const dist = Math.hypot((pieceRect.left + pieceRect.width/2) - (slotRect.left + slotRect.width/2), (pieceRect.top + pieceRect.height/2) - (slotRect.top + slotRect.height/2));
-                if (dist < 60) slot.classList.add('highlight'); else slot.classList.remove('highlight');
+                const slotRect = slot.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (pieceRect.left + pieceRect.width/2) - (slotRect.left + slotRect.width/2),
+                    (pieceRect.top + pieceRect.height/2) - (slotRect.top + slotRect.height/2)
+                );
+                if (dist < 60) slot.classList.add('highlight');
+                else slot.classList.remove('highlight');
             });
         };
 
         piece.onpointerup = (e) => {
-            if (!isDragging) return; isDragging = false; piece.releasePointerCapture(e.pointerId);
-            const pieceRect = piece.getBoundingClientRect(); let droppedSlot = null;
+            if (!isDragging) return;
+            isDragging = false;
+            piece.releasePointerCapture(e.pointerId);
+            
+            const pieceRect = piece.getBoundingClientRect();
+            let droppedSlot = null;
+
             Array.from(rightArea.children).forEach(slot => {
-                slot.classList.remove('highlight'); const slotRect = slot.getBoundingClientRect();
-                const dist = Math.hypot((pieceRect.left + pieceRect.width/2) - (slotRect.left + slotRect.width/2), (pieceRect.top + pieceRect.height/2) - (slotRect.top + slotRect.height/2));
+                slot.classList.remove('highlight');
+                const slotRect = slot.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (pieceRect.left + pieceRect.width/2) - (slotRect.left + slotRect.width/2),
+                    (pieceRect.top + pieceRect.height/2) - (slotRect.top + slotRect.height/2)
+                );
                 if (dist < 60) droppedSlot = slot;
             });
 
             if (droppedSlot) {
                 const val = droppedSlot.dataset.val;
                 if (val === q.answer) {
-                    playSnapSound(); state.awaitingNext = true;
-                    const stageRect = stage.getBoundingClientRect(); const targetRect = droppedSlot.getBoundingClientRect();
-                    piece.classList.add('snapped'); piece.style.transform = 'none'; piece.style.left = `${targetRect.left - stageRect.left - 96}px`; piece.style.top = `${targetRect.top - stageRect.top}px`;
-                    droppedSlot.classList.add('highlight'); droppedSlot.style.borderColor = '#64ff64'; droppedSlot.style.color = '#fff';
-                    const comboFloat = document.createElement('div'); comboFloat.textContent = q.targetCombo; comboFloat.style.position = 'absolute'; comboFloat.style.left = `${targetRect.left - stageRect.left - 48}px`; comboFloat.style.top = `${targetRect.top - stageRect.top - 20}px`; comboFloat.style.color = '#fff'; comboFloat.style.fontSize = '80px'; comboFloat.style.fontWeight = '900'; comboFloat.style.pointerEvents = 'none'; comboFloat.style.zIndex = '999'; comboFloat.style.textShadow = '0 0 20px #ffd76a, 0 0 40px #ffb347, 0 4px 10px rgba(0,0,0,0.5)'; comboFloat.style.animation = 'floatUpFade 1.5s forwards'; stage.appendChild(comboFloat);
-                    if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
-                    const replyUI = `${q.leftChar}... ${q.answer}... ${q.targetCombo}！太棒了！`; const replySpeak = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; speak(replySpeak);
+                    playSnapSound(); 
+                    state.awaitingNext = true;
+                    
+                    const stageRect = stage.getBoundingClientRect();
+                    const targetRect = droppedSlot.getBoundingClientRect();
+                    
+                    piece.classList.add('snapped');
+                    piece.style.transform = 'none';
+                    piece.style.left = `${targetRect.left - stageRect.left - 96}px`; 
+                    piece.style.top = `${targetRect.top - stageRect.top}px`;
+
+                    droppedSlot.classList.add('highlight');
+                    droppedSlot.style.borderColor = '#64ff64';
+                    droppedSlot.style.color = '#fff';
+                    
+                    const comboFloat = document.createElement('div');
+                    comboFloat.textContent = q.targetCombo;
+                    comboFloat.style.position = 'absolute';
+                    comboFloat.style.left = `${targetRect.left - stageRect.left - 48}px`; 
+                    comboFloat.style.top = `${targetRect.top - stageRect.top - 20}px`; 
+                    comboFloat.style.color = '#fff';
+                    comboFloat.style.fontSize = '80px';
+                    comboFloat.style.fontWeight = '900';
+                    comboFloat.style.pointerEvents = 'none';
+                    comboFloat.style.zIndex = '999';
+                    comboFloat.style.textShadow = '0 0 20px #ffd76a, 0 0 40px #ffb347, 0 4px 10px rgba(0,0,0,0.5)';
+                    comboFloat.style.animation = 'floatUpFade 1.5s forwards';
+                    stage.appendChild(comboFloat);
+
+                    if(document.getElementById('nextQuestionBtn')) {
+                        const nextBtn = document.getElementById('nextQuestionBtn');
+                        nextBtn.classList.remove('hidden-btn');
+                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                    }
+                    
+                    const replyUI = `${q.leftChar}... ${q.answer}... ${q.targetCombo}！太棒了！`;
+                    const replySpeak = `${q.leftChar}... ${q.answer}... ${q.soundWord}！太棒了！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
+
                 } else {
-                    state.excluded += 1; state.roundMistakes += 1; piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; piece.style.transform = 'translate(0px, 0px)';
-                    const replyUI = `不對喔，再試試看。`; const replySpeak = `不對喔，這不是 ${q.soundWord}。`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; speak(replySpeak);
+                    state.excluded += 1;
+                    state.roundMistakes += 1; 
+                    piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    piece.style.transform = 'translate(0px, 0px)';
+                    
+                    const replyUI = `不對喔，再試試看。`;
+                    const replySpeak = `不對喔，這不是 ${q.soundWord}。`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
                 }
-            } else { piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; piece.style.transform = 'translate(0px, 0px)'; }
+            } else {
+                piece.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                piece.style.transform = 'translate(0px, 0px)';
+            }
         };
+
       }
       else if (q.uiType === 'scratch') {
-        optionsWrap.style.opacity = '0.3'; optionsWrap.style.pointerEvents = 'none';
+        optionsWrap.style.opacity = '0.3';
+        optionsWrap.style.pointerEvents = 'none';
+
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把表面刮乾淨看看底下是什麼！';
-        const stage = document.createElement('div'); stage.className = 'scratch-stage';
-        const container = document.createElement('div'); container.className = 'scratch-container';
-        const content = document.createElement('div'); content.className = 'scratch-content';
-        if (q.scratchText) { content.textContent = q.scratchText; content.style.fontSize = '70px'; } else { content.textContent = q.answer; }
+        
+        const stage = document.createElement('div');
+        stage.className = 'scratch-stage';
 
-        const canvas = document.createElement('canvas'); canvas.className = 'scratch-canvas'; canvas.width = 240; canvas.height = 240; const ctx = canvas.getContext('2d'); 
-        const coverImg = new Image(); coverImg.src = 'images/scratch_cover.png';
-        coverImg.onload = () => { ctx.drawImage(coverImg, 0, 0, 240, 240); }; coverImg.onerror = () => { ctx.fillStyle = '#2d4a36'; ctx.fillRect(0, 0, 240, 240); };
+        const container = document.createElement('div');
+        container.className = 'scratch-container';
 
-        container.appendChild(content); container.appendChild(canvas); stage.appendChild(container); visualArea.appendChild(stage); visualArea.classList.remove('collapsed');
+        const content = document.createElement('div');
+        content.className = 'scratch-content';
+        
+        if (q.scratchText) {
+            content.textContent = q.scratchText;
+            content.style.fontSize = '70px'; 
+        } else {
+            content.textContent = q.answer;
+        }
 
-        let isScratching = false; let revealed = false; const scratchedCells = new Set(); const cols = 10, rows = 10; const cellW = 240 / cols, cellH = 240 / rows;
+        const canvas = document.createElement('canvas');
+        canvas.className = 'scratch-canvas';
+        canvas.width = 240;
+        canvas.height = 240;
+        const ctx = canvas.getContext('2d'); 
+
+        const coverImg = new Image();
+        coverImg.src = 'images/scratch_cover.png';
+        coverImg.onload = () => { ctx.drawImage(coverImg, 0, 0, 240, 240); };
+        coverImg.onerror = () => { ctx.fillStyle = '#2d4a36'; ctx.fillRect(0, 0, 240, 240); };
+
+        container.appendChild(content);
+        container.appendChild(canvas);
+        stage.appendChild(container);
+        visualArea.appendChild(stage);
+        visualArea.classList.remove('collapsed');
+
+        let isScratching = false;
+        let revealed = false;
+        
+        const scratchedCells = new Set();
+        const cols = 10, rows = 10;
+        const cellW = 240 / cols, cellH = 240 / rows;
 
         function scratch(e) {
-            if (!isScratching || revealed) return; e.preventDefault(); const rect = canvas.getBoundingClientRect();
+            if (!isScratching || revealed) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
             let clientX = e.clientX, clientY = e.clientY;
-            if (e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } else if (clientX === undefined && e.changedTouches) { clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY; }
-            const x = clientX - rect.left; const y = clientY - rect.top;
-            ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x, y, 35, 0, Math.PI * 2); ctx.fill();
+            if (e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+            else if (clientX === undefined && e.changedTouches) { clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY; }
 
-            const minC = Math.max(0, Math.floor((x - 35) / cellW)); const maxC = Math.min(cols - 1, Math.floor((x + 35) / cellW));
-            const minR = Math.max(0, Math.floor((y - 35) / cellH)); const maxR = Math.min(rows - 1, Math.floor((y + 35) / cellH));
-            for (let c = minC; c <= maxC; c++) { for (let r = minR; r <= maxR; r++) { scratchedCells.add(`${c},${r}`); } }
-            if (scratchedCells.size > 50) checkReveal();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 35, 0, Math.PI * 2); 
+            ctx.fill();
+
+            const minC = Math.max(0, Math.floor((x - 35) / cellW));
+            const maxC = Math.min(cols - 1, Math.floor((x + 35) / cellW));
+            const minR = Math.max(0, Math.floor((y - 35) / cellH));
+            const maxR = Math.min(rows - 1, Math.floor((y + 35) / cellH));
+
+            for (let c = minC; c <= maxC; c++) {
+                for (let r = minR; r <= maxR; r++) {
+                    scratchedCells.add(`${c},${r}`);
+                }
+            }
+
+            if (scratchedCells.size > 50) {
+                checkReveal();
+            }
         }
 
         function checkReveal() {
-            if (revealed) return; revealed = true; playChimeSound(); 
-            canvas.style.transition = 'opacity 0.6s ease'; canvas.style.opacity = '0';
-            optionsWrap.style.opacity = '1'; optionsWrap.style.pointerEvents = 'auto';
+            if (revealed) return;
+            revealed = true;
+            playChimeSound(); 
+            canvas.style.transition = 'opacity 0.6s ease';
+            canvas.style.opacity = '0';
+            
+            optionsWrap.style.opacity = '1';
+            optionsWrap.style.pointerEvents = 'auto';
+
             let reply = `原來是 ${q.answer}！請選出正確的答案！`;
-            if (q.kind === 'math-scratch') { reply = `${numberToZh(q.tableBase)} ${numberToZh(q.tableTarget)} 是多少？`; }
-            if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+            if (q.kind === 'math-scratch') {
+                reply = `${numberToZh(q.tableBase)} ${numberToZh(q.tableTarget)} 是多少？`;
+            }
+            if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+            speak(reply);
+
             setTimeout(() => canvas.remove(), 600);
         }
-        canvas.addEventListener('pointerdown', (e) => { isScratching = true; scratch(e); }); canvas.addEventListener('pointermove', scratch); canvas.addEventListener('touchmove', scratch, {passive: false});
-        window.onpointerup = () => { isScratching = false; }; window.ontouchend = () => { isScratching = false; };
+
+        canvas.addEventListener('pointerdown', (e) => { isScratching = true; scratch(e); });
+        canvas.addEventListener('pointermove', scratch);
+        canvas.addEventListener('touchmove', scratch, {passive: false});
+        
+        window.onpointerup = () => { isScratching = false; };
+        window.ontouchend = () => { isScratching = false; };
       }
+      /* 🌟 翻牌配對 (硬體加速 3D 翻轉) */
       else if (q.uiType === 'match') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '點擊卡片翻開，找出相同的兩個字！';
         if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
 
-        const stage = document.createElement('div'); stage.className = 'memory-stage'; const grid = document.createElement('div'); grid.className = 'memory-grid';
-        let flippedCards = []; let matchedCount = 0; let isLocked = false;
+        const stage = document.createElement('div');
+        stage.className = 'memory-stage';
+        
+        const grid = document.createElement('div');
+        grid.className = 'memory-grid';
+
+        let flippedCards = [];
+        let matchedCount = 0;
+        let isLocked = false;
 
         q.cardsData.forEach((cardItem) => {
-            const cardWrap = document.createElement('div'); cardWrap.className = 'memory-card';
-            const cardInner = document.createElement('div'); cardInner.className = 'memory-card-inner';
-            const cardFront = document.createElement('div'); cardFront.className = 'memory-card-front'; cardFront.textContent = cardItem.val;
-            const cardBack = document.createElement('div'); cardBack.className = 'memory-card-back';
+            const cardWrap = document.createElement('div');
+            cardWrap.className = 'memory-card';
             
-            cardInner.appendChild(cardFront); cardInner.appendChild(cardBack); cardWrap.appendChild(cardInner);
+            const cardInner = document.createElement('div');
+            cardInner.className = 'memory-card-inner';
+            
+            const cardFront = document.createElement('div');
+            cardFront.className = 'memory-card-front';
+            cardFront.textContent = cardItem.val;
+            
+            const cardBack = document.createElement('div');
+            cardBack.className = 'memory-card-back';
+            
+            cardInner.appendChild(cardFront);
+            cardInner.appendChild(cardBack);
+            cardWrap.appendChild(cardInner);
+            
             cardWrap.onpointerdown = (e) => {
                 if (isLocked || cardWrap.classList.contains('flipped') || cardWrap.classList.contains('matched')) return;
-                playPopSound(); cardWrap.classList.add('flipped'); flippedCards.push({ elem: cardWrap, data: cardItem });
+                
+                playPopSound();
+                cardWrap.classList.add('flipped');
+                flippedCards.push({ elem: cardWrap, data: cardItem });
                 
                 if (flippedCards.length === 2) {
                     isLocked = true;
+                    // 檢查配對
                     if (flippedCards[0].data.val === flippedCards[1].data.val) {
+                        // 配對成功
                         setTimeout(() => {
-                            playChimeSound(); speak(`太棒了！是 ${flippedCards[0].data.speak}`);
-                            flippedCards[0].elem.classList.add('matched'); flippedCards[1].elem.classList.add('matched');
-                            matchedCount += 2; flippedCards = []; isLocked = false;
+                            playChimeSound();
+                            speak(`太棒了！是 ${flippedCards[0].data.speak}`);
+                            flippedCards[0].elem.classList.add('matched');
+                            flippedCards[1].elem.classList.add('matched');
+                            matchedCount += 2;
+                            flippedCards = [];
+                            isLocked = false;
+                            
+                            // 檢查是否全部配對完畢
                             if (matchedCount === q.cardsData.length) {
                                 state.awaitingNext = true;
-                                setTimeout(() => { const nextBtn = document.getElementById('nextQuestionBtn'); if (nextBtn) { nextBtn.classList.remove('hidden-btn'); nextBtn.scrollIntoView(false); } }, 1500);
+                                setTimeout(() => {
+                                    const nextBtn = document.getElementById('nextQuestionBtn');
+                                    if (nextBtn) {
+                                        nextBtn.classList.remove('hidden-btn');
+                                        nextBtn.scrollIntoView(false);
+                                    }
+                                }, 1500);
                             }
                         }, 600);
                     } else {
-                        state.excluded += 1; state.roundMistakes += 1;
+                        // 配對失敗
+                        state.excluded += 1;
+                        state.roundMistakes += 1;
                         setTimeout(() => {
-                            playSplashSound(); flippedCards[0].elem.classList.remove('flipped'); flippedCards[1].elem.classList.remove('flipped'); flippedCards = []; isLocked = false;
-                        }, 1000); 
+                            playSplashSound();
+                            flippedCards[0].elem.classList.remove('flipped');
+                            flippedCards[1].elem.classList.remove('flipped');
+                            flippedCards = [];
+                            isLocked = false;
+                        }, 1000); // 鎖定 1 秒鐘後蓋回去
                     }
-                } else { speak(cardItem.speak); }
+                } else {
+                    // 翻第一張牌時發音
+                    speak(cardItem.speak);
+                }
             };
+            
             grid.appendChild(cardWrap);
         });
-        stage.appendChild(grid); optionsWrap.appendChild(stage);
+
+        stage.appendChild(grid);
+        optionsWrap.appendChild(stage);
       }
+      /* 🌟 復活：小鹿過河 (真實垂直過河版) */
       else if (q.uiType === 'path') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '小鹿要過河！點擊正確的石頭讓牠跳過去！';
-        const stage = document.createElement('div'); stage.className = 'path-stage';
-        const riverBg = document.createElement('div'); riverBg.className = 'path-river'; stage.appendChild(riverBg);
-        const riverOverlay = document.createElement('div'); riverOverlay.className = 'path-river-overlay'; stage.appendChild(riverOverlay);
+        
+        const stage = document.createElement('div');
+        stage.className = 'path-stage';
+        
+        const riverBg = document.createElement('div');
+        riverBg.className = 'path-river';
+        stage.appendChild(riverBg);
 
-        const targetTop = 70 - (state.qIndex * 13); const charStartTop = state.qIndex === 0 ? 84 : (70 - ((state.qIndex - 1) * 13)); 
+        const riverOverlay = document.createElement('div');
+        riverOverlay.className = 'path-river-overlay';
+        stage.appendChild(riverOverlay);
 
+        // 小鹿過河的動態捲動座標邏輯 (5題)
+        // 起點永遠在下方 (84%)，新的目標在上方 (70%)
+        const targetTop = 70 - (state.qIndex * 13); 
+        const charStartTop = state.qIndex === 0 ? 84 : (70 - ((state.qIndex - 1) * 13)); 
+
+        // 取消暗色歷史足跡，只保留小鹿目前腳下的那一顆發光石頭！
         if (state.qIndex > 0) {
-            const currentStone = document.createElement('div'); currentStone.className = 'path-stone'; currentStone.style.left = `calc(${state.lastPathX}% - 40px)`; currentStone.style.top = `${charStartTop}%`; currentStone.style.backgroundImage = "url('images/stone.png')"; currentStone.style.pointerEvents = 'none'; currentStone.style.zIndex = '4'; stage.appendChild(currentStone);
+            const currentStone = document.createElement('div');
+            currentStone.className = 'path-stone';
+            currentStone.style.left = `calc(${state.lastPathX}% - 40px)`;
+            currentStone.style.top = `${charStartTop}%`;
+            currentStone.style.backgroundImage = "url('images/stone.png')";
+            currentStone.style.pointerEvents = 'none'; // 防止阻擋手指點擊新石頭
+            currentStone.style.zIndex = '4'; // 確保在水面上、小鹿下
+            stage.appendChild(currentStone);
         }
 
-        const character = document.createElement('img'); character.src = 'images/deer.png'; character.className = 'path-character';
-        const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
-        character.style.left = `calc(${currentX}% - 35px)`; character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
-        character.onerror = function() { this.src = 'images/icon.png'; };
+        const character = document.createElement('img');
+        character.src = 'images/deer.png';
+        character.className = 'path-character';
         
-        const totalOpts = q.options.length; const xOffsets = [20, 50, 80]; 
+        // 繼承上次跳躍的 X 座標
+        const currentX = state.qIndex === 0 ? 50 : state.lastPathX;
+        character.style.left = `calc(${currentX}% - 35px)`;
+        // 第一題站在最下方的岸上，其餘站在前一顆石頭上
+        character.style.top = state.qIndex === 0 ? `76%` : `calc(${charStartTop}% - 35px)`; 
+        
+        character.onerror = function() { 
+            this.src = 'images/icon.png'; 
+        };
+        
+        const totalOpts = q.options.length;
+        const xOffsets = [20, 50, 80]; 
+        
         q.options.forEach((opt, idx) => {
-            const stone = document.createElement('div'); stone.className = 'path-stone';
-            const leftPos = xOffsets[idx]; let topPos = targetTop;
-            if (Math.abs(leftPos - currentX) < 10) { topPos -= 10; } else { topPos += (idx === 1 ? -4 : 6); }
-            stone.style.left = `calc(${leftPos}% - 40px)`; stone.style.top = `${topPos}%`;
-            const txt = document.createElement('span'); txt.textContent = opt.text; stone.appendChild(txt);
+            const stone = document.createElement('div');
+            stone.className = 'path-stone';
+            
+            const leftPos = xOffsets[idx];
+            let topPos = targetTop;
+            
+            // 終極防遮擋斜角推進魔法：如果石頭跟小鹿在同一直線上，就把石頭大幅往上推！
+            if (Math.abs(leftPos - currentX) < 10) {
+                topPos -= 10; // 大幅往上推，避開小鹿頭部
+            } else {
+                topPos += (idx === 1 ? -4 : 6); // 自然的錯落排列
+            }
+            
+            stone.style.left = `calc(${leftPos}% - 40px)`;
+            stone.style.top = `${topPos}%`;
+            
+            const txt = document.createElement('span');
+            txt.textContent = opt.text;
+            stone.appendChild(txt);
+            
             stone.style.backgroundImage = "url('images/stone.png')";
             
             stone.onpointerdown = (e) => {
                 if (state.awaitingNext || stone.classList.contains('excluded')) return;
+                
                 if (opt.text === q.answer) {
-                    stone.classList.add('correct'); state.awaitingNext = true; playJumpSound();
+                    stone.classList.add('correct');
+                    state.awaitingNext = true;
+                    
+                    playJumpSound();
+                    
+                    // 記錄這次落點的 X 座標，作為下一題的起點
                     state.lastPathX = leftPos; 
-                    character.style.left = `calc(${leftPos}% - 35px)`; character.style.top = `calc(${topPos}% - 35px)`; character.style.transform = 'scale(1.3) rotate(5deg)'; setTimeout(() => character.style.transform = 'scale(1)', 400);
+                    
+                    // 小鹿跳向新石頭
+                    character.style.left = `calc(${leftPos}% - 35px)`;
+                    character.style.top = `calc(${topPos}% - 35px)`; 
+                    character.style.transform = 'scale(1.3) rotate(5deg)';
+                    setTimeout(() => character.style.transform = 'scale(1)', 400);
 
-                    let de = ''; if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) { const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得'; }
+                    let de = '';
+                    if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+                       const ansNum = q.tableBase * q.tableTarget;
+                       if(ansNum <= 10) de = '得';
+                    }
                     const reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                    speak(reply);
 
+                    // 終極一躍：最後一題加碼跳上對岸
                     if (state.qIndex === state.questionList.length - 1) {
                         setTimeout(() => {
-                            playJumpSound(); character.style.left = `calc(50% - 35px)`; character.style.top = `2%`; character.style.transform = 'scale(1.2)'; setTimeout(() => character.style.transform = 'scale(1)', 400);
-                            setTimeout(() => { const nextBtn = document.getElementById('nextQuestionBtn'); if (nextBtn) { nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); speak('太棒了，成功過河！請點擊下方按鈕領取獎勵！'); } }, 1000);
+                            playJumpSound();
+                            character.style.left = `calc(50% - 35px)`; 
+                            character.style.top = `2%`; // 跳到畫面最頂端的草地上
+                            character.style.transform = 'scale(1.2)';
+                            setTimeout(() => character.style.transform = 'scale(1)', 400);
+                            
+                            // 延遲顯示「過關按鈕」並加入語音，等待孩子手動點擊
+                            setTimeout(() => {
+                                const nextBtn = document.getElementById('nextQuestionBtn');
+                                if (nextBtn) {
+                                    nextBtn.classList.remove('hidden-btn');
+                                    setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                                    speak('太棒了，成功過河！請點擊下方按鈕領取獎勵！');
+                                }
+                            }, 1000);
                         }, 1200);
-                    } else { setTimeout(() => { const nextBtn = document.getElementById('nextQuestionBtn'); if (nextBtn) nextBtn.click(); }, 2500); }
+                    } else {
+                        /* 延長等待時間至 2.5 秒，讓語音不會跟下一題打架 */
+                        setTimeout(() => {
+                            const nextBtn = document.getElementById('nextQuestionBtn');
+                            if (nextBtn) nextBtn.click();
+                        }, 2500); 
+                    }
+                    
                 } else {
-                    stone.classList.add('excluded'); stone.classList.add('sink'); state.excluded += 1; state.roundMistakes += 1; playSplashSound();
+                    stone.classList.add('excluded');
+                    stone.classList.add('sink');
+                    state.excluded += 1;
+                    state.roundMistakes += 1;
+                    
+                    playSplashSound();
+                    
                     const reply = `哎呀，這顆石頭沉下去了！`;
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; 
+                    speak(reply);
                 }
             };
             stage.appendChild(stone);
         });
-        stage.appendChild(character); optionsWrap.appendChild(stage);
+
+        stage.appendChild(character);
+        optionsWrap.appendChild(stage);
       }
-      /* 🌟 收果子遊戲還原版！ */
-      else if (q.uiType === 'drag') {
-          if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '把正確的果子收到籃子裡吧！';
-          const stage = document.createElement('div'); stage.className = 'drag-stage';
-          const tree = document.createElement('div'); tree.className = 'drag-tree'; stage.appendChild(tree);
-          const fruitContainer = document.createElement('div'); fruitContainer.className = 'drag-fruit-container';
-
-          q.options.forEach((opt, idx) => {
-              const fruit = document.createElement('div'); fruit.className = 'drag-fruit';
-              fruit.dataset.val = opt.text;
-              const xOffsets = [20, 50, 80]; const yOffsets = [20, 45, 20];
-              fruit.style.left = `calc(${xOffsets[idx]}% - 30px)`; fruit.style.top = `${yOffsets[idx]}%`;
-              
-              const fruitImg = document.createElement('img'); fruitImg.src = 'images/fruit.png';
-              fruitImg.onerror = function() { this.style.display='none'; fruit.style.background='#ff4757'; };
-              
-              const txt = document.createElement('span'); txt.textContent = opt.text; txt.style.zIndex='1';
-              fruit.appendChild(fruitImg); fruit.appendChild(txt); fruitContainer.appendChild(fruit);
-
-              let isDragging = false; let startX, startY; let origX = 0, origY = 0;
-              fruit.onpointerdown = (e) => {
-                  if (state.awaitingNext || fruit.classList.contains('excluded')) return;
-                  e.preventDefault(); isDragging = true; fruit.setPointerCapture(e.pointerId);
-                  let clientX = e.clientX; let clientY = e.clientY;
-                  if(clientX === undefined && e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-                  startX = clientX - origX; startY = clientY - origY; fruit.style.transition = 'none';
-              };
-              fruit.onpointermove = (e) => {
-                  if (!isDragging) return; e.preventDefault();
-                  let clientX = e.clientX; let clientY = e.clientY;
-                  if(clientX === undefined && e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-                  origX = clientX - startX; origY = clientY - startY; fruit.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
-              };
-              fruit.onpointerup = (e) => {
-                  if (!isDragging) return; isDragging = false; fruit.releasePointerCapture(e.pointerId);
-                  const fruitRect = fruit.getBoundingClientRect(); const basketElem = stage.querySelector('.drag-basket'); const basketRect = basketElem.getBoundingClientRect();
-                  const dist = Math.hypot((fruitRect.left + fruitRect.width/2) - (basketRect.left + basketRect.width/2), (fruitRect.top + fruitRect.height/2) - (basketRect.top + basketRect.height/2));
-
-                  if (dist < 80) {
-                      if (fruit.dataset.val === q.answer) {
-                          playSnapSound(); state.awaitingNext = true; fruit.style.transition = 'all 0.3s';
-                          const dx = (basketRect.left + basketRect.width/2) - (fruitRect.left - origX + fruitRect.width/2);
-                          const dy = (basketRect.top + basketRect.height/2) - (fruitRect.top - origY + fruitRect.height/2);
-                          fruit.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`; fruit.style.opacity = '0'; basketElem.classList.add('basket-success');
-                          const pinyinReveal = stage.querySelector('.vertical-pinyin'); if (pinyinReveal) pinyinReveal.classList.add('show');
-                          if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
-                          if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！收集到「${q.soundWord}」！`;
-                          speak(`太棒了！是${q.soundWord}`);
-                      } else {
-                          state.excluded += 1; state.roundMistakes += 1; fruit.classList.add('excluded'); origX = 0; origY = 0;
-                          fruit.style.transition = 'transform 0.4s'; fruit.style.transform = `translate(0px, 0px)`; playSplashSound();
-                          if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `這個不是我要的喔！`; speak('這個不是我要的喔！');
-                      }
-                  } else { origX = 0; origY = 0; fruit.style.transition = 'transform 0.4s'; fruit.style.transform = `translate(0px, 0px)`; }
-              };
-          });
-          stage.appendChild(fruitContainer);
-
-          const basketWrap = document.createElement('div'); basketWrap.className = 'drag-basket-wrap';
-          const pinyinReveal = document.createElement('div'); pinyinReveal.className = 'vertical-pinyin';
-          pinyinReveal.innerHTML = `<span>${q.targetCombo.charAt(0)}</span><span>${q.targetCombo.charAt(1)}</span>`;
-          const basket = document.createElement('div'); basket.className = 'drag-basket';
-          const basketImg = document.createElement('img'); basketImg.src = 'images/basket.png';
-          basketImg.onerror = function() { this.style.display='none'; basket.style.background='rgba(139,69,19,0.8)'; basket.style.borderRadius='20px'; };
-          const label = document.createElement('div'); label.className = 'basket-label'; label.innerHTML = `🛒 <span style="font-size:24px; font-weight:bold;">${q.basketText}</span>`;
-          
-          basket.appendChild(basketImg); basket.appendChild(label); basketWrap.appendChild(pinyinReveal); basketWrap.appendChild(basket); stage.appendChild(basketWrap); optionsWrap.appendChild(stage);
-      }
+    /* 🌟 數學：精靈餵食大挑戰版 (無敵光球完美啟動版) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
-        const stage = document.createElement('div'); stage.className = 'feed-stage';
-        const feedBg = document.createElement('div'); feedBg.className = 'feed-bg'; feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')"; stage.appendChild(feedBg);
-
-        const elfWrap = document.createElement('div'); elfWrap.className = 'feed-elf-wrap'; elfWrap.style.transform = 'none'; 
-        const currentStageIndex = state.qIndex + 1; const elfImg = document.createElement('img'); elfImg.className = 'feed-elf-img';
-        const tryPaths = [`images/elf_feed_${currentStageIndex}.png`, `elf_feed_${currentStageIndex}.png`, `images/icon.png`, `icon.png`];
-        let pathIdx = 0;
-        elfImg.onerror = function() { pathIdx++; if (pathIdx < tryPaths.length) { this.src = tryPaths[pathIdx]; } else { this.onerror = null; } }; 
-        elfImg.src = tryPaths[0]; 
-        const baseScale = 1 + (state.qIndex * 0.02); elfImg.style.transform = `scale(${baseScale})`;
-        elfWrap.appendChild(elfImg); stage.appendChild(elfWrap);
         
-        const foodContainer = document.createElement('div'); foodContainer.className = 'feed-food-container';
-        const xOffsets = [15, 50, 85]; const yOffsets = [20, 45, 20];
+        const stage = document.createElement('div');
+        stage.className = 'feed-stage';
+        
+        const feedBg = document.createElement('div');
+        feedBg.className = 'feed-bg';
+        feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
+        stage.appendChild(feedBg);
+
+        const elfWrap = document.createElement('div');
+        elfWrap.className = 'feed-elf-wrap';
+        elfWrap.style.transform = 'none'; 
+        
+        const currentStageIndex = state.qIndex + 1;
+        const elfImg = document.createElement('img');
+        elfImg.className = 'feed-elf-img';
+        
+        const tryPaths = [
+            `images/elf_feed_${currentStageIndex}.png`,
+            `elf_feed_${currentStageIndex}.png`,
+            `images/icon.png`, 
+            `icon.png`
+        ];
+        let pathIdx = 0;
+        
+        elfImg.onerror = function() { 
+            pathIdx++;
+            if (pathIdx < tryPaths.length) {
+                this.src = tryPaths[pathIdx];
+            } else {
+                this.onerror = null; 
+            }
+        }; 
+        elfImg.src = tryPaths[0]; 
+        
+        const baseScale = 1 + (state.qIndex * 0.02);
+        elfImg.style.transform = `scale(${baseScale})`;
+        
+        elfWrap.appendChild(elfImg);
+        stage.appendChild(elfWrap);
+        
+        const foodContainer = document.createElement('div');
+        foodContainer.className = 'feed-food-container';
+        
+        const xOffsets = [15, 50, 85];
+        const yOffsets = [20, 45, 20];
         
         q.options.forEach((opt, idx) => {
-            const food = document.createElement('div'); food.className = 'feed-food'; food.dataset.val = opt.text;
-            food.style.left = `calc(${xOffsets[idx]}% - 35px)`; food.style.top = `${yOffsets[idx]}%`;
+            const food = document.createElement('div');
+            food.className = 'feed-food';
+            food.dataset.val = opt.text;
             
-            const foodImg = document.createElement('img'); const foodPaths = [`images/food_berry.png`, `food_berry.png`]; let fPathIdx = 0;
-            foodImg.onerror = function() { fPathIdx++; if (fPathIdx < foodPaths.length) { this.src = foodPaths[fPathIdx]; } else { this.style.display = 'none'; food.style.background = '#ff4757'; } }; 
+            food.style.left = `calc(${xOffsets[idx]}% - 35px)`; 
+            food.style.top = `${yOffsets[idx]}%`;
+            
+            const foodImg = document.createElement('img');
+            const foodPaths = [`images/food_berry.png`, `food_berry.png`];
+            let fPathIdx = 0;
+            foodImg.onerror = function() { 
+                fPathIdx++;
+                if (fPathIdx < foodPaths.length) {
+                    this.src = foodPaths[fPathIdx];
+                } else {
+                    this.style.display = 'none'; 
+                    food.style.background = '#ff4757'; 
+                }
+            }; 
             foodImg.src = foodPaths[0];
-            const foodText = document.createElement('span'); foodText.textContent = opt.text; foodText.style.zIndex = '10';
-            food.appendChild(foodImg); food.appendChild(foodText); foodContainer.appendChild(food);
+            
+            const foodText = document.createElement('span');
+            foodText.textContent = opt.text; 
+            foodText.style.zIndex = '10';
+            
+            food.appendChild(foodImg);
+            food.appendChild(foodText);
+            foodContainer.appendChild(food);
 
-            let isDragging = false; let startX, startY; let origX = 0, origY = 0; 
+            let isDragging = false;
+            let startX, startY;
+            let origX = 0, origY = 0; 
+            
             food.onpointerdown = (e) => {
                 if (state.awaitingNext || food.classList.contains('excluded')) return;
-                e.preventDefault(); isDragging = true; food.setPointerCapture(e.pointerId);
+                e.preventDefault();
+                isDragging = true;
+                food.setPointerCapture(e.pointerId);
                 let clientX = e.clientX; let clientY = e.clientY;
                 if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-                startX = clientX - origX; startY = clientY - origY; food.style.transition = 'none';
-            };
-            food.onpointermove = (e) => {
-                if (!isDragging) return; e.preventDefault(); 
-                let clientX = e.clientX; let clientY = e.clientY;
-                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-                origX = clientX - startX; origY = clientY - startY; food.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
                 
-                const foodRect = food.getBoundingClientRect(); const elfRect = elfWrap.getBoundingClientRect();
-                const dist = Math.hypot((foodRect.left + foodRect.width/2) - (elfRect.left + elfRect.width/2), (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2));
-                if (dist < 90) elfImg.style.transform = `scale(${baseScale + 0.15})`; else elfImg.style.transform = `scale(${baseScale})`;
+                startX = clientX - origX;
+                startY = clientY - origY;
+                food.style.transition = 'none';
+            };
+
+            food.onpointermove = (e) => {
+                if (!isDragging) return;
+                e.preventDefault(); 
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                origX = clientX - startX;
+                origY = clientY - startY;
+                food.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
+                
+                const foodRect = food.getBoundingClientRect();
+                const elfRect = elfWrap.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (foodRect.left + foodRect.width/2) - (elfRect.left + elfRect.width/2),
+                    (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
+                );
+                
+                if (dist < 90) elfImg.style.transform = `scale(${baseScale + 0.15})`;
+                else elfImg.style.transform = `scale(${baseScale})`;
             };
 
             food.onpointerup = (e) => {
-                if (!isDragging) return; isDragging = false; food.releasePointerCapture(e.pointerId);
-                const foodRect = food.getBoundingClientRect(); const elfRect = elfWrap.getBoundingClientRect();
-                const dist = Math.hypot((foodRect.left + foodRect.width/2) - (elfRect.left + elfRect.width/2), (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2));
+                if (!isDragging) return;
+                isDragging = false;
+                food.releasePointerCapture(e.pointerId);
+                
+                const foodRect = food.getBoundingClientRect();
+                const elfRect = elfWrap.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (foodRect.left + foodRect.width/2) - (elfRect.left + elfRect.width/2),
+                    (foodRect.top + foodRect.height/2) - (elfRect.top + elfRect.height/2)
+                );
 
                 if (dist < 90) {
                     if (food.dataset.val === q.answer) {
-                        playSnapSound(); state.awaitingNext = true; food.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        playSnapSound();
+                        state.awaitingNext = true;
+                        
+                        food.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                         const dx = (elfRect.left + elfRect.width/2) - (foodRect.left - origX + foodRect.width/2);
                         const dy = (elfRect.top + elfRect.height/2) - (foodRect.top - origY + foodRect.height/2); 
-                        food.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`; food.style.opacity = '0'; elfImg.style.transform = `scale(${baseScale + 0.2})`; elfWrap.classList.add('feed-elf-success');
+                        
+                        food.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`;
+                        food.style.opacity = '0'; 
+                        
+                        elfImg.style.transform = `scale(${baseScale + 0.2})`;
+                        
+                        // 🌟 大樂修正：啟動外層的 CSS 光球魔法！
+                        elfWrap.classList.add('feed-elf-success');
                         
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
-                                const fullPaths = [`images/elf_full.png`, `elf_full.png`, `images/icon.png`, `icon.png`]; let fullIdx = 0;
-                                elfImg.onerror = function() { fullIdx++; if(fullIdx < fullPaths.length) this.src = fullPaths[fullIdx]; else this.onerror = null; };
-                                elfImg.src = fullPaths[0]; elfImg.style.transform = `scale(${baseScale + 0.1})`; 
+                                const fullPaths = [`images/elf_full.png`, `elf_full.png`, `images/icon.png`, `icon.png`];
+                                let fullIdx = 0;
+                                elfImg.onerror = function() {
+                                    fullIdx++;
+                                    if(fullIdx < fullPaths.length) this.src = fullPaths[fullIdx];
+                                    else this.onerror = null;
+                                };
+                                elfImg.src = fullPaths[0]; 
+                                elfImg.style.transform = `scale(${baseScale + 0.1})`;
+                                // 🌟 為了慶祝吃飽，最後一題光球就不關了，讓他一直發光！
                             }, 400); 
                         } else {
-                            setTimeout(() => { elfImg.style.transform = `scale(${baseScale})`; elfWrap.classList.remove('feed-elf-success'); }, 800);
+                            setTimeout(() => {
+                                elfImg.style.transform = `scale(${baseScale})`;
+                                // 🌟 平常的題目吃完後，關閉光球
+                                elfWrap.classList.remove('feed-elf-success');
+                            }, 800);
                         }
 
-                        if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
+                        if(document.getElementById('nextQuestionBtn')) {
+                            const nextBtn = document.getElementById('nextQuestionBtn');
+                            nextBtn.classList.remove('hidden-btn');
+                            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                        }
                         
-                        let de = ''; if (q.tableBase && q.tableTarget) { const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得'; }
-                        let replyUI = `${q.tableBase} × ${q.tableTarget} = ${q.answer}！`; let replySpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。`;
-                        if (state.qIndex === state.questionList.length - 1) { const title = state.playerTitle || '小探險家'; replyUI += `謝謝${title}，我吃得好飽喔！`; replySpeak += `謝謝${title}，我吃得好飽喔！`; } 
-                        else { replyUI += `好吃好吃！`; replySpeak += `太好了！`; }
-                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; speak(replySpeak);
+                        let de = '';
+                        if (q.tableBase && q.tableTarget) {
+                           const ansNum = q.tableBase * q.tableTarget;
+                           if(ansNum <= 10) de = '得';
+                        }
+                        
+                        let replyUI = `${q.tableBase} × ${q.tableTarget} = ${q.answer}！`;
+                        let replySpeak = `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。`;
+                        
+                        if (state.qIndex === state.questionList.length - 1) {
+                            const title = state.playerTitle || '小探險家';
+                            replyUI += `謝謝${title}，我吃得好飽喔！`;
+                            replySpeak += `謝謝${title}，我吃得好飽喔！`;
+                        } else {
+                            replyUI += `好吃好吃！`;
+                            replySpeak += `太好了！`;
+                        }
+
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
+
                     } else {
-                        state.excluded += 1; state.roundMistakes += 1; food.classList.add('excluded'); origX = 0; origY = 0;
-                        food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; food.style.transform = `translate(0px, 0px)`; elfImg.style.transform = `scale(${baseScale})`;
-                        playSplashSound(); const replyUI = `這個不是我要的答案喔！`; const replySpeak = `這個不是我要的答案喔！`;
-                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; speak(replySpeak);
+                        state.excluded += 1;
+                        state.roundMistakes += 1; 
+                        food.classList.add('excluded');
+                        
+                        origX = 0; origY = 0;
+                        food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        food.style.transform = `translate(0px, 0px)`;
+                        elfImg.style.transform = `scale(${baseScale})`;
+                        
+                        playSplashSound();
+                        const replyUI = `這個不是我要的答案喔！`;
+                        const replySpeak = `這個不是我要的答案喔！`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
                     }
-                } else { origX = 0; origY = 0; food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; food.style.transform = `translate(0px, 0px)`; elfImg.style.transform = `scale(${baseScale})`; }
+                } else {
+                    origX = 0; origY = 0;
+                    food.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    food.style.transform = `translate(0px, 0px)`;
+                    elfImg.style.transform = `scale(${baseScale})`;
+                }
             };
         });
-        stage.appendChild(foodContainer); optionsWrap.appendChild(stage);
+        
+        stage.appendChild(foodContainer);
+        optionsWrap.appendChild(stage);
       }
+      /* 🌟 全新進化版：回聲谷即時聲控 (字隨音動、魔術揭曉拼音版) */
       else if (q.uiType === 'echo') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '聽完語音，按下麥克風大聲唸出來吧！';
-        const stage = document.createElement('div'); stage.className = 'echo-stage';
-        const echoBg = document.createElement('div'); echoBg.className = 'echo-bg'; stage.appendChild(echoBg);
         
-        const p1 = q.targetCombo.charAt(0); const p2 = q.targetCombo.charAt(1);
-        const targetDisplay = document.createElement('div'); targetDisplay.className = 'echo-pinyin-target';
-        targetDisplay.innerHTML = `<span id="echo-p1" class="echo-char">${p1}</span><span id="echo-p2" class="echo-char">${p2}</span><div class="echo-combo-wrap"><div id="echo-combo" class="vertical-pinyin-echo"><span>${p1}</span><span>${p2}</span></div></div>`;
+        const stage = document.createElement('div');
+        stage.className = 'echo-stage';
+        
+        const echoBg = document.createElement('div');
+        echoBg.className = 'echo-bg';
+        stage.appendChild(echoBg);
+        
+        // 🌟 分離注音符號，並準備最後揭曉的直立拼音
+        const p1 = q.targetCombo.charAt(0);
+        const p2 = q.targetCombo.charAt(1);
+        
+        const targetDisplay = document.createElement('div');
+        targetDisplay.className = 'echo-pinyin-target';
+        targetDisplay.innerHTML = `
+            <span id="echo-p1" class="echo-char">${p1}</span>
+            <span id="echo-p2" class="echo-char">${p2}</span>
+            <div class="echo-combo-wrap">
+                <div id="echo-combo" class="vertical-pinyin-echo">
+                    <span>${p1}</span><span>${p2}</span>
+                </div>
+            </div>
+        `;
         stage.appendChild(targetDisplay);
-        const micBtn = document.createElement('div'); micBtn.className = 'mic-btn'; micBtn.textContent = '🎤';
-        const resultBox = document.createElement('div'); resultBox.className = 'echo-result'; resultBox.textContent = '請聽語音示範...';
-        stage.appendChild(micBtn); stage.appendChild(resultBox); optionsWrap.appendChild(stage);
         
+        const micBtn = document.createElement('div');
+        micBtn.className = 'mic-btn';
+        micBtn.textContent = '🎤';
+        
+        const resultBox = document.createElement('div');
+        resultBox.className = 'echo-result';
+        resultBox.textContent = '請聽語音示範...';
+        
+        stage.appendChild(micBtn);
+        stage.appendChild(resultBox);
+        optionsWrap.appendChild(stage);
+        
+        // 🌟 定義專屬的語音連動動畫魔法
         q.playVoice = () => {
-            const p1El = document.getElementById('echo-p1'); const p2El = document.getElementById('echo-p2'); const comboEl = document.getElementById('echo-combo');
+            const p1El = document.getElementById('echo-p1');
+            const p2El = document.getElementById('echo-p2');
+            const comboEl = document.getElementById('echo-combo');
+            
+            // 重置所有動畫狀態
             if(p1El) { p1El.style.color = '#ffd76a'; p1El.style.transform = 'scale(1)'; }
             if(p2El) { p2El.style.color = '#ffd76a'; p2El.style.transform = 'scale(1)'; }
             if(comboEl) { comboEl.classList.remove('show'); }
             if(resultBox) { resultBox.textContent = '請聽語音示範...'; }
 
+            // 啟動精準語音序列
             speakSequence([
                 { text: "請按下麥克風，大聲唸出", delay: 200 },
-                { text: p1, delay: 200, action: () => { if(p1El) { p1El.style.color = '#ff6b81'; p1El.style.transform = 'scale(1.4)'; setTimeout(() => { if(p1El) p1El.style.transform = 'scale(1)'; }, 400); } } },
-                { text: p2, delay: 200, action: () => { if(p1El) p1El.style.color = '#ffd76a'; if(p2El) { p2El.style.color = '#ff6b81'; p2El.style.transform = 'scale(1.4)'; setTimeout(() => { if(p2El) p2El.style.transform = 'scale(1)'; }, 400); } } },
-                { text: q.soundWord, action: () => { if(p2El) p2El.style.color = '#ffd76a'; if(comboEl) comboEl.classList.add('show'); if(resultBox) resultBox.textContent = '換你囉！按麥克風說話'; } }
+                { 
+                    text: p1, 
+                    delay: 200,
+                    action: () => {
+                        if(p1El) {
+                            p1El.style.color = '#ff6b81';
+                            p1El.style.transform = 'scale(1.4)';
+                            setTimeout(() => { if(p1El) p1El.style.transform = 'scale(1)'; }, 400);
+                        }
+                    }
+                },
+                { 
+                    text: p2, 
+                    delay: 200,
+                    action: () => {
+                        if(p1El) p1El.style.color = '#ffd76a'; // 恢復上一個字
+                        if(p2El) {
+                            p2El.style.color = '#ff6b81';
+                            p2El.style.transform = 'scale(1.4)';
+                            setTimeout(() => { if(p2El) p2El.style.transform = 'scale(1)'; }, 400);
+                        }
+                    }
+                },
+                { 
+                    text: q.soundWord, 
+                    action: () => {
+                        if(p2El) p2El.style.color = '#ffd76a';
+                        if(comboEl) comboEl.classList.add('show'); // 🌟 魔術揭曉直立拼音
+                        if(resultBox) resultBox.textContent = '換你囉！按麥克風說話';
+                    }
+                }
             ]);
         };
         
-        let failCount = 0; const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let failCount = 0;
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
-            resultBox.innerHTML = '⚠️ 你的瀏覽器不支援語音辨識喔！<br><small>請使用 Android Chrome 或 iOS Safari</small>'; micBtn.style.opacity = '0.5'; micBtn.style.pointerEvents = 'none'; q.playVoice();
+            resultBox.innerHTML = '⚠️ 你的瀏覽器不支援語音辨識喔！<br><small>請使用 Android Chrome 或 iOS Safari</small>';
+            micBtn.style.opacity = '0.5';
+            micBtn.style.pointerEvents = 'none';
+            q.playVoice(); // 即使不支援語音輸入，也要播放超炫的動畫教學
         } else {
-            const recognition = new SpeechRecognition(); recognition.lang = 'zh-TW'; recognition.interimResults = true; recognition.continuous = false; recognition.maxAlternatives = 1;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'zh-TW';
+            recognition.interimResults = true; 
+            recognition.continuous = false; 
+            recognition.maxAlternatives = 1;
+            
             let isRecognizing = false;
+            
+            // 🌟 改用 onclick 觸發
             micBtn.onclick = () => {
                 if (state.awaitingNext || speakingNow) return;
-                if (isRecognizing) { recognition.stop(); return; }
-                try { recognition.start(); } catch(e) { recognition.stop(); } 
+                
+                if (isRecognizing) {
+                    recognition.stop();
+                    return;
+                }
+                
+                try {
+                    recognition.start();
+                } catch(e) {
+                    recognition.stop();
+                } 
             };
-            recognition.onstart = () => { isRecognizing = true; micBtn.classList.add('listening'); resultBox.textContent = '正在聽... (請大聲說)'; };
+            
+            recognition.onstart = () => {
+                isRecognizing = true;
+                micBtn.classList.add('listening');
+                resultBox.textContent = '正在聽... (請大聲說)';
+            };
+            
             recognition.onresult = (event) => {
                 if (state.awaitingNext) return;
-                let currentTranscript = ''; for (let i = event.resultIndex; i < event.results.length; ++i) { currentTranscript += event.results[i][0].transcript; }
+                
+                let currentTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    currentTranscript += event.results[i][0].transcript;
+                }
+                
                 resultBox.textContent = `聽到：「${currentTranscript}」...`;
                 
                 let isCorrect = false;
-                if (currentTranscript.includes(q.soundWord)) { isCorrect = true; } 
-                else if (HOMOPHONES[q.soundWord]) { for (let word of HOMOPHONES[q.soundWord]) { if (currentTranscript.toLowerCase().includes(word.toLowerCase())) { isCorrect = true; break; } } }
+                if (currentTranscript.includes(q.soundWord)) {
+                    isCorrect = true;
+                } else if (HOMOPHONES[q.soundWord]) {
+                    for (let word of HOMOPHONES[q.soundWord]) {
+                        if (currentTranscript.toLowerCase().includes(word.toLowerCase())) {
+                            isCorrect = true;
+                            break;
+                        }
+                    }
+                }
                 
                 if (isCorrect) {
-                    recognition.stop(); playSnapSound(); state.awaitingNext = true; micBtn.classList.remove('listening'); micBtn.style.background = '#2ed573'; micBtn.style.borderColor = '#fff';
+                    recognition.stop(); 
+                    playSnapSound();
+                    state.awaitingNext = true;
+                    micBtn.classList.remove('listening');
+                    micBtn.style.background = '#2ed573';
+                    micBtn.style.borderColor = '#fff';
+                    // 🌟 答對時避免顯示奇怪的同音中文字，改顯示注音
                     resultBox.textContent = `太棒了！是：「${q.targetCombo}」`;
-                    if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = `太棒了！你唸出了：「${q.targetCombo}」！`; speak(`太棒了！你唸得非常標準！`);
+                    
+                    if(document.getElementById('nextQuestionBtn')) {
+                        const nextBtn = document.getElementById('nextQuestionBtn');
+                        nextBtn.classList.remove('hidden-btn');
+                        setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                    }
+                    const replyUI = `太棒了！你唸出了：「${q.targetCombo}」！`;
+                    const replySpeak = `太棒了！你唸得非常標準！`;
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
                 } 
                 else if (event.results[0].isFinal) {
-                    failCount++; state.excluded += 1; state.roundMistakes += 1; playSplashSound();
-                    resultBox.textContent = `沒有聽清楚喔...`; let replyUI = `聽起來不太像喔，再試一次吧！`; let replySpeak = replyUI;
+                    failCount++;
+                    state.excluded += 1;
+                    state.roundMistakes += 1;
+                    playSplashSound();
+                    
+                    // 🌟 答錯時避免顯示中文字讓孩子困惑
+                    resultBox.textContent = `沒有聽清楚喔...`;
+                    let replyUI = `聽起來不太像喔，再試一次吧！`;
+                    let replySpeak = replyUI;
                     
                     if (failCount >= 2) {
-                        replyUI = `語音精靈有點聽不懂，沒關係，我們可以直接過關喔！`; replySpeak = replyUI;
+                        replyUI = `語音精靈有點聽不懂，沒關係，我們可以直接過關喔！`;
+                        replySpeak = replyUI;
                         if(!document.getElementById('skipVoiceBtn')) {
-                            const skipBtn = document.createElement('button'); skipBtn.id = 'skipVoiceBtn'; skipBtn.className = 'primary-btn pulse-anim'; skipBtn.style.marginTop = '15px'; skipBtn.style.width = '100%'; skipBtn.textContent = '💡 點我直接過關';
+                            const skipBtn = document.createElement('button');
+                            skipBtn.id = 'skipVoiceBtn';
+                            skipBtn.className = 'primary-btn pulse-anim';
+                            skipBtn.style.marginTop = '15px';
+                            skipBtn.style.width = '100%';
+                            skipBtn.textContent = '💡 點我直接過關';
                             skipBtn.onclick = () => {
-                                recognition.stop(); playSnapSound(); state.awaitingNext = true; micBtn.classList.remove('listening'); micBtn.style.background = '#2ed573'; micBtn.style.borderColor = '#fff'; resultBox.textContent = `手動過關！太棒了！`;
-                                if(document.getElementById('nextQuestionBtn')) { const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100); }
-                                speak('太棒了！'); skipBtn.remove();
+                                recognition.stop();
+                                playSnapSound();
+                                state.awaitingNext = true;
+                                micBtn.classList.remove('listening');
+                                micBtn.style.background = '#2ed573';
+                                micBtn.style.borderColor = '#fff';
+                                resultBox.textContent = `手動過關！太棒了！`;
+                                if(document.getElementById('nextQuestionBtn')) {
+                                    const nextBtn = document.getElementById('nextQuestionBtn');
+                                    nextBtn.classList.remove('hidden-btn');
+                                    setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+                                }
+                                speak('太棒了！');
+                                skipBtn.remove();
                             };
                             stage.appendChild(skipBtn);
                         }
                     }
-                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; speak(replySpeak);
+                    
+                    if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                    speak(replySpeak);
                 }
             };
+            
             recognition.onerror = (event) => {
-                isRecognizing = false; micBtn.classList.remove('listening');
-                if (event.error === 'not-allowed') { resultBox.innerHTML = '⚠️ 請允許麥克風權限喔！<br><small>請在網站安全設定中開啟</small>'; } else if (event.error === 'no-speech') { resultBox.textContent = '沒聽到聲音，請再按一次麥克風！'; } else { resultBox.textContent = '收音發生錯誤，請重試！'; }
+                isRecognizing = false;
+                micBtn.classList.remove('listening');
+                if (event.error === 'not-allowed') {
+                    resultBox.innerHTML = '⚠️ 請允許麥克風權限喔！<br><small>請在網站安全設定中開啟</small>';
+                } else if (event.error === 'no-speech') {
+                    resultBox.textContent = '沒聽到聲音，請再按一次麥克風！';
+                } else {
+                    resultBox.textContent = '收音發生錯誤，請重試！';
+                }
             };
-            recognition.onend = () => { isRecognizing = false; micBtn.classList.remove('listening'); if (resultBox.textContent.includes('正在聽')) { resultBox.textContent = '請點擊麥克風再試一次！'; } };
+            
+            recognition.onend = () => {
+                isRecognizing = false;
+                micBtn.classList.remove('listening');
+                if (resultBox.textContent.includes('正在聽')) {
+                    resultBox.textContent = '請點擊麥克風再試一次！';
+                }
+            };
+            
+            // 🌟 進入題目時，自動播放一次精彩的教學動畫
             q.playVoice();
         }
       }
 
-      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.options && q.options.length > 0 && optionsWrap) {
+      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant' && q.options && q.options.length > 0 && optionsWrap) {
         q.options.forEach(opt => {
           const row = document.createElement('div'); row.className = 'option-row';
           const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
@@ -1647,8 +2696,8 @@
         });
       }
 
-      // 🌟 觸發語音 (除了會自己跑動畫的房間外)
-      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch') {
+      // 🌟 觸發其他房間的語音
+      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch' && q.uiType !== 'math-chant') {
           speak(q.speakText); 
       } else if (q.uiType === 'bubble') {
           setTimeout(() => speak(q.speakText), 500); 
@@ -1662,14 +2711,21 @@
       if (opt.text === q.answer) {
         btn.classList.add('correct'); state.awaitingNext = true;
         if(document.getElementById('nextQuestionBtn')) {
-            const nextBtn = document.getElementById('nextQuestionBtn'); nextBtn.classList.remove('hidden-btn'); setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            nextBtn.classList.remove('hidden-btn');
+            setTimeout(() => { nextBtn.scrollIntoView(false); }, 100);
         }
         
-        let de = ''; if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) { const ansNum = q.tableBase * q.tableTarget; if(ansNum <= 10) de = '得'; }
+        let de = '';
+        if (q.kind && q.kind.startsWith('math') && q.tableBase && q.tableTarget) {
+           const ansNum = q.tableBase * q.tableTarget;
+           if(ansNum <= 10) de = '得';
+        }
         let reply = (q.kind && q.kind.startsWith('math') && q.tableBase) ? `${numberToZh(q.tableBase)}${numberToZh(q.tableTarget)}${de}${opt.speak}。太好了！` : `答案是 ${opt.speak}。太好了！`;
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
       } else {
-        btn.classList.add('excluded'); state.excluded += 1; state.roundMistakes += 1; 
+        btn.classList.add('excluded'); state.excluded += 1;
+        state.roundMistakes += 1; 
         const reply = `你選了 ${opt.speak}。沒關係，我們再想想看。`;
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply; speak(reply);
       }
@@ -1681,47 +2737,67 @@
         if (state.qIndex >= state.questionList.length) {
             
           let earnedStars = 3;
-          if (state.roundMistakes >= 4) earnedStars = 1; else if (state.roundMistakes >= 1) earnedStars = 2;
-          let oldStars = state.totalStars; state.totalStars += earnedStars; state.shards += 3; state.brightness = Math.min(100, state.brightness + 2); state.normalSeeds += 1;
+          if (state.roundMistakes >= 4) earnedStars = 1;
+          else if (state.roundMistakes >= 1) earnedStars = 2;
           
-          let unlockMsg = ''; let oldUnlockedLevels = Math.floor(oldStars / 5) + 1; let newUnlockedLevels = Math.floor(state.totalStars / 5) + 1;
-          if (newUnlockedLevels > oldUnlockedLevels && newUnlockedLevels <= ZHUYIN_LEVELS.length) { unlockMsg = ' 🌟 恭喜解鎖新島嶼！'; }
+          let oldStars = state.totalStars;
+          state.totalStars += earnedStars;
+          state.shards += 3; 
+          state.brightness = Math.min(100, state.brightness + 2); 
+          state.normalSeeds += 1;
+          
+          let unlockMsg = '';
+          let oldUnlockedLevels = Math.floor(oldStars / 5) + 1;
+          let newUnlockedLevels = Math.floor(state.totalStars / 5) + 1;
+          
+          if (newUnlockedLevels > oldUnlockedLevels && newUnlockedLevels <= ZHUYIN_LEVELS.length) {
+              unlockMsg = ' 🌟 恭喜解鎖新島嶼！';
+          }
           
           saveState(); updateHome();
           
           if(document.getElementById('resultEarnedStars')) document.getElementById('resultEarnedStars').textContent = '⭐'.repeat(earnedStars);
           if(document.getElementById('resultBrightness')) document.getElementById('resultBrightness').textContent = `${state.brightness}%`;
           if(document.getElementById('resultShards')) document.getElementById('resultShards').textContent = String(state.shards);
-          showScreen('result'); speak(`過關！獲得 ${earnedStars} 顆星！${unlockMsg}`);
+          showScreen('result'); 
+          speak(`過關！獲得 ${earnedStars} 顆星！${unlockMsg}`);
         } else { renderQuestion(); }
       };
     }
 
+    /* 事件綁定 */
     document.querySelectorAll('[data-mode]').forEach(btn => { btn.onclick = () => buildRoomSelect(btn.dataset.mode); });
-    
-    // 🌟 首頁朗讀按鈕綁定 (支援開關暫停)
-    if(document.getElementById('homeReplayBtn')) {
-        document.getElementById('homeReplayBtn').onclick = () => {
-            if (speakingNow) { stopSpeech(); } 
-            else { speak(`歡迎回來，${state.playerTitle} ${state.spiritName}。你目前收集了 ${state.totalStars} 顆星星，森林亮度是百分之 ${state.brightness}。`); }
-        };
-    }
-    
     if(document.getElementById('backHomeBtn')) document.getElementById('backHomeBtn').onclick = () => { stopSpeech(); showScreen(state.mode === 'home' ? 'home' : 'roomSelect'); };
     if(document.getElementById('roomSelectBackBtn')) document.getElementById('roomSelectBackBtn').onclick = () => { showScreen('home'); updateHome(); };
     if(document.getElementById('resultHomeBtn')) document.getElementById('resultHomeBtn').onclick = () => { if(state.mode === 'today') { showScreen('home'); } else { showScreen('roomSelect'); } updateHome(); };
     
+    // 🌟 綁定再來一局按鈕
     if(document.getElementById('resultReplayBtn')) {
-        document.getElementById('resultReplayBtn').onclick = () => { if(state.subMode) { startSubMode(state.subMode); } else { showScreen('roomSelect'); } }; 
+        document.getElementById('resultReplayBtn').onclick = () => { 
+            if(state.subMode) {
+                startSubMode(state.subMode); // 重新開始同一個模式
+            } else {
+                showScreen('roomSelect');
+            }
+        }; 
     }
     
+    // 🌟 完美綁定統一的音效按鈕：如果該房間有專屬的語音連動魔法，就觸發它！
     if(document.getElementById('topSpeakBtn')) {
         document.getElementById('topSpeakBtn').onclick = () => { 
-            if(speakingNow) { stopSpeech(); } 
-            else { if (state.currentQuestion && state.currentQuestion.playVoice) { state.currentQuestion.playVoice(); } else { speak(state.currentQuestion.speakText); } }
+            if(speakingNow) {
+                stopSpeech(); 
+            } else {
+                if (state.currentQuestion && state.currentQuestion.playVoice) {
+                    state.currentQuestion.playVoice();
+                } else {
+                    speak(state.currentQuestion.speakText); 
+                }
+            }
         };
     }
 
+    // 起始流程
     if(document.getElementById('introAcceptBtn')) document.getElementById('introAcceptBtn').onclick = () => { showScreen('name'); renderNameGrid(document.getElementById('nameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('nameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmNameBtn').disabled=false;}); };
     if(document.getElementById('confirmNameBtn')) document.getElementById('confirmNameBtn').onclick = () => { state.spiritName = state.selectedName; showScreen('title'); renderNameGrid(document.getElementById('titleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('titleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');document.getElementById('confirmTitleBtn').disabled=false;}); };
     if(document.getElementById('confirmTitleBtn')) document.getElementById('confirmTitleBtn').onclick = () => { state.playerTitle = state.selectedTitle; showScreen('bond'); };
@@ -1729,19 +2805,29 @@
 
     function renderNameGrid(target, selectedName, options, onSelect) {
       target.innerHTML = '';
-      options.forEach(name => { const btn = document.createElement('button'); btn.type = 'button'; btn.className = `name-btn${selectedName === name ? ' selected' : ''}`; btn.textContent = name; btn.onclick = () => onSelect(name, btn); target.appendChild(btn); });
+      options.forEach(name => {
+        const btn = document.createElement('button'); btn.type = 'button'; btn.className = `name-btn${selectedName === name ? ' selected' : ''}`; btn.textContent = name; btn.onclick = () => onSelect(name, btn); target.appendChild(btn);
+      });
     }
 
     if (state.spiritName && state.playerTitle) { updateHome(); showScreen('home'); }
 
+// ==========================================
+    // 🌟 設定頁面與「強制清除快取」事件綁定 🌟
+    // ==========================================
+    
+    // 綁定首頁的「設定」按鈕打開設定畫面
     if(document.getElementById('homeSettingBtn')) {
         document.getElementById('homeSettingBtn').onclick = () => {
-            showScreen('settings'); state.selectedName = state.spiritName; state.selectedTitle = state.playerTitle;
+            showScreen('settings');
+            state.selectedName = state.spiritName;
+            state.selectedTitle = state.playerTitle;
             renderNameGrid(document.getElementById('settingsNameGrid'), state.spiritName, SPIRIT_NAMES, (n,b)=>{state.selectedName=n;[...document.getElementById('settingsNameGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');});
             renderNameGrid(document.getElementById('settingsTitleGrid'), state.playerTitle, PLAYER_TITLES, (n,b)=>{state.selectedTitle=n;[...document.getElementById('settingsTitleGrid').children].forEach(c=>c.classList.remove('selected'));b.classList.add('selected');});
         };
     }
     
+    // 設定畫面的三個基本按鈕
     if(document.getElementById('settingsCancelBtn')) document.getElementById('settingsCancelBtn').onclick = () => showScreen('home');
     if(document.getElementById('settingsSaveBtn')) document.getElementById('settingsSaveBtn').onclick = () => { state.spiritName = state.selectedName; state.playerTitle = state.selectedTitle; saveState(); updateHome(); showScreen('home'); showToast('設定已儲存！'); };
     if(document.getElementById('settingsResetBtn')) document.getElementById('settingsResetBtn').onclick = () => { if(confirm('確定要清除所有進度嗎？這無法復原喔！')) { safeStorage.clear(); window.location.href = window.location.pathname; } };
@@ -1750,64 +2836,116 @@
     if(document.getElementById('toggleSfxBtn')) {
         const sfxBtn = document.getElementById('toggleSfxBtn');
         const updateSfxBtnState = () => {
-            sfxBtn.innerHTML = isSfxEnabled ? '🔔 遊戲聲音：開啟' : '🔕 遊戲聲音：關閉';
-            sfxBtn.style.background = isSfxEnabled ? 'rgba(255,255,255,0.09)' : 'rgba(255,71,87,0.15)';
-            sfxBtn.style.color = isSfxEnabled ? '#fff' : '#ff6b81';
-            sfxBtn.style.borderColor = isSfxEnabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,71,87,0.4)';
+            sfxBtn.innerHTML = window.isSfxEnabled ? '🔔 遊戲聲音：開啟' : '🔕 遊戲聲音：關閉';
+            sfxBtn.style.background = window.isSfxEnabled ? 'rgba(255,255,255,0.09)' : 'rgba(255,71,87,0.15)';
+            sfxBtn.style.color = window.isSfxEnabled ? '#fff' : '#ff6b81';
+            sfxBtn.style.borderColor = window.isSfxEnabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,71,87,0.4)';
         };
         updateSfxBtnState();
         
         sfxBtn.onclick = () => {
-            isSfxEnabled = !isSfxEnabled; safeStorage.set('mm_sfx', isSfxEnabled ? 'true' : 'false');
-            isBgmEnabled = isSfxEnabled; safeStorage.set('mm_bgm', isBgmEnabled ? 'true' : 'false'); updateBgmBtnUI();
+            window.isSfxEnabled = !window.isSfxEnabled; 
+            safeStorage.set('mm_sfx', window.isSfxEnabled ? 'true' : 'false');
             
-            if (isBgmEnabled) { bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {}); } 
-            else { bgmAudio.pause(); isBgmPlaying = false; stopSpeech(); }
-            updateSfxBtnState(); showToast(isSfxEnabled ? '已開啟所有聲音' : '已靜音 (包含音樂與語音)');
-            if (isSfxEnabled) playSnapSound(); 
+            isBgmEnabled = window.isSfxEnabled; 
+            safeStorage.set('mm_bgm', isBgmEnabled ? 'true' : 'false'); 
+            updateBgmBtnUI();
+            
+            if (isBgmEnabled) { playBgmSafely(); } 
+            else { pauseBgmSafely(); stopSpeech(); }
+            
+            updateSfxBtnState(); 
+            showToast(window.isSfxEnabled ? '已開啟所有聲音' : '已靜音 (包含音樂與語音)');
+            if (window.isSfxEnabled) playSnapSound(); 
         };
     }
 
-    if(document.getElementById('forceClearCacheBtn')) {
-        document.getElementById('forceClearCacheBtn').onclick = () => {
-            if(confirm('確定要強制清除快取並重新載入嗎？\n(放心，這不會刪除您的星星和遊戲進度喔！)\n\n※ 適合用在圖片沒更新、畫面卡住的時候 ※')) {
-                if ('serviceWorker' in navigator) { navigator.serviceWorker.getRegistrations().then(function(registrations) { for(let registration of registrations) { registration.unregister(); } }); }
-                try { if (window.caches) { caches.keys().then(function(names) { for (let name of names) caches.delete(name); }); } } catch(e) {}
-                showToast('正在清除快取，即將重新載入...'); setTimeout(() => { window.location.href = window.location.pathname + '?clear=' + new Date().getTime(); }, 800);
-            }
-        };
-    }
-
-    // 🌟 沉浸式 BGM 音樂系統 🌟
-    const bgmAudio = new Audio('images/bgm.mp3'); bgmAudio.loop = true; bgmAudio.volume = 0.25; 
-    let isBgmEnabled = safeStorage.get('mm_bgm') !== 'false'; let isBgmPlaying = false;
+    // 🌟 安全的沉浸式 BGM 音樂系統 (延遲啟動防當機版) 🌟
+    let bgmAudio = null;
+    let isBgmEnabled = safeStorage.get('mm_bgm') !== 'false'; 
+    let isBgmPlaying = false;
     
-    function updateBgmBtnUI() { document.querySelectorAll('.bgm-toggle-btn').forEach(btn => { if (isBgmEnabled) btn.classList.remove('off'); else btn.classList.add('off'); }); }
+    function initBgm() {
+        if (!bgmAudio) {
+            bgmAudio = new Audio('images/bgm.mp3'); 
+            bgmAudio.loop = true; 
+            bgmAudio.volume = 0.25; 
+        }
+    }
+    
+    function playBgmSafely() {
+        if (!isBgmEnabled || window.isSfxEnabled === false) return;
+        initBgm();
+        if (!isBgmPlaying && bgmAudio) {
+            bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => { console.log("等待互動解鎖音樂"); });
+        }
+    }
+    
+    function pauseBgmSafely() {
+        if (bgmAudio && isBgmPlaying) {
+            bgmAudio.pause(); 
+            isBgmPlaying = false;
+        }
+    }
+
+    function updateBgmBtnUI() { 
+        document.querySelectorAll('.bgm-toggle-btn').forEach(btn => { 
+            if (isBgmEnabled) btn.classList.remove('off'); 
+            else btn.classList.add('off'); 
+        }); 
+    }
+    
     function toggleBgm() {
-        isBgmEnabled = !isBgmEnabled; safeStorage.set('mm_bgm', isBgmEnabled ? 'true' : 'false'); updateBgmBtnUI();
-        if (isBgmEnabled) { bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {}); } 
-        else { bgmAudio.pause(); isBgmPlaying = false; }
+        isBgmEnabled = !isBgmEnabled; 
+        safeStorage.set('mm_bgm', isBgmEnabled ? 'true' : 'false'); 
+        updateBgmBtnUI();
+        if (isBgmEnabled) { playBgmSafely(); } 
+        else { pauseBgmSafely(); }
     }
     
     if (document.getElementById('homeMusicBtn')) document.getElementById('homeMusicBtn').onclick = toggleBgm;
     if (document.getElementById('quizMusicBtn')) document.getElementById('quizMusicBtn').onclick = toggleBgm;
     updateBgmBtnUI();
     
-    document.body.addEventListener('pointerdown', () => { if (isBgmEnabled && !isBgmPlaying && isSfxEnabled) { bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {}); } }, { once: true });
+    // 等待使用者第一次觸控畫面後，才安全建立並播放音樂，避開蘋果與安卓的自動播放防護
+    document.body.addEventListener('pointerdown', () => { 
+        if (isBgmEnabled && !isBgmPlaying && window.isSfxEnabled !== false) { 
+            playBgmSafely(); 
+        } 
+    }, { once: true });
 
-    // 🌟 光之碎片靜默收集魔法 (移除所有 Combo 的文字與彈跳)
-    let _roundMistakes = 0; let _awaitingNext = false; state.combo = 0; state.mistakeInCurrentQ = false;
-    Object.defineProperty(state, 'roundMistakes', { get: () => _roundMistakes, set: (val) => { if (val > _roundMistakes) { state.combo = 0; state.mistakeInCurrentQ = true; } _roundMistakes = val; } });
-    Object.defineProperty(state, 'awaitingNext', {
-        get: () => _awaitingNext,
-        set: (val) => { 
-            if (val === true && _awaitingNext === false) { 
-                if (!state.mistakeInCurrentQ) { state.combo += 1; if (state.combo >= 3) { state.shards += 1; } }
-            } else if (val === false) { state.mistakeInCurrentQ = false; }
-            _awaitingNext = val;
-        }
-    });
 
+    // 🚀 絕招：強制清除快取！
+    if(document.getElementById('forceClearCacheBtn')) {
+        document.getElementById('forceClearCacheBtn').onclick = () => {
+            if(confirm('確定要強制清除快取並重新載入嗎？\n(放心，這不會刪除您的星星和遊戲進度喔！)\n\n※ 適合用在圖片沒更新、畫面卡住的時候 ※')) {
+                
+                // 1. 拔除離線服務工作者 (Service Worker)
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for(let registration of registrations) { 
+                            registration.unregister(); 
+                        }
+                    });
+                }
+                
+                // 2. 清除瀏覽器底層的 Cache Storage 圖片暫存
+                try {
+                    if (window.caches) {
+                        caches.keys().then(function(names) {
+                            for (let name of names) caches.delete(name);
+                        });
+                    }
+                } catch(e) {}
+                
+                // 3. 強制刷新網頁，並加上專屬時間戳記，打破手機最後的倔強！
+                showToast('正在清除快取，即將重新載入...');
+                setTimeout(() => {
+                    window.location.href = window.location.pathname + '?clear=' + new Date().getTime();
+                }, 800);
+            }
+        };
+    }
   </script>
 </body>
 </html>
