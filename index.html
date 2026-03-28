@@ -1800,7 +1800,7 @@
     Object.defineProperty(state, 'roundMistakes', { get: () => _roundMistakes, set: (val) => { if (val > _roundMistakes) { state.combo = 0; state.mistakeInCurrentQ = true; } _roundMistakes = val; } });
     Object.defineProperty(state, 'awaitingNext', {
         get: () => _awaitingNext,
-        set: (val) => {
+        set: (val) => { 
             if (val === true && _awaitingNext === false) { 
                 if (!state.mistakeInCurrentQ) { state.combo += 1; if (state.combo >= 3) { state.shards += 1; } }
             } else if (val === false) { state.mistakeInCurrentQ = false; }
