@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.50.4 安全音效升級版</title>
+  <title>慢慢變強｜螢光森林 v1.50.5</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -176,15 +176,15 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
-    /* 🌟 大樂修正：解決 iOS 卡片文字被壓扁的問題，強制設定 min-height 護城河 */
+    /* 🌟 大樂進化：防彈級記憶卡片比例，徹底解決手機壓扁問題 */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; }
-    .memory-card { aspect-ratio: 3/4; min-height: 110px; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
-    .memory-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+    .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; align-items: start; }
+    .memory-card { position: relative; width: 100%; padding-bottom: 133.33%; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; display: block; }
+    .memory-card-inner { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
     .memory-card.flipped .memory-card-inner { transform: rotateY(180deg); }
     .memory-card.matched { pointer-events: none; }
     .memory-card.matched .memory-card-inner { opacity: 0; transform: rotateY(180deg) scale(0.5); transition: all 0.5s ease-in-out; }
-    .memory-card-front, .memory-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; box-shadow: 0 6px 12px rgba(0,0,0,0.4); line-height: 1.2; letter-spacing: 1px; white-space: nowrap;}
+    .memory-card-front, .memory-card-back { position: absolute; inset: 0; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; box-shadow: 0 6px 12px rgba(0,0,0,0.4); line-height: 1.2; letter-spacing: 1px; white-space: nowrap;}
     .memory-card-back { background-image: url('images/card_back.png'); background-size: cover; background-position: center; border: 2px solid rgba(255,215,106,0.3); background-color: #2d4a36; }
     .memory-card-front { transform: rotateY(180deg); background: linear-gradient(135deg, #fffcf0, #ffedb3); color: #5c3a21; border: 3px solid #ffd76a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
@@ -224,17 +224,13 @@
     
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
     
-    /* 🌟 大樂的無敵光球：在小精靈背後畫一顆漸層圓球 */
     .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; pointer-events: none; }
     
-    /* 🌟 精靈專屬漂浮動畫 */
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
     
-    /* 🌟 終極大絕招：強制沒收圖片濾鏡，蘋果手機絕對畫不出方塊！ */
     .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; filter: none !important; }
     
     .feed-elf-success { transform: scale(1.15); }
-    /* 🌟 吃飽時：點亮背後的光球，保證 100% 圓滑無死角！ */
     .feed-elf-success::before { width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,215,106,0.95) 0%, rgba(255,226,143,0.6) 40%, rgba(255,215,106,0) 70%); opacity: 1; }
     
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
@@ -254,7 +250,6 @@
     .room-card-btn.is-locked { opacity: 0.65; filter: grayscale(0.6); border-style: dashed; }
     .room-card-btn.is-locked:hover { transform: none; opacity: 0.8; filter: grayscale(0.4); }
     
-    /* 🎵 音樂按鈕 CSS */
     .music-btn { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #ffd76a, #f0b93f); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; color: #163826; font-size: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);}
     .music-btn.off { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.4); filter: grayscale(1); box-shadow: none;}
     
@@ -314,7 +309,7 @@
       .path-stone::before { width: 48px; height: 16px; bottom: 3px; }
       
       .memory-stage { min-height: 340px; padding: 15px;}
-      .memory-grid { gap: 10px; max-width: 280px;}
+      .memory-grid { gap: 10px; max-width: 300px;}
       .memory-card-front, .memory-card-back { font-size: 32px; border-radius: 12px; }
 
       .drag-stage { height: 440px; padding-bottom: 25px; }
@@ -348,7 +343,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.50.4 安全音效升級版</div>
+        <div class="version-tag">v1.50.5 安全音效升級版</div>
       </div>
     </header>
 
@@ -1380,7 +1375,6 @@
       if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
       if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
       
-      /* 🌟 重新掛回：數學自動語音順口溜，不需要選選項版 🌟 */
       if (q.uiType === 'math-chant') {
           if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '請跟著小精靈一起大聲唸出來喔！';
           if (q.scene && visualArea) { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); visualArea.classList.remove('collapsed'); }
@@ -1391,9 +1385,14 @@
           stage.style.borderRadius = '24px'; stage.style.border = '2px dashed rgba(255,215,106,0.3)';
           stage.style.display = 'flex'; stage.style.flexDirection = 'column'; stage.style.alignItems = 'center'; stage.style.justifyContent = 'center';
 
+          // 🌟 換成指定的精靈圖 elf.png 🌟
           const elfIcon = document.createElement('img');
-          elfIcon.src = 'images/icon.png'; elfIcon.style.width = '120px'; elfIcon.style.marginBottom = '20px';
-          elfIcon.style.animation = 'magicalHover 3s infinite'; elfIcon.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))';
+          elfIcon.src = 'images/elf.png'; 
+          elfIcon.onerror = function() { this.onerror=null; this.src='images/icon.png'; };
+          elfIcon.style.width = '140px'; 
+          elfIcon.style.marginBottom = '20px';
+          elfIcon.style.animation = 'magicalHover 3s infinite'; 
+          elfIcon.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))';
 
           const bigEquation = document.createElement('div');
           bigEquation.style.fontSize = '64px'; bigEquation.style.fontWeight = '900'; bigEquation.style.color = '#ffd76a';
