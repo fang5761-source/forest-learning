@@ -223,17 +223,13 @@
     
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
     
-    /* 🌟 大樂的無敵光球：在小精靈背後畫一顆漸層圓球 */
     .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; pointer-events: none; }
     
-    /* 🌟 精靈專屬漂浮動畫 */
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
     
-    /* 🌟 終極大絕招：強制沒收圖片濾鏡，蘋果手機絕對畫不出方塊！ */
     .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; filter: none !important; }
     
     .feed-elf-success { transform: scale(1.15); }
-    /* 🌟 吃飽時：點亮背後的光球，保證 100% 圓滑無死角！ */
     .feed-elf-success::before { width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,215,106,0.95) 0%, rgba(255,226,143,0.6) 40%, rgba(255,215,106,0) 70%); opacity: 1; }
     
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
@@ -252,6 +248,16 @@
     .room-card-btn .room-emoji{font-size:28px} .room-card-btn strong{font-size:22px} .room-card-btn small{color:rgba(255,255,255,.78); line-height:1.5}
     .room-card-btn.is-locked { opacity: 0.65; filter: grayscale(0.6); border-style: dashed; }
     .room-card-btn.is-locked:hover { transform: none; opacity: 0.8; filter: grayscale(0.4); }
+    
+    /* 🌟 新增：連擊特效與音樂按鈕 CSS */
+    .combo-container { position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; pointer-events: none; display: flex; align-items: center; justify-content: center; gap: 10px; animation: comboPop 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .combo-flame { width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(255,215,106,0.8)); }
+    .combo-text { font-size: 56px; font-weight: 900; color: #fff; text-shadow: 0 4px 15px rgba(255,107,129,0.8), 0 0 30px #ff4757; font-style: italic; -webkit-text-stroke: 2px #ff4757; }
+    @keyframes comboPop { 0% { transform: translate(-50%, -30%) scale(0.5) rotate(-10deg); opacity: 0; } 20% { transform: translate(-50%, -50%) scale(1.2) rotate(5deg); opacity: 1; } 30% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; filter: brightness(1.2); } 80% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1.1); opacity: 0; } }
+    
+    .music-btn { width: 42px; height: 42px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
+    .music-btn img { width: 28px; height: 28px; object-fit: contain; }
+    .music-btn.off img { filter: grayscale(1) opacity(0.5); }
     
     .table-pick-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:16px;}
     .table-pick-btn{min-height:64px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.08); color:#fff; font-size:22px; cursor:pointer;}
@@ -400,7 +406,11 @@
       <div class="card dashboard-card">
         <div class="world-topbar">
           <div class="world-badge" id="worldTimeBadge">星夜森林</div>
-          <div class="title-actions">
+          <div class="title-actions" style="display:flex; gap:8px;">
+            <!-- 🌟 新增：首頁音樂按鈕 -->
+            <button id="homeMusicBtn" class="music-btn bgm-toggle-btn" type="button">
+                <img src="images/icon_music.png" onerror="this.src='icon.png'">
+            </button>
             <button id="homeReplayBtn" class="mini-btn" type="button">🔊 朗讀</button>
             <button id="homeSettingBtn" class="mini-btn" type="button">⚙️ 設定</button>
           </div>
@@ -513,6 +523,10 @@
           <span id="modeChip" class="meta-chip" style="font-size: 15px; padding: 6px 12px; margin:0;">任務</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
+          <!-- 🌟 新增：闖關畫面音樂按鈕 -->
+          <button id="quizMusicBtn" class="music-btn bgm-toggle-btn" style="background: rgba(22, 56, 38, 0.8); border-color: rgba(255,215,106,0.3);" type="button">
+             <img src="images/icon_music.png" onerror="this.src='icon.png'">
+          </button>
           <span id="roundText" class="meta-chip" style="background: rgba(255,215,106,0.15); color: #ffd76a; border: 1px solid rgba(255,215,106,0.3); font-size: 16px; padding: 4px 10px; border-radius: 999px; font-weight: bold;">1 / 5</span>
           <button id="topSpeakBtn" class="icon-btn light" style="width: 42px; height: 42px; border-radius: 14px; background: rgba(22, 56, 38, 0.8); border: 1px solid rgba(255,215,106,0.3); font-size: 20px; color: #ffd76a; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); flex-shrink: 0; cursor: pointer;" type="button" aria-label="朗讀題目">🔊</button>
         </div>
@@ -2149,7 +2163,7 @@
         stage.appendChild(character);
         optionsWrap.appendChild(stage);
       }
-    /* 🌟 數學：精靈餵食大挑戰版 (無敵光球完美啟動版) */
+    /* 🌟 數學：精靈餵食大挑戰版 (極速流暢版：移除亂碼，讓瀏覽器自然快取不閃爍) */
       else if (q.uiType === 'feed') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = q.feedPrompt || '肚子好餓喔！請餵我正確的答案！';
         
@@ -2158,6 +2172,7 @@
         
         const feedBg = document.createElement('div');
         feedBg.className = 'feed-bg';
+        // 🌟 移除亂碼，讓手機快取背景，切換題目時背景就會乖乖不動了！
         feedBg.style.backgroundImage = "url('images/feed_bg.png'), url('feed_bg.png')";
         stage.appendChild(feedBg);
 
@@ -2292,9 +2307,7 @@
                         food.style.opacity = '0'; 
                         
                         elfImg.style.transform = `scale(${baseScale + 0.2})`;
-                        
-                        // 🌟 大樂修正：啟動外層的 CSS 光球魔法！
-                        elfWrap.classList.add('feed-elf-success');
+                        elfImg.style.filter = 'drop-shadow(0 0 30px #ffd76a)';
                         
                         if (state.qIndex === state.questionList.length - 1) {
                             setTimeout(() => {
@@ -2307,13 +2320,12 @@
                                 };
                                 elfImg.src = fullPaths[0]; 
                                 elfImg.style.transform = `scale(${baseScale + 0.1})`;
-                                // 🌟 為了慶祝吃飽，最後一題光球就不關了，讓他一直發光！
+                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
                             }, 400); 
                         } else {
                             setTimeout(() => {
                                 elfImg.style.transform = `scale(${baseScale})`;
-                                // 🌟 平常的題目吃完後，關閉光球
-                                elfWrap.classList.remove('feed-elf-success');
+                                elfImg.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))';
                             }, 800);
                         }
 
@@ -2789,6 +2801,134 @@
                 }, 800);
             }
         };
+    }
+
+    // ==========================================
+    // 🌟 提案 C：沉浸式 BGM 與 Combo 連擊魔法系統 🌟
+    // ==========================================
+    
+    // 1. BGM 背景音樂系統
+    const bgmAudio = new Audio('images/bgm.mp3');
+    bgmAudio.loop = true;
+    bgmAudio.volume = 0.25; // 輕柔音量
+    
+    let isBgmEnabled = safeStorage.get('mm_bgm') !== 'false';
+    let isBgmPlaying = false;
+    
+    function updateBgmBtnUI() {
+        document.querySelectorAll('.bgm-toggle-btn').forEach(btn => {
+            if (isBgmEnabled) btn.classList.remove('off');
+            else btn.classList.add('off');
+        });
+    }
+    
+    function toggleBgm() {
+        isBgmEnabled = !isBgmEnabled;
+        safeStorage.set('mm_bgm', isBgmEnabled ? 'true' : 'false');
+        updateBgmBtnUI();
+        
+        if (isBgmEnabled) {
+            bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {});
+        } else {
+            bgmAudio.pause();
+            isBgmPlaying = false;
+        }
+    }
+    
+    // 綁定音樂按鈕
+    if (document.getElementById('homeMusicBtn')) document.getElementById('homeMusicBtn').onclick = toggleBgm;
+    if (document.getElementById('quizMusicBtn')) document.getElementById('quizMusicBtn').onclick = toggleBgm;
+    updateBgmBtnUI();
+    
+    // 為了突破瀏覽器的自動播放限制，在使用者第一次點擊畫面時自動播放音樂
+    document.body.addEventListener('pointerdown', () => {
+        if (isBgmEnabled && !isBgmPlaying) {
+            bgmAudio.play().then(() => { isBgmPlaying = true; }).catch(e => {});
+        }
+    }, { once: true });
+
+    // 2. Combo 連擊全域攔截魔法 (不需要修改原本的遊戲邏輯！)
+    let _roundMistakes = 0;
+    let _awaitingNext = false;
+    state.combo = 0;
+    state.mistakeInCurrentQ = false;
+
+    // 攔截錯誤紀錄：只要增加錯誤，就斷開連擊
+    Object.defineProperty(state, 'roundMistakes', {
+        get: () => _roundMistakes,
+        set: (val) => {
+            if (val > _roundMistakes) { 
+                state.combo = 0; 
+                state.mistakeInCurrentQ = true; 
+            }
+            _roundMistakes = val;
+        }
+    });
+
+    // 攔截過關判定：成功進入 awaitingNext 時結算連擊
+    Object.defineProperty(state, 'awaitingNext', {
+        get: () => _awaitingNext,
+        set: (val) => {
+            if (val === true && _awaitingNext === false) { 
+                // 成功過關的瞬間！
+                if (!state.mistakeInCurrentQ) {
+                    state.combo += 1;
+                    if (state.combo >= 2) setTimeout(() => showComboEffect(state.combo), 200);
+                }
+            } else if (val === false) {
+                // 換下一題時，重置當題錯誤狀態
+                state.mistakeInCurrentQ = false;
+            }
+            _awaitingNext = val;
+        }
+    });
+
+    function showComboEffect(count) {
+        const container = document.createElement('div');
+        container.className = 'combo-container';
+        
+        const flame = document.createElement('img');
+        flame.src = 'images/icon_flame.png';
+        flame.className = 'combo-flame';
+        flame.onerror = function() { this.style.display = 'none'; }; // 如果圖片還沒準備好，也不會壞掉
+        
+        const text = document.createElement('div');
+        text.className = 'combo-text';
+        text.textContent = `Combo x${count}!`;
+        
+        container.appendChild(flame);
+        container.appendChild(text);
+        document.body.appendChild(container);
+        
+        // 額外獎勵：連續答對 3 題以上，加送光之碎片！
+        if (count >= 3) {
+            state.shards += 1;
+            updateHome();
+            showToast(`🔥 連擊獎勵！光之碎片 +1`);
+        }
+        
+        // 播放特殊的 Combo 音效 (音調隨連擊數升高)
+        playComboSound(count);
+
+        setTimeout(() => container.remove(), 1500);
+    }
+
+    function playComboSound(count) {
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        osc.type = 'triangle';
+        
+        const baseFreq = 400 + (count * 80); // 每次連擊音調變高
+        osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, audioCtx.currentTime + 0.3);
+        
+        gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+        
+        osc.start(); osc.stop(audioCtx.currentTime + 0.4);
     }
   </script>
 </body>
