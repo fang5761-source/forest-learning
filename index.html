@@ -285,7 +285,12 @@
     .meteor-entity.correct-meteor { animation-play-state: paused !important; filter: drop-shadow(0 0 28px #ffd76a) drop-shadow(0 0 50px #ffb300) brightness(1.8) !important; outline: 3px solid #ffd76a; outline-offset: 4px; pointer-events: none; }
     .meteor-entity.wrong-meteor { opacity: 0 !important; pointer-events: none; }
     .meteor-entity.paused-meteor { animation-play-state: paused !important; filter: brightness(0.35) grayscale(0.8) !important; pointer-events: none; }
-    @media (max-width:760px) { .meteor-stage { height: 300px; } .meteor-entity { width: 70px; height: 70px; } .meteor-text { font-size: 22px; } }
+    @media (max-width:760px) {
+      .meteor-stage { height: 250px; }
+      .meteor-entity { width: 100px; height: 100px; }
+      .meteor-img { position: absolute; top: 50%; left: 50%; width: 70%; height: 70%; transform: translate(-50%, -50%); inset: unset; }
+      .meteor-text { font-size: 22px; }
+    }
 
     @media (max-width:760px){
       .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: max(30px, env(safe-area-inset-top));} 
@@ -298,8 +303,8 @@
       .seed-actions-grid{grid-template-columns:1fr;} .garden-stage-display{grid-template-columns:1fr;}
       .rank-head{flex-direction:column; align-items:flex-start;}
       
-      .quiz-topbar{margin-top: 10px; margin-bottom:8px; padding:10px 12px; display: flex; justify-content: space-between;}
-      .question-card{padding:14px; border-radius:22px; min-height: auto;}
+      .quiz-topbar{margin-top: 10px; margin-bottom:6px; padding:8px 12px; display: flex; justify-content: space-between;}
+      .question-card{padding:10px 14px; border-radius:22px; min-height: auto;}
       
       .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 8px; padding-top: 0px; min-height: 36px; padding-right: 0; flex-wrap: nowrap; overflow: hidden;}
       .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; text-align: center; flex-wrap: nowrap; }
@@ -307,7 +312,7 @@
       .question-main h2 { font-size: 26px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; text-overflow: ellipsis;}
       #roundText { font-size: 14px !important; padding: 2px 8px !important; white-space: nowrap;}
       
-      .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
+      .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:6px;}
       .magic-drum { width: 180px; height: 180px; }
       .drum-instruction { font-size: 18px; }
       .spotlight-stage { height: 300px; }
@@ -319,7 +324,7 @@
       .scratch-container { width: 200px; height: 200px; }
       .scratch-content { font-size: 80px; }
       
-      .visual-area { margin: 4px 0 8px !important; }
+      .visual-area { margin: 2px 0 4px !important; }
       
       .path-stage { height: 360px; } 
       .path-character { width: 55px; height: 55px; } 
@@ -838,7 +843,7 @@
       state.currentSpeechText = text; if (!('speechSynthesis' in window)) return;
       try { window.speechSynthesis.cancel(); } catch (e) {}
       const utter = new SpeechSynthesisUtterance(String(text).replace(/\n/g, ' '));
-      utter.lang = 'zh-TW'; utter.rate = 0.9;
+      utter.lang = 'zh-TW'; utter.rate = 0.85;
       const voice = pickVoice(); if (voice) utter.voice = voice;
       utter.onend = () => { speakingNow = false; syncSpeakButton(); };
       utter.onerror = () => { speakingNow = false; syncSpeakButton(); };
