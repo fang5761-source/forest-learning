@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.50.6</title>
+  <title>慢慢變強｜螢光森林 v1.50.10 終極修復版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
@@ -176,9 +176,10 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
+    /* 🌟 防彈級記憶卡片比例 */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; align-items: start; }
-    .memory-card { position: relative; width: 100%; padding-bottom: 133.33%; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; display: block; }
+    .memory-card { position: relative; width: 100%; padding-bottom: 133.33%; min-height: 110px; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; display: block; }
     .memory-card-inner { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
     .memory-card.flipped .memory-card-inner { transform: rotateY(180deg); }
     .memory-card.matched { pointer-events: none; }
@@ -191,10 +192,10 @@
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
     
-    /* 🌟 大樂進化：為果子加入專屬被鎖定的 CSS 外觀 */
+    /* 🌟 為果子加入專屬被鎖定的 CSS 外觀（防完全隱形） */
     .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
-    .drag-fruit.excluded { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+    .drag-fruit.excluded { opacity: 0.85; filter: grayscale(0.8) brightness(0.7); pointer-events: none; }
     .drag-fruit img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
     
     .drag-basket-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: auto; z-index: 5; padding-bottom: 20px; gap: 12px; }
@@ -222,23 +223,20 @@
     .vertical-pinyin-echo.show { opacity: 1; transform: scale(1); }
     
     .feed-stage { position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: linear-gradient(to bottom, #1a3622, #0d2015); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; touch-action: none; }
-    
     .feed-bg { position: absolute; inset: 0; background-image: url('images/feed_bg.png'), url('feed_bg.png'); background-size: cover; background-position: center bottom; opacity: 0.85; pointer-events: none; z-index: 1;}
-    
     .feed-elf-wrap { position: relative; width: 150px; height: 150px; margin-top: 10px; display: flex; justify-content: center; align-items: center; z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center;}
-    
     .feed-elf-wrap::before { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,106,0.4) 0%, rgba(255,215,106,0) 70%); transition: all 0.4s ease-out; z-index: -1; opacity: 0; pointer-events: none; }
     
     @keyframes magicalHover { 0% { top: 0px; } 50% { top: -15px; } 100% { top: 0px; } }
     
     .feed-elf-img { position: relative; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform 0.4s ease-out; animation: magicalHover 3s ease-in-out infinite; filter: none !important; }
-    
     .feed-elf-success { transform: scale(1.15); }
     .feed-elf-success::before { width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,215,106,0.95) 0%, rgba(255,226,143,0.6) 40%, rgba(255,215,106,0) 70%); opacity: 1; }
     
     .feed-food-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 10; }
     .feed-food { position: absolute; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); cursor: grab; user-select: none; border-radius: 50%; z-index: 10; touch-action: none; will-change: transform; }
     .feed-food:active { cursor: grabbing; z-index: 11; }
+    .feed-food.excluded { opacity: 0.85; filter: grayscale(0.8) brightness(0.7); pointer-events: none; }
     .feed-food img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
 
     @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
@@ -271,6 +269,23 @@
     .garden-stage-display{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
     .garden-big-visual{font-size:64px;display:flex;align-items:center;justify-content:center;min-height:100px;border-radius:20px;background:rgba(255,255,255,.08)}
     .hidden-btn{display:none !important;}
+
+    /* ===== 🌠 流星捕捉 meteor ===== */
+    .meteor-stage { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 20px; border: 2px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,215,106,0.08); }
+    .meteor-bg { position: absolute; inset: 0; background-image: url('images/meteor_bg.png'), url('images/meteor_bg.jpg'); background-size: cover; background-position: center; z-index: 0; }
+    .meteor-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,10,25,0.35) 0%, rgba(10,18,40,0.15) 60%, rgba(5,10,25,0.5) 100%); z-index: 1; pointer-events: none; }
+    /* ⚠️ transition 只保留 filter/opacity，絕不包含 transform（會和 animation 打架） */
+    .meteor-entity { position: absolute; width: 82px; height: 82px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-user-select: none; touch-action: manipulation; transition: filter 0.25s ease, opacity 0.3s ease; }
+    /* :active 也不能用 transform，改用 filter 回饋 */
+    .meteor-entity:active { filter: brightness(1.3); }
+    .meteor-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: -1; filter: drop-shadow(0 4px 12px rgba(255,200,80,0.55)); }
+    .meteor-text { position: relative; z-index: 2; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 18px rgba(255,220,100,0.7); pointer-events: none; white-space: nowrap; letter-spacing: 1px; }
+    /* translateY 需超過 舞台高度(350) + 流星高度(82) + top偏移(90) = 522px，用 560px 確保出界 */
+    @keyframes meteorFall { 0% { transform: translateY(0); } 100% { transform: translateY(560px); } }
+    .meteor-entity.correct-meteor { animation-play-state: paused !important; filter: drop-shadow(0 0 28px #ffd76a) drop-shadow(0 0 50px #ffb300) brightness(1.8) !important; outline: 3px solid #ffd76a; outline-offset: 4px; pointer-events: none; }
+    .meteor-entity.wrong-meteor { opacity: 0 !important; pointer-events: none; }
+    .meteor-entity.paused-meteor { animation-play-state: paused !important; filter: brightness(0.35) grayscale(0.8) !important; pointer-events: none; }
+    @media (max-width:760px) { .meteor-stage { height: 300px; } .meteor-entity { width: 70px; height: 70px; } .meteor-text { font-size: 22px; } }
 
     @media (max-width:760px){
       .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: max(30px, env(safe-area-inset-top));} 
@@ -324,15 +339,8 @@
       
       .echo-stage { height: 400px; }
       .mic-btn { width: 100px; height: 100px; font-size: 50px;}
-      .echo-pinyin-target { font-size: 42px; margin-bottom: 20px; gap: 12px;}
+      .echo-pinyin-target { font-size: 42px; margin-bottom: 20px;}
       .echo-result { font-size: 20px; min-height: 40px; padding: 8px 16px; margin-top: 20px;}
-      .echo-combo-wrap { width: 40px; }
-      .vertical-pinyin-echo { font-size: 36px; }
-
-      .feed-stage { height: 380px; padding-bottom: 15px; justify-content: flex-end; }
-      .feed-elf-wrap { width: 160px; height: 160px; margin-top: 5px; margin-bottom: auto;}
-      .feed-food-container { height: 150px; }
-      .feed-food { width: 65px; height: 65px; font-size: 28px; }
     }
   </style>
 </head>
@@ -346,7 +354,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.50.6 安全音效升級版</div>
+        <div class="version-tag">v1.50.10 終極修復版</div>
       </div>
     </header>
 
@@ -462,7 +470,7 @@
           <div class="growth-head" style="margin-bottom:12px;"><h3>我的種子袋</h3></div>
           <div class="growth-grid">
             <div class="growth-pill"><span>普通種子</span><strong id="gardenSeedNormalText">0 顆</strong></div>
-            <div class="growth-pill"><span>稀重種子</span><strong id="gardenSeedRareText">0 顆</strong></div>
+            <div class="growth-pill"><span>稀有種子</span><strong id="gardenSeedRareText">0 顆</strong></div>
             <div class="growth-pill"><span>星光種子</span><strong id="gardenSeedStarText">0 顆</strong></div>
             <div class="growth-pill"><span>已種下</span><strong id="gardenPlantedText">0 顆</strong></div>
           </div>
@@ -866,9 +874,7 @@
             if(item.text) {
                 const utter = new SpeechSynthesisUtterance(item.text);
                 utter.lang = 'zh-TW';
-                
-                // 🌟 大樂修正：加入自訂語速選項，預設稍微放慢到 0.85
-                utter.rate = item.rate || 0.85; 
+                utter.rate = item.rate || 0.5; 
                 
                 const voice = pickVoice(); 
                 if (voice) utter.voice = voice;
@@ -956,7 +962,7 @@
       ],
       forest: [
         { key:'forest-catch', emoji:'🧚', title:'抓精靈', desc:'【捕捉類】綜合測驗！抓出正確的小精靈。', locked: true },
-        { key:'forest-meteor', emoji:'🌠', title:'流星捕捉', desc:'【捕捉類】接住天上掉下來的流星答案。', locked: true },
+        { key:'forest-meteor', emoji:'🌠', title:'流星捕捉', desc:'【捕捉類】接住天上掉下來的流星答案。', locked: false },
         { key:'forest-maze', emoji:'🗺️', title:'森林迷宮', desc:'【路徑類】在迷宮路口選出正確的答案前進。', locked: true },
         { key:'forest-parkour', emoji:'🏃', title:'森林跑酷', desc:'【動作類】極速挑戰！3秒內選出正確的路。', locked: true },
         { key:'forest-lightning', emoji:'⚡', title:'閃電選擇', desc:'【動作類】限時內極速答題。', locked: true },
@@ -1181,6 +1187,7 @@
             speakText: `請找出，${p1}，${p2}，${soundWord}，把它收進籃子裡`, 
             answer: targetCombo, 
             soundWord: soundWord, 
+            targetCombo: targetCombo, 
             basketText: `${p1} + ${p2}`, 
             options: options.map(o => ({text: o, speak: COMBO_SOUND[o] || o})), 
             uiType: 'drag', 
@@ -1210,6 +1217,80 @@
             uiType: 'echo', 
             scene: '🗣️ 按下麥克風，大聲說出答案！' 
         });
+      }
+      return list;
+    }
+
+    function buildForestMeteorSet() {
+      const list = [];
+      for (let i = 0; i < 5; i++) {
+        const typeRoll = Math.random();
+        
+        if (typeRoll < 0.34) {
+          // ── Math 類 ──
+          const table = randomInt(2, 9);
+          const step = randomInt(1, 9);
+          const answer = table * step;
+          const candidates = [];
+          [answer - table, answer + table, answer - 2, answer + 3].forEach(n => {
+            if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n);
+          });
+          while (candidates.length < 3) {
+            const c = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+            if (c > 0 && c <= 81 && c !== answer && !candidates.includes(c)) candidates.push(c);
+          }
+          const options = shuffle([
+            { text: String(answer), speak: numberToZh(answer) },
+            { text: String(candidates[0]), speak: numberToZh(candidates[0]) },
+            { text: String(candidates[1]), speak: numberToZh(candidates[1]) },
+            { text: String(candidates[2]), speak: numberToZh(candidates[2]) }
+          ]);
+          list.push({
+            area: '森林冒險', kind: 'forest-meteor',
+            promptText: `${table} × ${step} = ?`,
+            speakText: `${numberToZh(table)}乘以${numberToZh(step)}等於幾？接住正確的流星！`,
+            answer: String(answer), options, uiType: 'meteor',
+            scene: '🌠 接住寫著正確答案的流星！'
+          });
+
+        } else if (typeRoll < 0.67) {
+          // ── Pinyin 類 ──
+          const targetCombo = randomItem(COMBO_SET);
+          const soundWord = COMBO_SOUND[targetCombo];
+          const p1 = targetCombo.charAt(0);
+          const p2 = targetCombo.charAt(1);
+          let pool = shuffle([...COMBO_SET].filter(c => c !== targetCombo));
+          const fakes = pool.slice(0, 3);
+          const options = shuffle([
+            { text: targetCombo, speak: soundWord },
+            ...fakes.map(f => ({ text: f, speak: COMBO_SOUND[f] || f }))
+          ]);
+          list.push({
+            area: '森林冒險', kind: 'forest-meteor',
+            promptText: `請抓住「${targetCombo}」`,
+            speakText: `請接住，${p1}，${p2}，${soundWord}！`,
+            answer: targetCombo, options, uiType: 'meteor',
+            scene: '🌠 接住寫著正確拼音的流星！'
+          });
+
+        } else {
+          // ── Symbol 類 ──
+          const allSymbols = [...SYMBOL_SET];
+          const answer = randomItem(allSymbols);
+          let pool = shuffle(allSymbols.filter(s => s !== answer));
+          const fakes = pool.slice(0, 3);
+          const options = shuffle([
+            { text: answer, speak: answer },
+            ...fakes.map(f => ({ text: f, speak: f }))
+          ]);
+          list.push({
+            area: '森林冒險', kind: 'forest-meteor',
+            promptText: `請抓住「${answer}」`,
+            speakText: `請接住注音符號，${answer}！`,
+            answer, options, uiType: 'meteor',
+            scene: '🌠 接住寫著正確注音的流星！'
+          });
+        }
       }
       return list;
     }
@@ -1333,18 +1414,15 @@
       } else if (subMode === 'math-feed') {
         state.questionList = buildMathFeedSet(state.selectedTable);
         if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = `精靈餵食｜${state.selectedTable}的表`;
+      } else if (subMode === 'forest-meteor') {
+        state.questionList = buildForestMeteorSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '流星捕捉';
       }
 
       showScreen('quiz'); renderQuestion();
     }
 
     function renderQuestion() {
-      // 🌟 大樂進化：針對「單頁式互動遊戲」，徹底取消強制回到最上方的設計，防止畫面跳動暈船！
-      const immersiveTypes = ['drum', 'spotlight', 'bubble', 'puzzle', 'path', 'match', 'drag', 'echo', 'feed', 'math-chant', 'scratch'];
-      if (!immersiveTypes.includes(state.questionList[state.qIndex].uiType)) {
-          setTimeout(() => { window.scrollTo(0, 0); }, 50);
-      }
-        
       const q = state.questionList[state.qIndex];  
       state.currentQuestion = q; state.excluded = 0; state.awaitingNext = false;
       q.playVoice = null;
@@ -1380,7 +1458,7 @@
       if(optionsWrap) { optionsWrap.dataset.layout = q.uiType || 'default'; optionsWrap.className = 'options-wrap'; }
       
       if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '慢慢來，我們一起試試看。';
-      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
+      if (q.scene && visualArea && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant' && q.uiType !== 'meteor') { const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene; visualArea.appendChild(badge); }
       
       if (q.uiType === 'math-chant') {
           if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '請跟著小精靈一起大聲唸出來喔！';
@@ -1392,16 +1470,14 @@
           stage.style.borderRadius = '24px'; stage.style.border = '2px dashed rgba(255,215,106,0.3)';
           stage.style.display = 'flex'; stage.style.flexDirection = 'column'; stage.style.alignItems = 'center'; stage.style.justifyContent = 'center';
 
-          // 🌟 更新小精靈，並微調大小
           const elfIcon = document.createElement('img');
           elfIcon.src = 'images/elf.png'; 
           elfIcon.onerror = function() { this.onerror=null; this.src='images/icon.png'; };
-          elfIcon.style.width = '140px'; 
+          elfIcon.style.width = '110px'; 
           elfIcon.style.marginBottom = '20px';
           elfIcon.style.animation = 'magicalHover 3s infinite'; 
           elfIcon.style.filter = 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))';
 
-          // 🌟 將算式拆成上下兩行，避免手機螢幕太小被擠壓
           const bigEquation = document.createElement('div');
           bigEquation.style.display = 'flex';
           bigEquation.style.flexDirection = 'column';
@@ -1409,13 +1485,13 @@
           bigEquation.style.gap = '4px';
 
           const eqTop = document.createElement('div');
-          eqTop.style.fontSize = '32px';
+          eqTop.style.fontSize = '22px';
           eqTop.style.fontWeight = 'bold';
           eqTop.style.color = '#fff';
           eqTop.textContent = `${q.tableBase} × ${q.tableTarget} =`;
 
           const eqBottom = document.createElement('div');
-          eqBottom.style.fontSize = '72px';
+          eqBottom.style.fontSize = '42px';
           eqBottom.style.fontWeight = '900';
           eqBottom.style.color = '#ffd76a';
           eqBottom.style.textShadow = '0 4px 15px rgba(0,0,0,0.5)';
@@ -1430,7 +1506,7 @@
               speakSequence([
                   {
                       text: q.speakText,
-                      rate: 0.65, // 🌟 放慢語音精靈的速度，讓小朋友更好跟讀
+                      rate: 0.72, 
                       action: () => {
                           eqBottom.style.transform = 'scale(1.3)'; eqBottom.style.color = '#fff'; eqBottom.style.transition = 'all 0.3s ease';
                           elfIcon.style.transform = 'scale(1.1)'; elfIcon.style.transition = 'all 0.3s ease';
@@ -1447,7 +1523,6 @@
                       nextBtn.classList.remove('hidden-btn'); 
                       nextBtn.textContent = (state.qIndex === state.questionList.length - 1) ? '完成口訣！' : '聽下一句';
                       nextBtn.classList.add('pulse-anim');
-                      // 🌟 拔除 scrollIntoView，避免畫面被往下扯
                   }
               });
           };
@@ -2049,9 +2124,7 @@
                 
                 if (flippedCards.length === 2) {
                     isLocked = true;
-                    // 檢查配對
                     if (flippedCards[0].data.val === flippedCards[1].data.val) {
-                        // 配對成功
                         setTimeout(() => {
                             playChimeSound();
                             speak(`太棒了！是 ${flippedCards[0].data.speak}`);
@@ -2061,7 +2134,6 @@
                             flippedCards = [];
                             isLocked = false;
                             
-                            // 檢查是否全部配對完畢
                             if (matchedCount === q.cardsData.length) {
                                 state.awaitingNext = true;
                                 setTimeout(() => {
@@ -2073,7 +2145,6 @@
                             }
                         }, 600);
                     } else {
-                        // 配對失敗
                         state.excluded += 1;
                         state.roundMistakes += 1;
                         setTimeout(() => {
@@ -2082,10 +2153,9 @@
                             flippedCards[1].elem.classList.remove('flipped');
                             flippedCards = [];
                             isLocked = false;
-                        }, 1000); // 鎖定 1 秒鐘後蓋回去
+                        }, 1000); 
                     }
                 } else {
-                    // 翻第一張牌時發音
                     speak(cardItem.speak);
                 }
             };
@@ -2444,6 +2514,169 @@
         stage.appendChild(foodContainer);
         optionsWrap.appendChild(stage);
       }
+      else if (q.uiType === 'drag') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '動動手指，把正確的果子拖進籃子裡吧！';
+        
+        const stage = document.createElement('div');
+        stage.className = 'drag-stage';
+        
+        const treeBg = document.createElement('div');
+        treeBg.className = 'drag-tree';
+        stage.appendChild(treeBg);
+        
+        const basketWrap = document.createElement('div');
+        basketWrap.className = 'drag-basket-wrap';
+        
+        const basket = document.createElement('div');
+        basket.className = 'drag-basket';
+        const basketImg = document.createElement('img');
+        basketImg.src = 'images/basket.png';
+        basketImg.onerror = () => { basketImg.style.display = 'none'; basket.style.background = '#8B5A2B'; basket.style.borderRadius = '20px'; }; 
+        basket.appendChild(basketImg);
+        
+        const verticalPinyin = document.createElement('div');
+        verticalPinyin.className = 'vertical-pinyin';
+        const p1_char = q.answer.charAt(0);
+        const p2_char = q.answer.charAt(1);
+        verticalPinyin.innerHTML = `<span>${p1_char}</span><span>${p2_char}</span>`;
+        basket.appendChild(verticalPinyin);
+        
+        const basketLabel = document.createElement('div');
+        basketLabel.className = 'basket-label';
+        basketLabel.innerHTML = `<span style="font-size:26px; font-weight:900;">${q.basketText}</span><span style="color:#ffd76a; font-size:20px; font-weight:bold;">🔊 ${q.answer}</span>`;
+        
+        basketWrap.appendChild(basket);
+        basketWrap.appendChild(basketLabel);
+        
+        const fruitContainer = document.createElement('div');
+        fruitContainer.className = 'drag-fruit-container';
+        
+        const xOffsets = [15, 50, 85];
+        const yOffsets = [15, 5, 15]; 
+        
+        q.options.forEach((opt, idx) => {
+            const fruit = document.createElement('div');
+            fruit.className = 'drag-fruit';
+            fruit.dataset.val = opt.text;
+            
+            fruit.style.position = 'absolute';
+            fruit.style.left = `calc(${xOffsets[idx]}% - 30px)`; 
+            fruit.style.top = `${yOffsets[idx]}%`;
+            
+            const fruitImg = document.createElement('img');
+            fruitImg.src = 'images/fruit.png';
+            fruitImg.onerror = () => { fruitImg.style.display = 'none'; fruit.style.background = '#ff6b81'; }; 
+            
+            const fruitText = document.createElement('span');
+            fruitText.textContent = opt.text; 
+            fruitText.style.zIndex = '10';
+            
+            fruit.appendChild(fruitImg);
+            fruit.appendChild(fruitText);
+            fruitContainer.appendChild(fruit);
+
+            let isDragging = false;
+            let startX, startY;
+            let origX = 0, origY = 0; 
+            
+            fruit.onpointerdown = (e) => {
+                if (state.awaitingNext || fruit.classList.contains('excluded')) return;
+                e.preventDefault();
+                isDragging = true;
+                fruit.setPointerCapture(e.pointerId);
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                startX = clientX - origX;
+                startY = clientY - origY;
+                fruit.style.transition = 'none';
+            };
+
+            fruit.onpointermove = (e) => {
+                if (!isDragging) return;
+                e.preventDefault(); 
+                let clientX = e.clientX; let clientY = e.clientY;
+                if(clientX === undefined && e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                
+                origX = clientX - startX;
+                origY = clientY - startY;
+                fruit.style.transform = `translate(${origX}px, ${origY}px) scale(1.1)`;
+                
+                const fruitRect = fruit.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (fruitRect.left + fruitRect.width/2) - (basketRect.left + basketRect.width/2),
+                    (fruitRect.top + fruitRect.height/2) - (basketRect.top + basketRect.height/2)
+                );
+                if (dist < 80) basket.classList.add('highlight');
+                else basket.classList.remove('highlight');
+            };
+
+            fruit.onpointerup = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                fruit.releasePointerCapture(e.pointerId);
+                basket.classList.remove('highlight');
+                
+                const fruitRect = fruit.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                const dist = Math.hypot(
+                    (fruitRect.left + fruitRect.width/2) - (basketRect.left + basketRect.width/2),
+                    (fruitRect.top + fruitRect.height/2) - (basketRect.top + basketRect.height/2)
+                );
+
+                if (dist < 80) {
+                    if (fruit.dataset.val === q.answer) {
+                        playSnapSound();
+                        state.awaitingNext = true;
+                        
+                        fruit.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        const dx = (basketRect.left + basketRect.width/2) - (fruitRect.left - origX + fruitRect.width/2);
+                        const dy = (basketRect.top + basketRect.height/2) - (fruitRect.top - origY + fruitRect.height/2); 
+                        
+                        fruit.style.transform = `translate(${dx}px, ${dy}px) scale(0.1)`;
+                        fruit.style.opacity = '0'; 
+                        
+                        basket.classList.add('basket-success');
+                        setTimeout(() => verticalPinyin.classList.add('show'), 300);
+                        setTimeout(() => basket.classList.remove('basket-success'), 1000);
+
+                        if(document.getElementById('nextQuestionBtn')) {
+                            const nextBtn = document.getElementById('nextQuestionBtn');
+                            nextBtn.classList.remove('hidden-btn');
+                        }
+                        
+                        const replyUI = `${p1_char}... ${p2_char}... ${q.answer}！太棒了！`;
+                        const replySpeak = `${p1_char}... ${p2_char}... ${q.soundWord}！太棒了！`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
+
+                    } else {
+                        state.excluded += 1;
+                        state.roundMistakes += 1; 
+                        fruit.classList.add('excluded');
+                        
+                        origX = 0; origY = 0;
+                        fruit.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        fruit.style.transform = `translate(0px, 0px)`;
+                        
+                        const replyUI = `不對喔，再找找看。`;
+                        const replySpeak = `不對喔，這不是 ${q.soundWord}。`;
+                        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = replyUI; 
+                        speak(replySpeak);
+                    }
+                } else {
+                    origX = 0; origY = 0;
+                    fruit.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    fruit.style.transform = `translate(0px, 0px)`;
+                }
+            };
+        });
+        
+        stage.appendChild(fruitContainer);
+        stage.appendChild(basketWrap);
+        optionsWrap.appendChild(stage);
+      }
       else if (q.uiType === 'echo') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '聽完語音，按下麥克風大聲唸出來吧！';
         
@@ -2673,7 +2906,102 @@
         }
       }
 
-      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant' && q.options && q.options.length > 0 && optionsWrap) {
+      else if (q.uiType === 'meteor') {
+        if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '接住寫著正確答案的流星！其他的都是陷阱！';
+        if (q.scene && visualArea) {
+          const badge = document.createElement('div'); badge.className='scene-badge'; badge.textContent=q.scene;
+          visualArea.appendChild(badge); visualArea.classList.remove('collapsed');
+        }
+
+        const stage = document.createElement('div');
+        stage.className = 'meteor-stage';
+
+        const bg = document.createElement('div');
+        bg.className = 'meteor-bg';
+        stage.appendChild(bg);
+
+        // 為每個選項建立一顆流星
+        q.options.forEach((opt, idx) => {
+          const entity = document.createElement('div');
+          entity.className = 'meteor-entity';
+
+          // 隨機 X 位置 (8% ~ 76%)，確保不超出邊界
+          const leftPct = 8 + Math.random() * 68;
+          entity.style.left = `${leftPct}%`;
+
+          // top 固定在 -90px，translateY 動畫負責垂直移動
+          // hit area 會跟著 transform 的視覺位置，所以點得到
+          entity.style.top = '-90px';
+
+          // 隨機掉落週期 (4s ~ 8s)
+          const fallDuration = 10 + Math.random() * 8;
+          // 負數 delay 讓流星從動畫週期的隨機進度開始，畫面一開始就有流星
+          const fallDelay = -(Math.random() * fallDuration);
+          entity.style.animation = `meteorFall ${fallDuration}s ${fallDelay.toFixed(2)}s linear infinite`;
+
+          // 流星圖片
+          const img = document.createElement('img');
+          img.src = 'images/meteor.png';
+          img.className = 'meteor-img';
+          img.onerror = function() {
+            this.onerror = null;
+            // fallback：以金色光球代替
+            this.style.display = 'none';
+            entity.style.background = 'radial-gradient(circle, rgba(255,220,80,0.85) 0%, rgba(255,140,0,0.55) 60%, transparent 80%)';
+            entity.style.borderRadius = '50%';
+            entity.style.boxShadow = '0 0 18px 4px rgba(255,200,60,0.7)';
+          };
+
+          // 選項文字
+          const txt = document.createElement('div');
+          txt.className = 'meteor-text';
+          txt.textContent = opt.text;
+
+          entity.appendChild(img);
+          entity.appendChild(txt);
+
+          entity.onpointerdown = (e) => {
+            e.preventDefault();
+            if (state.awaitingNext) return;
+
+            if (opt.text === q.answer) {
+              // ✅ 正確
+              playChimeSound();
+              state.awaitingNext = true;
+              entity.classList.add('correct-meteor');
+
+              // 暫停並調暗其他流星
+              Array.from(stage.querySelectorAll('.meteor-entity')).forEach(el => {
+                if (el !== entity) el.classList.add('paused-meteor');
+              });
+
+              if(document.getElementById('nextQuestionBtn')) {
+                const nextBtn = document.getElementById('nextQuestionBtn');
+                nextBtn.classList.remove('hidden-btn');
+              }
+              const reply = `太棒了！答案是 ${opt.speak}！`;
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply;
+              speak(reply);
+
+            } else {
+              // ❌ 錯誤
+              playSplashSound();
+              state.excluded += 1;
+              state.roundMistakes += 1;
+              entity.classList.add('wrong-meteor');
+              const reply = `這顆是 ${opt.speak}！繼續找正確的流星！`;
+              if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = reply;
+              speak(reply);
+            }
+          };
+
+          stage.appendChild(entity);
+        });
+
+        optionsWrap.appendChild(stage);
+      }
+
+      if(q.uiType !== 'drum' && q.uiType !== 'spotlight' && q.uiType !== 'bubble' && q.uiType !== 'puzzle' && q.uiType !== 'path' && q.uiType !== 'match' && q.uiType !== 'drag' && q.uiType !== 'echo' && q.uiType !== 'feed' && q.uiType !== 'math-chant' && q.uiType !== 'meteor' && q.options && q.options.length > 0 && optionsWrap) {
         q.options.forEach(opt => {
           const row = document.createElement('div'); row.className = 'option-row';
           const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.text;
@@ -2684,10 +3012,12 @@
         });
       }
 
-      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch' && q.uiType !== 'math-chant') {
+      if (q.uiType !== 'echo' && q.uiType !== 'bubble' && q.uiType !== 'scratch' && q.uiType !== 'math-chant' && q.uiType !== 'meteor') {
           speak(q.speakText); 
       } else if (q.uiType === 'bubble') {
           setTimeout(() => speak(q.speakText), 500); 
+      } else if (q.uiType === 'meteor') {
+          setTimeout(() => speak(q.speakText), 600);
       }
     }
 
