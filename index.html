@@ -9,13 +9,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png">
   <link rel="shortcut icon" href="images/icon.png">
-  <title>慢慢變強｜螢光森林 v1.52.1 流星最終打磨版</title>
+  <title>慢慢變強｜螢光森林 v1.50.10 終極修復版</title>
   <meta name="theme-color" content="#163826">
   <style>
     :root{--bg-1:#07170f;--bg-2:#0d2d1d;--bg-3:#163826;--bg-4:#1f4a33;--gold:#ffd76a;--gold-soft:#fff2b5;--green-soft:#d8f0d8;--text:#f7fbf4;--muted:rgba(247,251,244,.82);--line:rgba(255,255,255,.12);--shadow:0 12px 40px rgba(0,0,0,.32);}
     
     *{box-sizing:border-box;} 
-    button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label, .mic-btn, .feed-food, .meteor-entity { touch-action: manipulation; }
+    button, a, .world-spot, .puzzle-piece, .drag-fruit, .memory-card, .path-stone, .drag-basket, .basket-label, .mic-btn, .feed-food { touch-action: manipulation; }
     html,body{margin:0;min-height:100%; overflow-x: hidden; background-color: var(--bg-3);}
     body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--text);background:radial-gradient(circle at 50% 10%, rgba(73,150,82,.26), transparent 28%),radial-gradient(circle at 18% 22%, rgba(255,215,106,.10), transparent 16%),radial-gradient(circle at 80% 20%, rgba(209,255,180,.08), transparent 18%),linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 64%, #0b2016 100%);}
     button{font:inherit; outline:none; -webkit-tap-highlight-color: transparent;} 
@@ -176,6 +176,7 @@
     @keyframes stoneSink { to { transform: translateY(40px) scale(0.8); opacity: 0; } }
     .path-character { position: absolute; width: 70px; height: 70px; z-index: 50; transition: left 0.4s ease-in-out, top 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s ease; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6)); object-fit: contain; transform-origin: bottom center; pointer-events: none; }
 
+    /* 🌟 防彈級記憶卡片比例 */
     .memory-stage { position: relative; width: 100%; min-height: 380px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at center, #1b3d2a, #0b1c11); border: 2px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 30px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; }
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 320px; margin: 0 auto; align-items: start; }
     .memory-card { position: relative; width: 100%; padding-bottom: 133.33%; min-height: 110px; perspective: 1000px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; display: block; }
@@ -191,6 +192,7 @@
     .drag-tree { position: absolute; top: 0; left: 0; width: 100%; height: 180px; background-image: url('images/tree.png'); background-size: cover; background-position: center top; border-radius: 20px 20px 0 0; z-index: 1; pointer-events: none; opacity: 0.9; }
     .drag-fruit-container { position: absolute; top: 0; left: 0; width: 100%; height: 180px; z-index: 10; }
     
+    /* 🌟 為果子加入專屬被鎖定的 CSS 外觀（防完全隱形） */
     .drag-fruit { position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); cursor: grab; user-select: none; border-radius: 50%; box-shadow: 0 8px 15px rgba(0,0,0,0.4); z-index: 10; touch-action: none; will-change: transform;}
     .drag-fruit:active { cursor: grabbing; z-index: 11; }
     .drag-fruit.excluded { opacity: 0.85; filter: grayscale(0.8) brightness(0.7); pointer-events: none; }
@@ -272,14 +274,23 @@
     .meteor-stage { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 20px; border: 2px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,215,106,0.08); }
     .meteor-bg { position: absolute; inset: 0; background-image: url('images/meteor_bg.png'), url('images/meteor_bg.jpg'); background-size: cover; background-position: center; z-index: 0; }
     .meteor-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,10,25,0.35) 0%, rgba(10,18,40,0.15) 60%, rgba(5,10,25,0.5) 100%); z-index: 1; pointer-events: none; }
-    .meteor-entity { position: absolute; width: 110px; height: 110px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-user-select: none; touch-action: manipulation; transition: filter 0.25s ease, opacity 0.3s ease; }
-    .meteor-entity:active { filter: brightness(1.3); }
-    .meteor-img { position: absolute; inset: 0; width: 85%; height: 85%; margin: auto; object-fit: contain; pointer-events: none; z-index: -1; filter: drop-shadow(0 4px 12px rgba(255,200,80,0.55)); transform: scale(0.85); }
-    .meteor-text { position: absolute; left: 36%; top: 50%; transform: translate(-50%, -50%); z-index: 2; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 18px rgba(255,220,100,0.7); pointer-events: none; white-space: nowrap; letter-spacing: 1px; }
-    @keyframes meteorFall { 0% { top: -120px; } 100% { top: 120%; } }
-    .meteor-entity.correct-meteor { animation-play-state: paused !important; filter: drop-shadow(0 0 20px #ffd76a) drop-shadow(0 0 40px #ffb300) brightness(1.6) !important; pointer-events: none; }
-    .meteor-entity.wrong-meteor { opacity: 0 !important; pointer-events: none; }
-    .meteor-entity.paused-meteor { animation-play-state: paused !important; filter: brightness(0.35) grayscale(0.8) !important; pointer-events: none; }
+    /* ⚠️ transition 只保留 filter/opacity，絕不包含 transform（會和 animation 打架） */
+    .meteor-entity { position: absolute; width: 82px; height: 82px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-user-select: none; touch-action: manipulation; transition: transform 0.2s ease, opacity 0.3s ease; }
+    /* :active 也不能用 transform，改用 filter 回饋 */
+    .meteor-entity:active { transform: scale(0.95); }
+    .meteor-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: -1; filter: drop-shadow(0 4px 12px rgba(255,200,80,0.55)); }
+    .meteor-text { position: relative; z-index: 2; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 18px rgba(255,220,100,0.7); pointer-events: none; white-space: nowrap; letter-spacing: 1px; }
+    /* translateY 需超過 舞台高度(350) + 流星高度(82) + top偏移(90) = 522px，用 560px 確保出界 */
+    @keyframes meteorFall { 0% { transform: translateY(0); } 100% { transform: translateY(560px); } }
+    .meteor-entity.correct-meteor { animation-play-state: paused !important; filter: drop-shadow(0 0 28px #ffd76a) drop-shadow(0 0 50px #ffb300) brightness(1.8) !important; outline: 3px solid #ffd76a; outline-offset: 4px; pointer-events: none; }
+    .meteor-entity.wrong-meteor { opacity: 0 !important; transform: scale(0.5) !important; pointer-events: none; }
+    .meteor-entity.paused-meteor { animation-play-state: paused !important; opacity: 0.35 !important; pointer-events: none; }
+    @media (max-width:760px) {
+      .meteor-stage { height: 250px; }
+      .meteor-entity { width: 100px; height: 100px; }
+      .meteor-img { position: absolute; top: 50%; left: 50%; width: 70%; height: 70%; transform: translate(-50%, -50%); inset: unset; }
+      .meteor-text { font-size: 22px; }
+    }
 
     @media (max-width:760px){
       .app-shell{width:min(100%,calc(100% - 20px)); padding-top: 30px; padding-top: max(30px, env(safe-area-inset-top));} 
@@ -292,8 +303,8 @@
       .seed-actions-grid{grid-template-columns:1fr;} .garden-stage-display{grid-template-columns:1fr;}
       .rank-head{flex-direction:column; align-items:flex-start;}
       
-      .quiz-topbar{margin-top: 10px; margin-bottom:8px; padding:10px 12px; display: flex; justify-content: space-between;}
-      .question-card{padding:14px; border-radius:22px; min-height: auto;}
+      .quiz-topbar{margin-top: 10px; margin-bottom:6px; padding:8px 12px; display: flex; justify-content: space-between;}
+      .question-card{padding:10px 14px; border-radius:22px; min-height: auto;}
       
       .question-head { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 8px; padding-top: 0px; min-height: 36px; padding-right: 0; flex-wrap: nowrap; overflow: hidden;}
       .question-main { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; text-align: center; flex-wrap: nowrap; }
@@ -301,7 +312,7 @@
       .question-main h2 { font-size: 26px !important; line-height: 1; margin: 0; white-space: nowrap; font-weight: 900; letter-spacing: 1px; text-overflow: ellipsis;}
       #roundText { font-size: 14px !important; padding: 2px 8px !important; white-space: nowrap;}
       
-      .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:10px;}
+      .feedback-bar{flex-direction:column; align-items:flex-start; justify-content:center; gap:6px;}
       .magic-drum { width: 180px; height: 180px; }
       .drum-instruction { font-size: 18px; }
       .spotlight-stage { height: 300px; }
@@ -313,7 +324,7 @@
       .scratch-container { width: 200px; height: 200px; }
       .scratch-content { font-size: 80px; }
       
-      .visual-area { margin: 4px 0 8px !important; }
+      .visual-area { margin: 2px 0 4px !important; }
       
       .path-stage { height: 360px; } 
       .path-character { width: 55px; height: 55px; } 
@@ -335,10 +346,6 @@
       .mic-btn { width: 100px; height: 100px; font-size: 50px;}
       .echo-pinyin-target { font-size: 42px; margin-bottom: 20px;}
       .echo-result { font-size: 20px; min-height: 40px; padding: 8px 16px; margin-top: 20px;}
-
-      .meteor-stage { height: 250px; } 
-      .meteor-entity { width: 100px; height: 100px; } 
-      .meteor-text { font-size: 22px; } 
     }
   </style>
 </head>
@@ -352,7 +359,7 @@
       <div>
         <div class="eyebrow">森林探索學習</div>
         <h1>慢慢變強</h1>
-        <div class="version-tag">v1.52.1 流星最終打磨版</div>
+        <div class="version-tag">v1.50.10 終極修復版</div>
       </div>
     </header>
 
@@ -836,8 +843,7 @@
       state.currentSpeechText = text; if (!('speechSynthesis' in window)) return;
       try { window.speechSynthesis.cancel(); } catch (e) {}
       const utter = new SpeechSynthesisUtterance(String(text).replace(/\n/g, ' '));
-      utter.lang = 'zh-TW'; 
-      utter.rate = 0.85; 
+      utter.lang = 'zh-TW'; utter.rate = 0.85;
       const voice = pickVoice(); if (voice) utter.voice = voice;
       utter.onend = () => { speakingNow = false; syncSpeakButton(); };
       utter.onerror = () => { speakingNow = false; syncSpeakButton(); };
@@ -873,7 +879,7 @@
             if(item.text) {
                 const utter = new SpeechSynthesisUtterance(item.text);
                 utter.lang = 'zh-TW';
-                utter.rate = item.rate || 0.85; 
+                utter.rate = item.rate || 0.5; 
                 
                 const voice = pickVoice(); 
                 if (voice) utter.voice = voice;
@@ -962,6 +968,7 @@
       forest: [
         { key:'forest-catch', emoji:'🧚', title:'抓精靈', desc:'【捕捉類】綜合測驗！抓出正確的小精靈。', locked: true },
         { key:'forest-meteor', emoji:'🌠', title:'流星捕捉', desc:'【捕捉類】接住天上掉下來的流星答案。', locked: false },
+        { key:'forest-spotlight', emoji:'🔦', title:'黑夜探照', desc:'【探索類】在黑暗中尋找正確的答案。', locked: false },
         { key:'forest-maze', emoji:'🗺️', title:'森林迷宮', desc:'【路徑類】在迷宮路口選出正確的答案前進。', locked: true },
         { key:'forest-parkour', emoji:'🏃', title:'森林跑酷', desc:'【動作類】極速挑戰！3秒內選出正確的路。', locked: true },
         { key:'forest-lightning', emoji:'⚡', title:'閃電選擇', desc:'【動作類】限時內極速答題。', locked: true },
@@ -1226,6 +1233,7 @@
         const typeRoll = Math.random();
         
         if (typeRoll < 0.34) {
+          // ── Math 類 ──
           const table = randomInt(2, 9);
           const step = randomInt(1, 9);
           const answer = table * step;
@@ -1252,6 +1260,7 @@
           });
 
         } else if (typeRoll < 0.67) {
+          // ── Pinyin 類 ──
           const targetCombo = randomItem(COMBO_SET);
           const soundWord = COMBO_SOUND[targetCombo];
           const p1 = targetCombo.charAt(0);
@@ -1271,6 +1280,7 @@
           });
 
         } else {
+          // ── Symbol 類 ──
           const allSymbols = [...SYMBOL_SET];
           const answer = randomItem(allSymbols);
           let pool = shuffle(allSymbols.filter(s => s !== answer));
@@ -1285,6 +1295,80 @@
             speakText: `請接住注音符號，${answer}！`,
             answer, options, uiType: 'meteor',
             scene: '🌠 接住寫著正確注音的流星！'
+          });
+        }
+      }
+      return list;
+    }
+
+    function buildForestSpotlightSet() {
+      const list = [];
+      for (let i = 0; i < 5; i++) {
+        const typeRoll = Math.random();
+
+        if (typeRoll < 0.34) {
+          // ── Math 類 ──
+          const table = randomInt(2, 9);
+          const step = randomInt(1, 9);
+          const answer = table * step;
+          const candidates = [];
+          [answer - table, answer + table, answer - 2, answer + 3].forEach(n => {
+            if (n > 0 && n <= 81 && n !== answer && !candidates.includes(n)) candidates.push(n);
+          });
+          while (candidates.length < 3) {
+            const c = answer + (Math.random() > 0.5 ? 1 : -1) * (table + candidates.length + 1);
+            if (c > 0 && c <= 81 && c !== answer && !candidates.includes(c)) candidates.push(c);
+          }
+          const options = shuffle([
+            { text: String(answer), speak: numberToZh(answer) },
+            { text: String(candidates[0]), speak: numberToZh(candidates[0]) },
+            { text: String(candidates[1]), speak: numberToZh(candidates[1]) },
+            { text: String(candidates[2]), speak: numberToZh(candidates[2]) }
+          ]);
+          list.push({
+            area: '森林冒險', kind: 'forest-spotlight',
+            promptText: `${table} × ${step} = ?`,
+            speakText: `${numberToZh(table)}乘以${numberToZh(step)}等於幾？用手電筒找找看！`,
+            answer: String(answer), options, uiType: 'spotlight',
+            scene: '🔦 在黑黑的地方滑動手指，找找看目標在哪裡！'
+          });
+
+        } else if (typeRoll < 0.67) {
+          // ── Pinyin 類 ──
+          const targetCombo = randomItem(COMBO_SET);
+          const soundWord = COMBO_SOUND[targetCombo];
+          const p1 = targetCombo.charAt(0);
+          const p2 = targetCombo.charAt(1);
+          let pool = shuffle([...COMBO_SET].filter(c => c !== targetCombo));
+          const fakes = pool.slice(0, 3);
+          const options = shuffle([
+            { text: targetCombo, speak: soundWord },
+            ...fakes.map(f => ({ text: f, speak: COMBO_SOUND[f] || f }))
+          ]);
+          list.push({
+            area: '森林冒險', kind: 'forest-spotlight',
+            promptText: `請找出「${targetCombo}」`,
+            speakText: `請找出，${p1}，${p2}，${soundWord}！`,
+            answer: targetCombo, options, uiType: 'spotlight',
+            scene: '🔦 在黑黑的地方滑動手指，找找看目標在哪裡！'
+          });
+
+        } else {
+          // ── Symbol 類 ──
+          const allSymbols = [...SYMBOL_SET];
+          const answer = randomItem(allSymbols);
+          let pool = shuffle(allSymbols.filter(s => s !== answer));
+          const fakes = pool.slice(0, 3);
+          const options = shuffle([
+            { text: answer, speak: answer },
+            ...fakes.map(f => ({ text: f, speak: f }))
+          ]);
+          list.push({
+            area: '森林冒險', kind: 'forest-spotlight',
+            promptText: `請找出「${answer}」`,
+            speakText: `請找出注音符號，${answer}！`,
+            answer, options, uiType: 'spotlight',
+            scene: '🔦 在黑黑的地方滑動手指，找找看目標在哪裡！'
           });
         }
       }
@@ -1413,6 +1497,9 @@
       } else if (subMode === 'forest-meteor') {
         state.questionList = buildForestMeteorSet();
         if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '流星捕捉';
+      } else if (subMode === 'forest-spotlight') {
+        state.questionList = buildForestSpotlightSet();
+        if(document.getElementById('modeChip')) document.getElementById('modeChip').textContent = '黑夜探照';
       }
 
       showScreen('quiz'); renderQuestion();
@@ -2901,6 +2988,7 @@
             q.playVoice();
         }
       }
+
       else if (q.uiType === 'meteor') {
         if(document.getElementById('feedbackLine')) document.getElementById('feedbackLine').textContent = '接住寫著正確答案的流星！其他的都是陷阱！';
         if (q.scene && visualArea) {
@@ -2915,28 +3003,39 @@
         bg.className = 'meteor-bg';
         stage.appendChild(bg);
 
+        // 為每個選項建立一顆流星
         q.options.forEach((opt, idx) => {
           const entity = document.createElement('div');
           entity.className = 'meteor-entity';
 
+          // 隨機 X 位置 (8% ~ 76%)，確保不超出邊界
           const leftPct = 8 + Math.random() * 68;
           entity.style.left = `${leftPct}%`;
 
+          // top 固定在 -90px，translateY 動畫負責垂直移動
+          // hit area 會跟著 transform 的視覺位置，所以點得到
+          entity.style.top = '-90px';
+
+          // 隨機掉落週期 (4s ~ 8s)
           const fallDuration = 10 + Math.random() * 8;
+          // 負數 delay 讓流星從動畫週期的隨機進度開始，畫面一開始就有流星
           const fallDelay = -(Math.random() * fallDuration);
           entity.style.animation = `meteorFall ${fallDuration}s ${fallDelay.toFixed(2)}s linear infinite`;
 
+          // 流星圖片
           const img = document.createElement('img');
           img.src = 'images/meteor.png';
           img.className = 'meteor-img';
           img.onerror = function() {
             this.onerror = null;
+            // fallback：以金色光球代替
             this.style.display = 'none';
             entity.style.background = 'radial-gradient(circle, rgba(255,220,80,0.85) 0%, rgba(255,140,0,0.55) 60%, transparent 80%)';
             entity.style.borderRadius = '50%';
             entity.style.boxShadow = '0 0 18px 4px rgba(255,200,60,0.7)';
           };
 
+          // 選項文字
           const txt = document.createElement('div');
           txt.className = 'meteor-text';
           txt.textContent = opt.text;
@@ -2949,10 +3048,12 @@
             if (state.awaitingNext) return;
 
             if (opt.text === q.answer) {
+              // ✅ 正確
               playChimeSound();
               state.awaitingNext = true;
               entity.classList.add('correct-meteor');
 
+              // 暫停並調暗其他流星
               Array.from(stage.querySelectorAll('.meteor-entity')).forEach(el => {
                 if (el !== entity) el.classList.add('paused-meteor');
               });
@@ -2966,6 +3067,7 @@
               speak(reply);
 
             } else {
+              // ❌ 錯誤
               playSplashSound();
               state.excluded += 1;
               state.roundMistakes += 1;
@@ -2975,6 +3077,7 @@
               speak(reply);
             }
           };
+
           stage.appendChild(entity);
         });
 
